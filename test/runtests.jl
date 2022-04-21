@@ -25,6 +25,10 @@ end
     include("arith.jl")
 end
 
+@testset "strings" begin
+    include("strings.jl")
+end
+
 @testset "accuracy" begin
     include("accuracy.jl")
 end

@@ -1,7 +1,19 @@
 struct NanoDate
     datetime::DateTime      # DateTime(UTM(microsec))
-    nanosecs::Nanosecond    # Nanosecond(1000microsec + nanosec)
+    nanosecs::Nanosecond    # Nanosecond(microsecond * 1_000 + nanosecond)
+
+    function NanoDate(datetime::DateTime, nanosecs::Nanosecond)
+        nanos = value(nanosecs)
+        0 <= nanos < 1_000_000 && return new(datetime, nanosecs)
+
+        millisecs = value(datetime)
+        millis, nanos = divrem(nanos, NanosecondsPerMillisecond)
+        datetime = DateTime(Dates.UTM(millisecs + millis))
+        new(datetime, Nanosecond(nanosecs))
+    end
 end
+
+NanoDate(x::NanoDate) = x
 
 datetime(x::NanoDate) = x.datetime
 nanosecs(x::NanoDate) = x.nanosecs

@@ -1,0 +1,20 @@
+name = "NanoDates"
+uuid = "46f1a544-deae-4307-8689-c12aa3c955c6"
+authors = ["Jeffrey Sarnoff <jeffrey.sarnoff@gmail.com>"]
+keywords = ["Julia", "Dates", "time", "date", "nanoseconds"]
+description = "NanoDate is a nanosecond resolved DateTime type" 
+license = "MIT"
+version = "0.1.0"
+
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+[compat]
+julia = "1.7"
+
+[extras]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[test]
+test = ["Test", "Dates"]

@@ -1,15 +1,33 @@
 # NanoDates.jl
 #### celebrating the finer aspects of time
 
+
 `NanoDates` gives you nanoseconds and microseconds with your dates.
 
-The `Time` type from Dates does resolve nanoseconds, and they work within the scope of that type.
-With the `DateTime` type from Dates does not keep the two most finely resolved time periods.
-*To have date-and-time together, one must drop microseconds and ignore nanoseconds.*
+##### motivation
+
+- The `Time` type from Dates supports nanoseconds when dates are not used.
+- `Time` works incompletely with`DateTime` which is limited to milliseconds.
+
+- We need date-and-time together, fully resolved, accurate and precise.
+  - `NanoDate` is familiar and effective
+    -  works well with Dates
+    -  uses `DateTime` methods
+
+- This package is a redesign of `TimesDates`
+  - `TimesDates` is widely used and well liked
+    - offers nanoseond resolved dates       (as do we)
+    - offers nanosecond accurate time zones (we do not)
+ 
+- Contributors are welcome
+  -  clear code, robust performance, reliable interoperability
+  -  frendly docs, easily followed, well explained
+ 
+----
 
 `NanoDate` is a date-and-time type giving you all the dates and all the times-of-day.
 
-
+----
 
 
 

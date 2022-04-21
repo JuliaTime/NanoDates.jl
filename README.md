@@ -41,7 +41,7 @@ Grace Hopper, with gratitude
 |                   |                         |
 |                   | 300 is 299.792458       |
 
-        -  1 light-nanometer     is about   30 centimeters
+        -  1 light-nanometer    is about   30 centimeters
         - 500 light-nanometers   is about  150 meters
         - 500 light-microseconds is about  750 furlongs
         -   1 light-millisecond  is about  186 miles

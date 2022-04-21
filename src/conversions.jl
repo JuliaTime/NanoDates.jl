@@ -1,6 +1,6 @@
-Base.convert(::Type{NanoDate}, x::DateTime) = NanoDate(x, Time0)
-Base.convert(::Type{NanoDate}, x::Date) = NanoDate(x, Time0)
-Base.convert(::Type{NanoDate}, x::Time) = NanoDate(today(), Time0)
+Base.convert(::Type{NanoDate}, x::DateTime) = NanoDate(x, Nanosecond0)
+Base.convert(::Type{NanoDate}, x::Date) = NanoDate(x, Nanosecond0)
+Base.convert(::Type{NanoDate}, x::Time) = NanoDate(today(), Nanosecond0)
 
 Base.convert(::Type{DateTime}, x::NanoDate) = x.datetime
 Base.convert(::Type{Date}, x::NanoDate) = Date(x.datetime)

@@ -5,7 +5,7 @@ struct NanoDate
     datetime::DateTime      # DateTime(UTM(microsec))
     nanosecs::Nanosecond    # Nanosecond(microsecond * 1_000 + nanosecond)
 
-    function NanoDate(::Construct, datetime::DateTime, nanosecs::Nanosecond) =
+    NanoDate(::Construct, datetime::DateTime, nanosecs::Nanosecond) =
         new(datetime, nanosecs)
 end
 

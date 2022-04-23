@@ -65,5 +65,5 @@ const Epoch2000Date = Date(2000,1,1)
 const Epoch2000DateTime = DateTime(2000,1,1, 0,0,0, 0)
 const Epoch2000RataDie = Dates.value(Epoch2000Date)
 const Epoch2000Milliseconds = Dates.value(Epoch2000DateTime)
-const Epoch2000Nanoseconds  = Int128(Epoch2000Milliseconds) * NanosecondsPerMilliseconds
+const Epoch2000Nanoseconds  = Int128(Epoch2000Milliseconds) * NanosecondsPerMillisecond
 

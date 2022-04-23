@@ -10,3 +10,4 @@ Base.trunc(dt::NanoDate, p::Type{Second}) = dt - Millisecond(dt)
 Base.trunc(dt::NanoDate, p::Type{Millisecond}) = dt - div(dt.nanosecs, NanosecondsPerMillisecond)
 Base.trunc(dt::NanoDate, p::Type{Microsecond}) = dt - rem(dt.nanosecs, NanosecondsPerMicrosecond)
 Base.trunc(dt::NanoDate, p::Type{Nanosecond}) = dt
+

@@ -18,3 +18,8 @@ NanoDate(x::NanoDate) = x
 datetime(x::NanoDate) = x.datetime
 nanosecs(x::NanoDate) = x.nanosecs
 
+NanoDate(dt::DateTime, us::Microsecond) = NanoDate(dt, Nanosecond(value(us) * 1_000))
+NanoDate(dt::DateTime, us::Microsecond, ns::Nanosecond) =
+    NanoDate(dt, Nanosecond(value(us) * 1_000 + value(ns)))
+
+NanoDate(dt::DateTime, ns::Int) = NanoDate(dt, Nanosecond(ns))

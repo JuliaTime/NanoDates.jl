@@ -1,16 +1,22 @@
+const Construct = Val{:NanoDate}
+const Constructor = Construct()
+
 struct NanoDate
     datetime::DateTime      # DateTime(UTM(microsec))
     nanosecs::Nanosecond    # Nanosecond(microsecond * 1_000 + nanosecond)
 
-    function NanoDate(datetime::DateTime, nanosecs::Nanosecond)
-        nanos = value(nanosecs)
-        0 <= nanos < 1_000_000 && return new(datetime, nanosecs)
+    function NanoDate(::Construct, datetime::DateTime, nanosecs::Nanosecond) =
+        new(datetime, nanosecs)
+end
 
-        millisecs = value(datetime)
-        millis, nanos = divrem(nanos, NanosecondsPerMillisecond)
-        datetime = DateTime(Dates.UTM(millisecs + millis))
-        new(datetime, Nanosecond(nanosecs))
-    end
+function NanoDate(datetime::DateTime, nanosecs::Nanosecond)
+    nanos = value(nanosecs)
+    0 <= nanos < 1_000_000 && return NanoDate(Constructor, datetime, nanosecs)
+
+    millisecs = value(datetime)
+    millis, nanos = divrem(nanos, NanosecondsPerMillisecond)
+    datetime = DateTime(Dates.UTM(millisecs + millis))
+    NanoDate(Constructor, datetime, Nanosecond(nanosecs))
 end
 
 NanoDate(x::NanoDate) = x

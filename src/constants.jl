@@ -50,12 +50,12 @@ const Quarter0 = Quarter(0)
 const Year0 = Year(0)
 
 const RataDie0 = Date(0, 12, 31)
-const UnixRataDie = Dates.value(UnixDate0)
-const Epoch2000RataDie = Dates.value(Date(2000,1,1))
-
 const UnixDate0 = Date(1970, 1, 1)
 const UnixTime0 = Time0
 const UnixDateTime0 = DateTime(1970,1,1, 0,0,0,0)
+
+const UnixRataDie = Dates.value(UnixDate0)
+const Epoch2000RataDie = Dates.value(Date(2000,1,1))
 const UnixMilliseconds = Dates.value(UnixDateTime0)
 const UnixMicroseconds = UnixMilliseconds * MicrosecondsPerMillisecond
 const UnixNanoseconds = Int128(UnixMilliseconds) * NanosecondsPerMillisecond

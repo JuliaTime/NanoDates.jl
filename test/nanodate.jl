@@ -26,13 +26,8 @@ ananodate = NanoDate(adatetime, ananos)
     @test ananodate.nanosecs == ananosecs
 
     @test NanoDate(adate, atime) == ananodate
-<<<<<<< HEAD
     @test NanoDate(yr, mn, dy) == NanoDate(adate)
     @test NanoDate(Yr, Mn, Dy) == NanoDate(adate)
-=======
-    @test NanoDate(yr, mn, dy) == NanoDate(date)
-    @test NanoDate(Yr, Mn, Dy) == NanoDate(date)
->>>>>>> main
     @test NanoDate(yr, mn, dy, hr, mi, sc, ms, us, ns) == ananodate
     @test NanoDate(Yr, Mn, Dy, Hr, Mi, Sc, Ms, Us, Ns) == ananodate
 end

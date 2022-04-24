@@ -27,3 +27,10 @@ ananodate = NanoDate(adatetime, ananos)
     @test NanoDate(yr, mn, dy, hr, mi, sc, ms, us, ns) == ananodate
     @test NanoDate(Yr, Mn, Dy, Hr, Mi, Sc, Ms, Us, Ns) == ananodate
 end
+
+@testset "conversions" begin
+    @test adatetime == DateTime(ananodate)
+    @test adate == Date(ananodate)
+    @test atime == Time(ananodate)
+end
+

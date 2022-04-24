@@ -9,21 +9,21 @@ Yr,Mn,Dy = Year(yr), Month(mn), Day(dy)
 Hr,Mi,Sc = Hour(hr), Minute(mi), Second(sc)
 Ms,Us,Ns = Millisecond(ms), Microsecond(us), Nanosecond(ns)
 
-date = Date(yr, mn, dy)
-time = Time(hr, mi, sc, ms, us, ns)
-nanos = nanosecs(Microsecond(time), Nanosecond(time))
-datetime = DateTime(date, trunc(time, Millisecond))
-nanodate = NanoDate(datetime, nanos)
+adate = Date(yr, mn, dy)
+atime = Time(hr, mi, sc, ms, us, ns)
+ananos = nanosecs(Microsecond(time), Nanosecond(time))
+adatetime = DateTime(date, trunc(time, Millisecond))
+ananodate = NanoDate(datetime, nanos)
 
 @testset "constructors" begin
     @test_throws MethodError NanoDate()
     
-    @test nanodate.datetime == datetime
-    @test nanodate.nanosecs == nanos
+    @test ananodate.datetime == adatetime
+    @test ananodate.nanosecs == ananos
 
-    @test NanoDate(date, time) == nanodate
+    @test NanoDate(date, time) == ananodate
     @test NanoDate(yr, mn, dy) == NanoDate(date)
     @test NanoDate(Yr, Mn, Dy) == NanoDate(date)
-    @test NanoDate(yr, mn, dy, hr, mi, sc, ms, us, ns) == nanodate
-    @test NanoDate(Yr, Mn, Dy, Hr, Mi, Sc, Ms, Us, Ns) == nanodate
+    @test NanoDate(yr, mn, dy, hr, mi, sc, ms, us, ns) == ananodate
+    @test NanoDate(Yr, Mn, Dy, Hr, Mi, Sc, Ms, Us, Ns) == ananodate
 end

@@ -13,11 +13,7 @@ adate = Date(yr, mn, dy)
 atime = Time(hr, mi, sc, ms, us, ns)
 ananosecs = nanosecs(Microsecond(atime), Nanosecond(atime))
 adatetime = DateTime(adate, trunc(atime, Millisecond))
-<<<<<<< HEAD
 ananodate = NanoDate(adatetime, ananosecs)
-=======
-ananodate = NanoDate(adatetime, ananos)
->>>>>>> main
 
 @testset "constructors" begin
     @test_throws MethodError NanoDate()

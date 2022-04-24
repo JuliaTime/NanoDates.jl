@@ -6,11 +6,11 @@ hr,mi,sc = (10, 20, 0)
 ms,us,ns = (350, 789, 420)
 
 Yr,Mn,Dy = Year(yr), Month(mn), Day(dy)
-Hr,Mn,Sc = Hour(hr), Minute(mi), Second(sc)
+Hr,Mi,Sc = Hour(hr), Minute(mi), Second(sc)
 Ms,Us,Ns = Millisecond(ms), Microsecond(us), Nanosecond(ns)
 
 date = Date(yr, mn, dy)
-time = Time(hr, mn, sc, ms, us. ns)
+time = Time(hr, mi, sc, ms, us. ns)
 nanos = nanosecs(Microsecond(time), Nanosecond(time))
 datetime = DateTime(date, trunc(time, Millisecond))
 nanodate = NanoDate(datetime, nanos)

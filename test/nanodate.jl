@@ -11,7 +11,7 @@ Ms,Us,Ns = Millisecond(ms), Microsecond(us), Nanosecond(ns)
 
 adate = Date(yr, mn, dy)
 atime = Time(hr, mi, sc, ms, us, ns)
-ananos = nanosecs(Microsecond(atime), Nanosecond(atime))
+ananosecs = nanosecs(Microsecond(atime), Nanosecond(atime))
 adatetime = DateTime(adate, trunc(atime, Millisecond))
 ananodate = NanoDate(adatetime, ananos)
 
@@ -19,7 +19,7 @@ ananodate = NanoDate(adatetime, ananos)
     @test_throws MethodError NanoDate()
     
     @test ananodate.datetime == adatetime
-    @test ananodate.nanosecs == ananos
+    @test ananodate.nanosecs == ananosecs
 
     @test NanoDate(adate, atime) == ananodate
     @test NanoDate(yr, mn, dy) == NanoDate(date)

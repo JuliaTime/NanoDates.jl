@@ -20,8 +20,8 @@ nanosecs(x::NanoDate) = x.nanosecs
 
 NanoDate(dt::DateTime, us::Microsecond) = NanoDate(dt, Nanosecond(value(us) * 1_000))
 NanoDate(dt::DateTime, us::Microsecond, ns::Nanosecond) =
-    NanoDate(dt, Nanosecond(value(us) * 1_000 + value(ns)))
-
+    NanoDate(dt, nanosecs(us, ns))
+    
 NanoDate(dt::Date, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(dt), us, ns)
 NanoDate(d::Date, us::Microsecond) = NanoDate(DateTime(dt), us)
 NanoDate(d::Date, ns::Nanosecond) = NanoDate(DateTime(d), ns)
@@ -38,20 +38,28 @@ NanoDate(yr, mn, dy, hr, mi=0, sc=0, ms=0, us=0, ns=0)) =
 # for internal use
 
 usns(ns) = ns
-usns(us, ns) = us * 1_000 + ns
+@inline usns(us, ns) = us * 1_000 + ns
 
 nanosecs(ns) = Nanosecond(ns)
 nanosecs(ns::Nanosecond) = ns
 nanosecs(us::Microsecond) = Nanosecond(1_000 * value(us))
-nanosecs(us, ns) = Nanosecond(usns(us, ns))
-nanosecs(us::Microsecond, ns::Nanosecond) = nanosecs(value(us), value(ns))
+@inline nanosecs(us, ns) = Nanosecond(usns(us, ns))
+@inline nanosecs(us::Microsecond, ns::Nanosecond) = nanosecs(value(us), value(ns))
 
 NanoDate(dt::DateTime, x) = NanoDate(dt, nanosecs(x))
 NanoDate(dt::DateTime, us, ns) = NanoDate(dt, nanosecs(us, ns))
 NanoDate(d::Date, x) = NanoDate(d, nanosecs(x))
 NanoDate(d::Date, us, ns) = NanoDate(d, nanosecs(us, ns))
 
-NanoDate(; millis=0, us=0, ns=0) = NanoDate(DateTime(UTM(millis)), nanosecs(us, ns))
+NanoDate(dy::Day) = NanoDate(Date(UTD(dy)), Nanosecond0)
+NanoDate(dy::Day, ns::Nanosecond) = NanoDate(Date(UTD(dy)), ns)
+NanoDate(dy::Day, us::Microsecond) = NanoDate(Date(UTD(dy)), nanosecs(us))
+NanoDate(dy::Day, us::Microsecond, ns::Nanosecond) = NanoDate(Date(UTD(dy)), nanosecs(us,ns))
+
+NanoDate(ms::Millisecond) = NanoDate(DateTime(UTM(ms)), Nanosecond0)
+NanoDate(ms::Millisecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), ns)
+NanoDate(ms::Millisecond, us::Microsecond) = NanoDate(DateTime(UTM(ms)), nanosecs(us))
+NanoDate(ms::Millisecond, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), nanosecs(us,ns))
 
 const DateOrDateTime = value(DateTime(1,1,1))
 datedatetime(x) = (abs(x) < DateOrDateTime) ? Date(UTD(x)) : DateTime(UTM(x))

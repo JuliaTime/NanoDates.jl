@@ -61,5 +61,5 @@ NanoDate(ms::Millisecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), ns)
 NanoDate(ms::Millisecond, us::Microsecond) = NanoDate(DateTime(UTM(ms)), nanosecs(us))
 NanoDate(ms::Millisecond, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), nanosecs(us,ns))
 
-const DateOrDateTime = value(DateTime(1,1,1))
+const DateOrDateTime = value(Date(5001,1,1))
 datedatetime(x) = (abs(x) < DateOrDateTime) ? Date(UTD(x)) : DateTime(UTM(x))

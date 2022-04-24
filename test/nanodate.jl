@@ -3,7 +3,7 @@ using NanoDates: datedatetime, nanosecs
 
 date = Date(2022, 7, 28)
 time = Time(10, 30, 0, 350, 789, 420)
-nanos = nanosecs(Microseconds(time), Nanoseconds(time))
+nanos = nanosecs(Microsecond(time), Nanosecond(time))
 datetime = DateTime(date, trunc(time, Millisecond))
 nanodate = NanoDate(datetime, nanos)
 

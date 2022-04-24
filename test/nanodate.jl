@@ -11,9 +11,9 @@ Ms,Us,Ns = Millisecond(ms), Microsecond(us), Nanosecond(ns)
 
 adate = Date(yr, mn, dy)
 atime = Time(hr, mi, sc, ms, us, ns)
-ananos = nanosecs(Microsecond(time), Nanosecond(time))
-adatetime = DateTime(date, trunc(time, Millisecond))
-ananodate = NanoDate(datetime, nanos)
+ananos = nanosecs(Microsecond(atime), Nanosecond(atime))
+adatetime = DateTime(adate, trunc(atime, Millisecond))
+ananodate = NanoDate(adatetime, ananos)
 
 @testset "constructors" begin
     @test_throws MethodError NanoDate()

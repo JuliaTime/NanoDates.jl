@@ -6,7 +6,7 @@ Base.convert(::Type{DateTime}, x::NanoDate) = x.datetime
 Base.convert(::Type{Date}, x::NanoDate) = Date(x.datetime)
 
 function Base.convert(::Type{Time}, x::NanoDate)
-    nanos = value(Time(x.datetime)) + x.nanosecs
+    nanos = value(Time(x.datetime)) + value(x.nanosecs)
     Time(Nanosecond(nanos))
 end
 

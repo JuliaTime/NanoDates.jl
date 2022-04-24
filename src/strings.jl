@@ -39,3 +39,16 @@ function nanodate_string(nd, sep)
     str * padded
 end
 
+# !!FIXME
+function Dates.format(nd::NanoDate, df::DateFormat)
+    str = format(nd.datetime, df)
+    nanos = value(nd.nanosecs)
+    iszero(nanos) && return str
+    us, ns = divrem(nanos, 1_000)
+    millis = millisecond(nd.datetime)
+
+    str = str * lpad(us, 3, '0')
+    iszero(ns) && return str
+    str = str * lpad(ns, 3, '0')
+    str
+end

@@ -22,7 +22,10 @@ NanoDate(dt::DateTime, us::Microsecond) = NanoDate(dt, Nanosecond(value(us) * 1_
 NanoDate(dt::DateTime, us::Microsecond, ns::Nanosecond) =
     NanoDate(dt, Nanosecond(value(us) * 1_000 + value(ns)))
 
+NanoDate(dt::Date, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(dt), us, ns)
 NanoDate(d::Date, us::Microsecond) = NanoDate(DateTime(dt), us)
 NanoDate(d::Date, ns::Nanosecond) = NanoDate(DateTime(d), ns)
 
+# for internal use
 NanoDate(dt::DateTime, ns::Int) = NanoDate(dt, Nanosecond(ns))
+NanoDate(dt::Date, ns::Int) = NanoDate(dt, Nanosecond(ns))

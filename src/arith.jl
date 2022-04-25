@@ -51,7 +51,7 @@ end
 Base.floor(nd::NanoDate, ::Type{Microsecond}) = trunc(nd, Microsecond)
 function Base.ceil(nd::NanoDate, ::Type{Microsecond})
     cs, ns = fldmod(value(nd.nanosecs), NanosecondsPerMicrosecond)
-    NanoDate(nd.datetime, nanosec(Microsecond(cs))) + Microsecond(!iszero(ns))
+    NanoDate(nd.datetime, nanosecs(Microsecond(cs))) + Microsecond(!iszero(ns))
 end
 
 Base.trunc(nd::NanoDate, ::Type{Nanosecond}) = nd

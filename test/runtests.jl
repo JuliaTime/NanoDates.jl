@@ -1,5 +1,7 @@
-using Dates, NanoDates, Test
-using Dates: value, CompoundPeriod, toms, tons, UTM, UTD, format
+using Test
+using Dates
+using Dates: value, CompoundPeriod, toms, tons, UTM, UTD
+using NanoDates
 using NanoDates: nanosecs
 
 include("constants.jl")

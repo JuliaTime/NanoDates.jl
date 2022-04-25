@@ -83,3 +83,14 @@ julia> ~ans
 
 julia> canonicalize(Nanosecond(ans))
 3 days, 14 hours, 19 minutes, 36 seconds, 422 milliseconds, 830 microseconds, 45 nanoseconds
+
+
+julia> datetime2unixnanoseconds(dtm) - ns
+0xfffee559b9b67022
+
+julia> d=~ans
+0x00011aa646498fdd
+
+julia> di=Int(d)
+310776422830045
+

@@ -34,8 +34,3 @@ end
     include("strings.jl")
 end
 
-@testset "accuracy" begin
-    include("accuracy.jl")
-end
-
-

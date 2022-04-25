@@ -37,3 +37,18 @@ function offset_reset()
 end
 
 
+Dates.value(now()) - Dates.value(DateTime(1970,1,1))
+1650886367654
+
+
+julia> Dates.value(now()) - Dates.value(DateTime(1970,1,1))
+1650886434679
+julia> round(Int,time()*1_000)
+1650900835774
+
+const UNIXEPOCH_MILLISECONDS Dates.value(DateTime(1970,1,1))
+
+# this value is match to Int(time() * 1_000)
+datetime2unixmilliseconds(x::dtm) = Dates.value(x) - UNIXEPOCH_MILLISECONDS
+
+

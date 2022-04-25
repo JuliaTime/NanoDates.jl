@@ -31,13 +31,16 @@ end
 
 # trunc, floor, ceil
 
-for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)
+for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second)
   @eval begin
     Base.trunc(nd::NanoDate, ::Type{$T}) = NanoDate(trunc(nd.datetime, $T))
     Base.floor(nd::NanoDate, ::Type{$T}) = trunc(nd, $T)
     Base.ceil(nd::NanoDate, ::Type{$T}) = NanoDate(ceil(nd.datetime), $T)
   end  
 end
+
+Base.trunc(nd::NanoDate, ::Type{Millisecond}) = NanoDate(trunc(nd.datetime, Millisecond))
+Base.floor(nd::NanoDate, ::Type{Millisecond}) = trunc(nd, Millisecond)
 Base.ceil(nd::NanoDate, ::Type{Millisecond}) =
     NanoDate(nd.datetime) + Millisecond(!iszero(nd.nanosecs))
 

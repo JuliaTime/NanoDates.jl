@@ -46,9 +46,40 @@ julia> Dates.value(now()) - Dates.value(DateTime(1970,1,1))
 julia> round(Int,time()*1_000)
 1650900835774
 
-const UNIXEPOCH_MILLISECONDS Dates.value(DateTime(1970,1,1))
+const UNIXEPOCH_MILLISECONDS = Dates.value(DateTime(1970,1,1))
 
 # this value is match to Int(time() * 1_000)
-datetime2unixmilliseconds(x::dtm) = Dates.value(x) - UNIXEPOCH_MILLISECONDS
+@inline datetime2unixmilliseconds(dtm) = Dates.value(dtm) - UNIXEPOCH_MILLISECONDS
+@inline time2unixmilliseconds(tm) = trunc(Int, tm * 1_000)
+
+@inline datetime2unixnanoseconds(dtm) = datetime2unixmilliseconds(dtm)
+@inline time2unixnanoseconds(tm) = time2unixmilliseconds(tm) * 1_000_000
+
+tm, ns, dtm = time(), time_ns(), now()
+datetime2unixnanoseconds(dtm) - time2unixnanoseconds(tm)
+
+datetime2unixnanoseconds(dtm) - ns
 
 
+julia> datetime2unixnanoseconds(dtm) - ns
+0xfffee566434df922
+
+julia> ~ans
+0x00011a99bcb206dd
+
+julia> canonicalize(Nanosecond(ans))
+3 days, 14 hours, 18 minutes, 42 seconds, 574 milliseconds, 812 microseconds, 893 nanoseconds
+
+julia> tm, ns, dtm = time(), time_ns(), now()
+(1.650901633654e9, 0x00011c26a6d5a054, DateTime("2022-04-25T11:47:13.654"))
+
+datetime2unixnanoseconds(dtm) - time2unixnanoseconds(tm)
+
+julia> datetime2unixnanoseconds(dtm) - ns
+0xfffee559b9b67022
+
+julia> ~ans
+0x00011aa646498fdd
+
+julia> canonicalize(Nanosecond(ans))
+3 days, 14 hours, 19 minutes, 36 seconds, 422 milliseconds, 830 microseconds, 45 nanoseconds

@@ -1,7 +1,3 @@
-const CharString = Union{Char, AbstractString}
-
-const NANODATE_FORMAT = dateformat"yyyy-mm-ddTHH:MM:SS.sss"
-
 function Base.string(nd::NanoDate; sep::CharString="")
     if isempty(sep)
         nanodate_string(nd)

@@ -15,6 +15,7 @@ include("compare.jl")
 include("interop.jl")
 include("arith.jl")
 include("strings.jl")
+include("io.jl")
 
 end
 

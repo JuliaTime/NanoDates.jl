@@ -47,13 +47,13 @@ end
 end
 
 @testset "ceil to period" begin
-    @test floor(ananodate, Year) == NanoDate(yr)
-    @test floor(ananodate, Month) == NanoDate(yr,mn)
-    @test floor(ananodate, Day) == NanoDate(yr,mn,dy)
-    @test floor(ananodate, Hour) == NanoDate(yr,mn,dy,hr)
-    @test floor(ananodate, Minute) == NanoDate(yr,mn,dy,hr,mi)
-    @test floor(ananodate, Second) == NanoDate(yr,mn,dy,hr,mi,sc)
-    @test floor(ananodate, Millisecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms)
-    @test floor(ananodate, Microsecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs)
-    @test floor(ananodate, Nanosecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns)
+    @test ceil(ananodate, Year) == NanoDate(yr+!isone(mn))
+    @test ceil(ananodate, Month) == NanoDate(yr,mn+!isone(dy))
+    @test ceil(ananodate, Day) == NanoDate(yr,mn,dy+!iszero(hr))
+    @test ceil(ananodate, Hour) == NanoDate(yr,mn,dy,hr+!iszero(mi))
+    @test ceil(ananodate, Minute) == NanoDate(yr,mn,dy,hr,mi+!iszero(sc))
+    @test ceil(ananodate, Second) == NanoDate(yr,mn,dy,hr,mi,sc+!iszero(ms))
+    @test ceil(ananodate, Millisecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms+!iszero(cs))
+    @test ceil(ananodate, Microsecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs+!iszero(ns))
+    @test ceil(ananodate, Nanosecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns)
 end

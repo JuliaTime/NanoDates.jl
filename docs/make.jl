@@ -15,7 +15,11 @@ makedocs(
         ansicolor = true,
     ),
     pages = Any[
-        "Home" => "index.md"
+        "Home" => "index.md",
+        "Use" = Any[
+            "Construction" => "construction.md",
+            "As a string" => "intostring.md",
+        ],
     ],
 )
 

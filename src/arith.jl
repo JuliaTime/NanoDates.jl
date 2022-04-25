@@ -36,6 +36,7 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millis
     Base.trunc(nd::NanoDate, ::Type{$T}) = NanoDate(trunc(nd.datetime, $T))
     Base.floor(nd::NanoDate, ::Type{$T}) = trunc(nd, $T)
     Base.ceil(nd::NanoDate, ::Type{$T}) = NanoDate(ceil(nd.datetime), $T)
+  end  
 end
 Base.ceil(nd::Nanodate, ::Type{Millisecond}) =
     NanoDate(nd.datetime) + Millisecond(!iszero(nd.nanosecs))

@@ -7,7 +7,7 @@ using Test
 include("constants.jl")
 
 @testset "nanodate" begin
-    include("nanodate.jl`")
+    include("nanodate.jl")
 end
 
 @testset "accessors" begin

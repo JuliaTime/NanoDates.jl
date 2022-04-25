@@ -83,13 +83,13 @@ end
 end
 
 @testset "round nearest (ties up) to period" begin
-    @test round(ananodate, Year, RoundUp, RoundNearestTiesUp) == NanoDate(yr + (mn >= 6))
-    @test round(ananodate, Month, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn + (dy >= daysinmonth(yr, mn)/2))
-    @test round(ananodate, Day, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn, dy + (hr >= 12))
-    @test round(ananodate, Hour, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr + (mn >= 30))
-    @test round(ananodate, Minute, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi + (sc >= 30))
-    @test round(ananodate, Second, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc + (ms >= 500))
-    @test round(ananodate, Millisecond, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms + (cs >= 500))
-    @test round(ananodate, Microsecond, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs + (ns >= 500))
-    @test round(ananodate, Nanosecond, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns)
+    @test round(ananodate, Year, RoundNearestTiesUp) == NanoDate(yr + (mn >= 6))
+    @test round(ananodate, Month, RoundNearestTiesUp) == NanoDate(yr, mn + (dy >= daysinmonth(yr, mn)/2))
+    @test round(ananodate, Day, RoundNearestTiesUp) == NanoDate(yr, mn, dy + (hr >= 12))
+    @test round(ananodate, Hour, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr + (mn >= 30))
+    @test round(ananodate, Minute, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi + (sc >= 30))
+    @test round(ananodate, Second, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc + (ms >= 500))
+    @test round(ananodate, Millisecond, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms + (cs >= 500))
+    @test round(ananodate, Microsecond, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs + (ns >= 500))
+    @test round(ananodate, Nanosecond, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns)
 end

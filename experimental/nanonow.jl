@@ -23,3 +23,17 @@ value(now()) * 1_000 - rem(time_ns(), u6)
 
 @inline offset(ns,dtm) = 
     mod(ns, 60_000_000_000), mod(dtm, 60_000) * 1_000_000
+
+
+function offset_reset()
+    tmns0, tm0 = time_ns(), time()
+    tmns = Int128(tmns0)
+    tm = trunc(Int128, tm0 * Int128(1_000_000))
+    toffset = tmns - tm
+    offset_csns = mod(toffset, 1_000_000)
+    dtm = DateTime(Dates.UTM(Millisecond(div(tm, 1_000))))
+    csns = Nanosecond(offset_csns)
+    NanoDate(dtm, offset_csns)
+end
+
+

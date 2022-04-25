@@ -25,5 +25,30 @@ Base.isless(x::DateTime, y::NanoDate) =
     isless(x, y.datetime) ||
     (isequal(x, y.datetime) && !iszero(y.nanosecs))
 
+Base.:(==)(x::NanoDate, y::NanoDate) =
+    (x.datetime == y.datetime) && (x.nanosecs == y.nanosecs)
+Base.:(<)(x::NanoDate, y::NanoDate) =
+    (x.datetime < y.datetime) || (x.datetime == y.datetime && x.nanosecs < y.nanosecs)
+Base.:(<=)(x::NanoDate, y::NanoDate) =
+    (x.datetime < y.datetime) || (x.datetime == y.datetime && x.nanosecs <= y.nanosecs)
+Base.:(>)(x::NanoDate, y::NanoDate) =
+    (x.datetime > y.datetime) || (x.datetime == y.datetime && x.nanosecs > y.nanosecs)
+Base.:(>=)(x::NanoDate, y::NanoDate) =
+    (x.datetime > y.datetime) || (x.datetime == y.datetime && x.nanosecs >= y.nanosecs)
 
+for (T) in (:DateTime, :Date)
+  @eval begin
+    Base.:(==)(x::NanoDate, y::$T) = (x.datetime == y) && iszero(x.nanosecs)
+    Base.:(==)(x::$T, y::NanoDate) = (x == y.datetime) && iszero(y.nanosecs)
 
+    Base.:(<)(x::NanoDate, y::$T) = (x.datetime < y)
+    Base.:(<)(x::$T, y::NanoDate) = (x < y.datetime)
+    Base.:(>)(x::NanoDate, y::$T) = (x.datetime > y) || (x.datetime == y && !iszero(x.nanosecs))
+    Base.:(>)(x::$T, y::NanoDate) = (x > y.datetime) 
+
+    Base.:(<=)(x::NanoDate, y::$T) = (x < y) || (x == y)
+    Base.:(<=)(x::$T, y::NanoDate) = (x < y) || (x == y)
+    Base.:(>=)(x::NanoDate, y::$T) = (x > y) || (x == y)
+    Base.:(>=)(x::$T, y::NanoDate) = (x > y) || (x == y)
+  end
+end

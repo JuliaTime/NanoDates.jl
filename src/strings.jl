@@ -1,7 +1,9 @@
+const CharString = Union{Char, AbstractString}
+
 const NANODATE_FORMAT = dateformat"yyyy-mm-ddTHH:MM:SS.sss"
 
-function Base.string(nd::NanoDate; sep::Char='∅')
-    if sep === '∅'
+function Base.string(nd::NanoDate; sep::CharString="")
+    if isempty(sep)
         nanodate_string(nd)
     else
         nanodate_string(nd, sep)
@@ -41,7 +43,7 @@ function nanodate_string(nd, sep)
     str * padded
 end
 
-function Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::Union{Char,String}="")
+function Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharString="")
     str = Dates.format(nd.datetime, df)
     nsubsecfields = 0
     lasttoken = df.tokens[end]

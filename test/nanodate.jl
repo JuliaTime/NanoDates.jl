@@ -9,7 +9,7 @@ end
 
 @testset "construct by Dates types" begin
     @test NanoDate(adate, atime) == ananodate
-    @test NanoDate(adatetime, ananosec) == ananodate
+    @test NanoDate(adatetime, ananosecs) == ananodate
     @test NanoDate(adatetime) == ananodate0
     @test NanoDate(adate) == ananodate00
 end

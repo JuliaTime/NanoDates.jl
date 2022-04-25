@@ -1,5 +1,6 @@
 using NanoDates, Test
 
+include("constants.jl")
 
 @testset "nanodate" begin
     include("nanodate.jl`")

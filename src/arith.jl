@@ -1,3 +1,19 @@
+function Base.:(-)(x::NanoDate, y::NanoDate)
+    canonicalize((x.datetime - y.datetime) + canonicalize(x.nanosecs - y.nanosecs))
+end
+Base.:(-)(x::NanoDate, y::DateTime) = (-)(promote(x,y)...)
+Base.:(-)(x::NanoDate, y::Date) = (-)(promote(x,y)...)
+Base.:(-)(x::DateTime, y::NanoDate) = (-)(promote(x,y)...)
+Base.:(-)(x::Date, y::NanoDate) = (-)(promote(x,y)...)
+
+function Base.:(-)(x::NanoDate, y::Time)
+    ymillis, ynanos = fldmod(value(y), NanosecondsPerMillisecond)
+    xynanos = Nanosecond(value(x.nanosecs) + ynanos)
+    (x + Millisecond(ymillis)) + xynanos
+end
+
+NanoDate(x.datetime, Nanoseconds(value(x.nanosecs) - tons(y)))
+
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)
   @eval begin
     Base.:(+)(nd::NanoDate, x::$T) = NanoDate(nd.datetime + x, nd.nanosecs)

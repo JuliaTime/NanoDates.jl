@@ -82,7 +82,7 @@ end
     @test round(ananodate, Nanosecond, RoundUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns)
 end
 
-@testset "round nearest to period" begin
+@testset "round nearest (ties up) to period" begin
     @test round(ananodate, Year, RoundUp, RoundNearestTiesUp) == NanoDate(yr + (mn >= 6))
     @test round(ananodate, Month, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn + (dy >= daysinmonth(yr, mn)/2))
     @test round(ananodate, Day, RoundUp, RoundNearestTiesUp) == NanoDate(yr, mn, dy + (hr >= 12))

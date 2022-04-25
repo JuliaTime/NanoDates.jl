@@ -1,3 +1,5 @@
+const NANODATE_FORMAT = dateformat"yyyy-mm-ddTHH:MM:SS.sss"
+
 function Base.string(nd::NanoDate; sep::Char='∅')
     if sep === '∅'
         nanodate_string(nd)
@@ -39,16 +41,23 @@ function nanodate_string(nd, sep)
     str * padded
 end
 
-# !!FIXME
-function Dates.format(nd::NanoDate, df::DateFormat)
-    str = format(nd.datetime, df)
+function Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::Union{Char,String}="")
+    str = Dates.format(nd.datetime, df)
+    nsubsecfields = 0
+    lasttoken = df.tokens[end]
+    if isa(lasttoken, Dates.DatePart) && typeof(lasttoken).parameters[1] === 's'
+        nsubsecfields = lasttoken.width
+    end
     nanos = value(nd.nanosecs)
     iszero(nanos) && return str
-    us, ns = divrem(nanos, 1_000)
+    cs, ns = divrem(nanos, 1_000)
     millis = millisecond(nd.datetime)
-
-    str = str * lpad(us, 3, '0')
-    iszero(ns) && return str
-    str = str * lpad(ns, 3, '0')
+    if nsubsecfields > 1
+        str = str * sep * lpad(cs, 3, '0')
+        iszero(ns) && return str
+        if nsubsecfields > 2
+            str = str * sep * lpad(ns, 3, '0')
+        end
+    end
     str
 end

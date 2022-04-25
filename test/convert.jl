@@ -4,7 +4,7 @@
 end
 
 @testset "promote" begin
-    @test promote(ananodate, adatetime) = (ananodate, NanoDate(adatetime))
-    @test promote(ananodate, adate) = (ananodate, NanoDate(adate))
+    @test promote(ananodate, adatetime) == (ananodate, NanoDate(adatetime))
+    @test promote(ananodate, adate) == (ananodate, NanoDate(adate))
 end
 

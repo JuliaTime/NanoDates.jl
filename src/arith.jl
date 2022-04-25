@@ -12,8 +12,6 @@ function Base.:(-)(x::NanoDate, y::Time)
     (x + Millisecond(ymillis)) + xynanos
 end
 
-NanoDate(x.datetime, Nanoseconds(value(x.nanosecs) - tons(y)))
-
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)
   @eval begin
     Base.:(+)(nd::NanoDate, x::$T) = NanoDate(nd.datetime + x, nd.nanosecs)

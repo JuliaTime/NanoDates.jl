@@ -1,3 +1,7 @@
+const CharString = Union{Char, AbstractString}
+
+const NANODATE_FORMAT = dateformat"yyyy-mm-ddTHH:MM:SS.sss"
+
 const DaysPerWeek = Int64(7)
 const HoursPerDay = Int64(24)
 const MinutesPerHour = Int64(60)

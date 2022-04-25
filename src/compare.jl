@@ -1,0 +1,29 @@
+Base.isequal(x::NanoDate, y::NanoDate) =
+    isequal(x.datetime, y.datetime) && isequal(x.nanosecs, y.nanosecs)
+
+Base.isequal(x::NanoDate, y::Date) =
+    isequal(x.datetime, y) && iszero(x.nanosecs)
+Base.isequal(x::Date, y::NanoDate) =
+    isequal(x, y.datetime) && iszero(y.nanosecs)
+
+Base.isequal(x::NanoDate, y::DateTime) =
+    isequal(x.datetime, y) && iszero(x.nanosecs)
+Base.isequal(x::DateTime, y::NanoDate) =
+    isequal(x, y.datetime) && iszero(y.nanosecs)
+
+Base.isless(x::NanoDate, y::NanoDate) =
+    isless(x.datetime, y.datetime) ||
+    (isequal(x.datetime, y.datetime) && isless(x.nanosecs, y.nanosecs))
+
+Base.isless(x::NanoDate, y::Date) = isless(x.datetime, y)
+Base.isless(x::Date, y::NanoDate) = 
+    isless(x, y.datetime) ||
+    (isequal(x, y.datetime) && !iszero(y.nanosecs))
+
+Base.isless(x::NanoDate, y::DateTime) = isless(x.datetime, y)
+Base.isless(x::DateTime, y::NanoDate) = 
+    isless(x, y.datetime) ||
+    (isequal(x, y.datetime) && !iszero(y.nanosecs))
+
+
+

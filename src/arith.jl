@@ -70,6 +70,7 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second,
         dn = round(nd, $T, RoundDown)
         (up - nd) <= (nd - down) ? up : down
     end
+    Base.round(nd::NanoDate, :;Type{$T}, ::RoundingMode{:Nearest})  = round(nd, $T)
     Base.round(nd::NanoDate, ::Type{$T}) = round(nd, $T, RoundNearestTiesUp)    
   end
 end

@@ -75,7 +75,3 @@ Base.round(nd::NanoDate, ::Type{Nanosecond}, ::RoundingMode{:Down}) = nd
 Base.round(nd::NanoDate, ::Type{Nanosecond}, ::RoundingMode{:Up}) = nd
 Base.round(nd::NanoDate, ::Type{Nanosecond}, ::RoundingMode{:RoundNearestTiesUp}) = nd
 
-
-
-
-    

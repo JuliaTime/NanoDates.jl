@@ -22,3 +22,38 @@ end
     @test ananodate - Nanosecond(1) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns-1)
 end
 
+@testset "trunc to period" begin
+    @test trunc(ananodate, Year) == NanoDate(yr)
+    @test trunc(ananodate, Month) == NanoDate(yr,mn)
+    @test trunc(ananodate, Day) == NanoDate(yr,mn,dy)
+    @test trunc(ananodate, Hour) == NanoDate(yr,mn,dy,hr)
+    @test trunc(ananodate, Minute) == NanoDate(yr,mn,dy,hr,mi)
+    @test trunc(ananodate, Second) == NanoDate(yr,mn,dy,hr,mi,sc)
+    @test trunc(ananodate, Millisecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms)
+    @test trunc(ananodate, Microsecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs)
+    @test trunc(ananodate, Nanosecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns)
+end
+
+@testset "floor to period" begin
+    @test floor(ananodate, Year) == NanoDate(yr)
+    @test floor(ananodate, Month) == NanoDate(yr,mn)
+    @test floor(ananodate, Day) == NanoDate(yr,mn,dy)
+    @test floor(ananodate, Hour) == NanoDate(yr,mn,dy,hr)
+    @test floor(ananodate, Minute) == NanoDate(yr,mn,dy,hr,mi)
+    @test floor(ananodate, Second) == NanoDate(yr,mn,dy,hr,mi,sc)
+    @test floor(ananodate, Millisecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms)
+    @test floor(ananodate, Microsecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs)
+    @test floor(ananodate, Nanosecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns)
+end
+
+@testset "ceil to period" begin
+    @test floor(ananodate, Year) == NanoDate(yr)
+    @test floor(ananodate, Month) == NanoDate(yr,mn)
+    @test floor(ananodate, Day) == NanoDate(yr,mn,dy)
+    @test floor(ananodate, Hour) == NanoDate(yr,mn,dy,hr)
+    @test floor(ananodate, Minute) == NanoDate(yr,mn,dy,hr,mi)
+    @test floor(ananodate, Second) == NanoDate(yr,mn,dy,hr,mi,sc)
+    @test floor(ananodate, Millisecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms)
+    @test floor(ananodate, Microsecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs)
+    @test floor(ananodate, Nanosecond) == NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns)
+end

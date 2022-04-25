@@ -14,7 +14,7 @@ end
     @test NanoDate(adate) == ananodate00
 end
 
-@testset "convert" end
+@testset "convert" begin
     @test convert(NanoDate, adatetime) == ananodate0
     @test convert(NanoDate, adate) == ananodate00
 end

@@ -81,7 +81,7 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second,
     Base.round(nd::NanoDate, ::Type{$T}, ::RoundingMode{:Up}) = ceil(nd, $T)
     function Base.round(nd::NanoDate, ::Type{$T}, ::RoundingMode{:NearestTiesUp})
         up = round(nd, $T, RoundUp)
-        dn = round(nd, $T, RoundDown)
+        down = round(nd, $T, RoundDown)
         (up - nd) <= (nd - down) ? up : down
     end
     Base.round(nd::NanoDate, ::Type{$T}, ::RoundingMode{:Nearest})  = round(nd, $T)

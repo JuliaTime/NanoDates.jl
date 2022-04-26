@@ -76,13 +76,11 @@ Base.ceil(nd::NanoDate, ::Type{Nanosecond}) = nd
 
 for T in (:Minute, :Second, :Millisecond, :Microsecond)
   @eval begin
-    Base.trunc(tm::Time, ::Type{$T}) = NanoDate(trunc(nd.datetime, $T))
     Base.floor(tm::Time, ::Type{$T}) = trunc(nd, $T)
     Base.ceil(tm::Time, ::Type{$T}) = NanoDate(ceil(nd.datetime, $T))
   end  
 end
 
-Base.trunc(tm::Time, ::Type{Hour}) = tm - Hour(tm)
 Base.floor(tm::Time, ::Type{Hour}) = tm - Hour(tm)
 function Base.ceil(tm::Time, ::Type{Hour})
     nanos = value(tm)
@@ -96,7 +94,6 @@ function Base.ceil(tm::Time, ::Type{Hour})
     end
 end
 
-Base.trunc(tm::Time, ::Type{Nanosecond}) = tm
 Base.floor(tm::Time, ::Type{Nanosecond}) = tm
 Base.ceil(tm::Time, ::Type{Nanosecond}) = tm
 

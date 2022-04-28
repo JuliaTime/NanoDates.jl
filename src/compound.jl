@@ -29,7 +29,7 @@ function retype(::Type{CompoundPeriod}, tm::Time)
     Millisecond(millis) + Microsecond(micros) + Nanosecond(nanos)
 end
 
-retype(::Type{CompoundPeriod}, dt::Date)
+function retype(::Type{CompoundPeriod}, dt::Date)
     yr,mn,dy = yearmonthday(dt)
     Year(yr) + Month(mn) + Day(dy)
 end

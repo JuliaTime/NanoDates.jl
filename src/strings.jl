@@ -64,3 +64,25 @@ function Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharStr
     end
     str
 end
+
+function Time(s::String)
+    n = length(s)
+    n <= 12 && return Dates.Time(s)
+    timefromstring(s)
+end
+
+function timefromstring(s::String)
+    dotidx = findlast(x -> x == '.', s)
+    if isnothing(dotidx) || length(s) - dotidx <= 3
+        return parse(Time, s)
+    else
+        secs, subsecs = split(s, '.')
+        secs *= "." * subsecs[1:3]
+        subsecs = subsecs[4:end]
+        tm = parse(Time, secs)
+        isubsecs = Meta.parse("1" * subsecs)
+        micros, nanos = divrem(isubsecs, 1_000)
+        micros = mod(micros, 1_000)
+        return tm + Microsecond(micros) + Nanosecond(nanos)
+    end
+end

@@ -8,13 +8,18 @@ end
 
 function nanodate_string(nd)
     str = string(nd.datetime)
+    millis = millisecond(nd)
     nanos = value(nd.nanosecs)
-    if nanos === 0
-        padded = ""
-    elseif nanos % 1_000 !== 0
-        padded = "." * lpad(nanos, 6, '0')
-    else
-        padded = "." * lpad(div(nanos, 1_000), 3, '0')
+    if millis == 0 && nanos != 0
+        str *= ".000"
+    end
+    padded = ""
+    if nanos != 0
+        if nanos % 1_000 !== 0
+            padded = lpad(nanos, 6, '0')
+        else
+            padded = lpad(div(nanos, 1_000), 3, '0')
+        end
     end
     str * padded
 end

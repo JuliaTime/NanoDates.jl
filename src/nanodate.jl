@@ -35,18 +35,6 @@ NanoDate(yr, mn=1, dy=1) = NanoDate(Date(yr, mn, dy))
 NanoDate(yr, mn, dy, hr, mi=0, sc=0, ms=0, us=0, ns=0) =
     NanoDate(DateTime(yr, mn, dy, hr, mi, sc, ms), nanosecs(us, ns))
 
-NanoDate(year::Integer=year(today()); month::T=1, day::T=1, hour::T=0, minute::T=0, second::T=0,
-    millisecond::T=0, microsecond::T=0, nanosecond::T=0) where {T<:Integer}=
-    NanoDate(year, month, day, hour, minute, second,
-        millisecond, microsecond, nanosecond)
-
-NanoDate(year::Year=Year(today()); month::Month=Month(1), day::Day=Day(1),
-    hour::Hour=Hour(0), minute::Minute=Minute(0), second::Second=Second(0),
-    millisecond::Millisecond=Millisecond(0), microsecond::Microsecond=Microsecond(0),
-    nanosecond::Nanosecond=Nanosecond(0)) =
-    NanoDate(year, month, day, hour, minute, second,
-        millisecond, microsecond, nanosecond)
-
 # for internal use
 
 usns(ns) = ns

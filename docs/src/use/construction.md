@@ -74,16 +74,6 @@ ananodate = NanoDate(
     Nanosecond(nanos))
 # 2022-04-28T14:32:10.123456789
 ```
-The lowercase singular form of periods are keywords. 
-Omitted `month`, `day` are assigned 1
-Omitted time fields are assigned 0
-Omitting the year gives the current year
-```
-ananodate = NanoDate(; year=2020, hour=15, second=2)
-# 2020-01-01T15:00:02
-
-ananodate = NanoDate(; month=4, day=28, hour=14, minute=32, second=10)
-# 2022-04-28T14:32:10
 
 
 

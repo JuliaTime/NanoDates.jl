@@ -19,7 +19,7 @@ function Base.:(-)(nd::NanoDate, cperiod::CompoundPeriod)
     nd
 end
 
-function convert(::Type{CompoundPeriod}, tm::Time)
+function retype(::Type{CompoundPeriod}, tm::Time)
     secs, subsecs = fldmod(value(tm), NanosecondsPerSecond)
     millis, nanos = fldmod(subsecs, NanosecondsPerMillisecond)
     micros, nanos = fldmod(nanos, NanosecondsPerMicrosecond)
@@ -29,22 +29,22 @@ function convert(::Type{CompoundPeriod}, tm::Time)
     Millisecond(millis) + Microsecond(micros) + Nanosecond(nanos)
 end
 
-Base.convert(::Type{CompoundPeriod}, dt::Date)
+retype(::Type{CompoundPeriod}, dt::Date)
     yr,mn,dy = yearmonthday(dt)
     Year(yr) + Month(mn) + Day(dy)
 end
 
-Base.convert(::Type{CompoundPeriod}, dtm::DateTime) =
-    convert(CompoundPeriod, Date(dtm)) +
-    convert(CompoundPeriod, Time(dtm))
+retype(::Type{CompoundPeriod}, dtm::DateTime) =
+    retype(CompoundPeriod, Date(dtm)) +
+    retype(CompoundPeriod, Time(dtm))
 end
 
-Base.convert(::Type{CompoundPeriod}, nd::NanoDate) =
-    convert(CompoundPeriod, Date(nd)) +
-    convert(CompoundPeriod, Time(nd))
+retype(::Type{CompoundPeriod}, nd::NanoDate) =
+    retype(CompoundPeriod, Date(nd)) +
+    retype(CompoundPeriod, Time(nd))
 end
 
-Base.convert(::Type{Time}, cperiod::CompoundPeriod)
+retype(::Type{Time}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     tm = Time0
     for p in cp.periods
@@ -54,7 +54,7 @@ Base.convert(::Type{Time}, cperiod::CompoundPeriod)
     tm
 end
 
-Base.convert(::Type{Date}, cperiod::CompoundPeriod)
+retype(::Type{Date}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     dt = Date0
     for p in cp.periods
@@ -64,7 +64,7 @@ Base.convert(::Type{Date}, cperiod::CompoundPeriod)
     dt
 end
 
-Base.convert(::Type{DateTime}, cperiod::CompoundPeriod)
+retype(::Type{DateTime}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     dtm = DateTime0
     for p in cp.periods
@@ -74,7 +74,7 @@ Base.convert(::Type{DateTime}, cperiod::CompoundPeriod)
     dtm
 end
 
-Base.convert(::Type{NanoDate}, cperiod::CompoundPeriod)
+retype(::Type{NanoDate}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     nd = NanoDate0
     for p in cp.periods
@@ -83,11 +83,21 @@ Base.convert(::Type{NanoDate}, cperiod::CompoundPeriod)
     dtm
 end
 
-
 Base.:(+)(nd::NanoDate, tm::Time) =
-    nd + convert(CompoundPeriod, tm)
+    nd + retype(CompoundPeriod, tm)
 
 Base.:(-)(nd::NanoDate, tm::Time) =
-    nd + (-convert(CompoundPeriod, tm))
+    nd + (-retype(CompoundPeriod, tm))
 
+Base.:(+)(nd::NanoDate, dt::Date) =
+    nd + retype(CompoundPeriod, dt)
+
+Base.:(-)(nd::NanoDate, dt::Date) =
+    nd + (-retype(CompoundPeriod, dt))
+
+Base.:(+)(nd::NanoDate, dtm::DateTime) =
+    nd + retype(CompoundPeriod, dtm)
+
+Base.:(-)(nd::NanoDate, dtm::DateTime) =
+    nd + (-retype(CompoundPeriod, dtm))
 

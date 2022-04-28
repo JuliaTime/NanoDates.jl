@@ -37,6 +37,8 @@ function Base.:(-)(nd::NanoDate, cperiod::CompoundPeriod)
     nd
 end
 
+Base.(-)(tm::Time) = -(retype(CompoundPeriod, tm))
+
 function retype(::Type{CompoundPeriod}, tm::Time)
     secs, subsecs = fldmod(value(tm), NanosecondsPerSecond)
     millis, nanos = fldmod(subsecs, NanosecondsPerMillisecond)

@@ -24,7 +24,7 @@ function Base.convert(::Type{CompoundPeriod}, tm::Time)
     mins, secs = fldmod(secs, SecondsPerMinute)
     hours, mins = fldmod(mins, MinutesPerHour)
     Hour(hours) + Minute(mins) + Second(secs) + 
-    Millisecond(millis) + Microsecond(micros) + Nanoseconds(nanos)
+    Millisecond(millis) + Microsecond(micros) + Nanosecond(nanos)
 end
 
 Base.(+)(nd::NanoDate, tm::Time) =

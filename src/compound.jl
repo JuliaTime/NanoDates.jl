@@ -37,14 +37,12 @@ end
 retype(::Type{CompoundPeriod}, dtm::DateTime) =
     retype(CompoundPeriod, Date(dtm)) +
     retype(CompoundPeriod, Time(dtm))
-end
 
 retype(::Type{CompoundPeriod}, nd::NanoDate) =
     retype(CompoundPeriod, Date(nd)) +
     retype(CompoundPeriod, Time(nd))
-end
 
-retype(::Type{Time}, cperiod::CompoundPeriod)
+function retype(::Type{Time}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     tm = Time0
     for p in cp.periods
@@ -54,7 +52,7 @@ retype(::Type{Time}, cperiod::CompoundPeriod)
     tm
 end
 
-retype(::Type{Date}, cperiod::CompoundPeriod)
+function retype(::Type{Date}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     dt = Date0
     for p in cp.periods
@@ -64,7 +62,7 @@ retype(::Type{Date}, cperiod::CompoundPeriod)
     dt
 end
 
-retype(::Type{DateTime}, cperiod::CompoundPeriod)
+function retype(::Type{DateTime}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     dtm = DateTime0
     for p in cp.periods
@@ -74,7 +72,7 @@ retype(::Type{DateTime}, cperiod::CompoundPeriod)
     dtm
 end
 
-retype(::Type{NanoDate}, cperiod::CompoundPeriod)
+function retype(::Type{NanoDate}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     nd = NanoDate0
     for p in cp.periods

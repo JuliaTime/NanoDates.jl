@@ -85,17 +85,17 @@ Base.:(+)(nd::NanoDate, tm::Time) =
     nd + retype(CompoundPeriod, tm)
 
 Base.:(-)(nd::NanoDate, tm::Time) =
-    nd + (-retype(CompoundPeriod, tm))
+    nd - retype(CompoundPeriod, tm)
 
 Base.:(+)(nd::NanoDate, dt::Date) =
     nd + retype(CompoundPeriod, dt)
 
 Base.:(-)(nd::NanoDate, dt::Date) =
-    nd + (-retype(CompoundPeriod, dt))
+    nd - retype(CompoundPeriod, dt)
 
 Base.:(+)(nd::NanoDate, dtm::DateTime) =
     nd + retype(CompoundPeriod, dtm)
 
 Base.:(-)(nd::NanoDate, dtm::DateTime) =
-    nd + (-retype(CompoundPeriod, dtm))
+    nd -retype(CompoundPeriod, dtm)
 

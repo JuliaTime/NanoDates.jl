@@ -4,6 +4,7 @@ Base.iterate(cperiod::CompoundPeriod) = iterate(reverse(cperiod.periods))
  
 Base.iterate(cperiod::CompoundPeriod, state) = iterate(reverse(cperiod.periods), state)
 
+#-
 Base.:(+)(nd::NanoDate, tm::Dates.Time) =
     nd + retype(Dates.CompoundPeriod, tm)
 
@@ -21,6 +22,7 @@ Base.:(+)(nd::NanoDate, dtm::Dates.DateTime) =
 
 Base.:(-)(nd::NanoDate, dtm::Dates.DateTime) =
     nd -retype(Dates.CompoundPeriod, dtm)
+=#
 
 function Base.:(+)(nd::NanoDate, cperiod::CompoundPeriod)
     for p in cperiod

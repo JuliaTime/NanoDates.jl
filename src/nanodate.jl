@@ -21,7 +21,7 @@ nanosecs(x::NanoDate) = x.nanosecs
 NanoDate(dt::DateTime, us::Microsecond) = NanoDate(dt, Nanosecond(value(us) * 1_000))
 NanoDate(dt::DateTime, us::Microsecond, ns::Nanosecond) =
     NanoDate(dt, nanosecs(us, ns))
-    
+
 NanoDate(dt::Date, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(dt), us, ns)
 NanoDate(d::Date, us::Microsecond) = NanoDate(DateTime(dt), us)
 NanoDate(d::Date, ns::Nanosecond) = NanoDate(DateTime(d), ns)
@@ -32,8 +32,20 @@ NanoDate(yr::Year, mn::Month, dy::Day, hr::Hour, mi::Minute=Minute(0), sc::Secon
     NanoDate(DateTime(yr, mn, dy, hr, mi, sc, ms), nanosecs(us, ns))
 
 NanoDate(yr, mn=1, dy=1) = NanoDate(Date(yr, mn, dy))
-NanoDate(yr, mn, dy, hr, mi=0, sc=0, ms=0, us=0, ns=0) = 
+NanoDate(yr, mn, dy, hr, mi=0, sc=0, ms=0, us=0, ns=0) =
     NanoDate(DateTime(yr, mn, dy, hr, mi, sc, ms), nanosecs(us, ns))
+
+NanoDate(year::Integer=year(today()); month::T=1, day::T=1, hour::T=0, minute::T=0, second::T=0,
+    millisecond::T=0, microsecond::T=0, nanosecond::T=0) where {T<:Integer}=
+    NanoDate(year, month, day, hour, minute, second,
+        millisecond, microsecond, nanosecond)
+
+NanoDate(year::Year=Year(today()); month::Month=Month(1), day::Day=Day(1),
+    hour::Hour=Hour(0), minute::Minute=Minute(0), second::Second=Second(0),
+    millisecond::Millisecond=Millisecond(0), microsecond::Microsecond=Microsecond(0),
+    nanosecond::Nanosecond=Nanosecond(0)) =
+    NanoDate(year, month, day, hour, minute, second,
+        millisecond, microsecond, nanosecond)
 
 # for internal use
 
@@ -54,12 +66,12 @@ NanoDate(d::Date, us, ns) = NanoDate(d, nanosecs(us, ns))
 NanoDate(dy::Day) = NanoDate(Date(UTD(dy)), Nanosecond0)
 NanoDate(dy::Day, ns::Nanosecond) = NanoDate(Date(UTD(dy)), ns)
 NanoDate(dy::Day, us::Microsecond) = NanoDate(Date(UTD(dy)), nanosecs(us))
-NanoDate(dy::Day, us::Microsecond, ns::Nanosecond) = NanoDate(Date(UTD(dy)), nanosecs(us,ns))
+NanoDate(dy::Day, us::Microsecond, ns::Nanosecond) = NanoDate(Date(UTD(dy)), nanosecs(us, ns))
 
 NanoDate(ms::Millisecond) = NanoDate(DateTime(UTM(ms)), Nanosecond0)
 NanoDate(ms::Millisecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), ns)
 NanoDate(ms::Millisecond, us::Microsecond) = NanoDate(DateTime(UTM(ms)), nanosecs(us))
-NanoDate(ms::Millisecond, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), nanosecs(us,ns))
+NanoDate(ms::Millisecond, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), nanosecs(us, ns))
 
-const DateOrDateTime = value(Date(5001,1,1))
+const DateOrDateTime = value(Date(5001, 1, 1))
 datedatetime(x) = (abs(x) < DateOrDateTime) ? Date(UTD(x)) : DateTime(UTM(x))

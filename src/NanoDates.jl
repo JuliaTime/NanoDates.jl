@@ -1,6 +1,6 @@
 module NanoDates
 
-export NanoDate
+export NanoDate, date_time
 export nanodate2rata, rata2nanodate, nanodate2unix, unix2nanodate
 
 using Dates

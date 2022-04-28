@@ -12,9 +12,9 @@ function nanodate_string(nd)
     if nanos === 0
         padded = ""
     elseif nanos % 1_000 !== 0
-        padded = lpad(nanos, 6, '0')
+        padded = "." * lpad(nanos, 6, '0')
     else
-        padded = lpad(div(nanos, 1_000), 3, '0')
+        padded = "." * lpad(div(nanos, 1_000), 3, '0')
     end
     str * padded
 end

@@ -19,7 +19,7 @@ function Base.:(-)(nd::NanoDate, cperiod::CompoundPeriod)
     nd
 end
 
-function Base.convert(::Type{CompoundPeriod}, tm::Time)
+function convert(::Type{CompoundPeriod}, tm::Time)
     secs, subsecs = fldmod(value(tm), NanosecondsPerSecond)
     millis, nanos = fldmod(subsecs, NanosecondsPerMillisecond)
     micros, nanos = fldmod(nanos, NanosecondsPerMicrosecond)

@@ -1,4 +1,4 @@
-## Conveniences
+## Convenient Work-Alikes
 
 Here are a few simple timesavers, DateTime work-alikes.
 `nnow()`, `nnow(UTC)` are similar to `now()`, `now(UTC)`,

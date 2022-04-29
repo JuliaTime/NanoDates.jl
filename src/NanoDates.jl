@@ -1,12 +1,16 @@
 module NanoDates
 
-export NanoDate, date_time
-export nanodate2rata, rata2nanodate, nanodate2unix, unix2nanodate
+export NanoDate,
+export date_time,
+        nanodate2rata, rata2nanodate,
+        nanodate2unix, unix2nanodate
 
 using Dates
-using Dates: AbstractDateTime, CompoundPeriod,
-                value, days, toms, tons, UTM, UTD
+using Dates: AbstractDateTime, value,
+             CompoundPeriod, UTD, UTM,
+             days, toms, tons
 
+            
 include("constants.jl")
 include("nanodate.jl")
 include("accessors.jl")
@@ -17,7 +21,4 @@ include("arith.jl")
 include("strings.jl")
 include("io.jl")
 
-const NanoDate0 = NanoDate(0,1,1,0,0,0,0,0,0)
-
-end
 

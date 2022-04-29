@@ -2,8 +2,8 @@
 using Documenter
 
 makedocs(
-    modules = [NanosecondDates],
-    sitename = "NanosecondDates",
+    modules = [NanoDates],
+    sitename = "NanoDates",
     authors = "Jeffrey Sarnoff",
     clean = false,
     strict = !("strict=false" in ARGS),
@@ -27,6 +27,6 @@ makedocs(
 Deploy docs to Github pages.
 =#
 Documenter.deploydocs(
-    repo="github.com/JeffreySarnoff/NanosecondDates.jl.git",
+    repo="github.com/JeffreySarnoff/NanoDates.jl.git",
     devbranch = "main",
 )

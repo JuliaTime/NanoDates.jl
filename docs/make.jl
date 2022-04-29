@@ -14,13 +14,13 @@ makedocs(
         highlights = ["yaml"],
         ansicolor = true,
     ),
-    pages = Any[
+    pages = [
         "Home" => "index.md",
-        "Use" = Any[
+        "Guide" = Any[
             "Construction" => "use/construction.md",
             "As a string" => "use/intostring.md",
         ],
-    ],
+    ]
 )
 
 #=

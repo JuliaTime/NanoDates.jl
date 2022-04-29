@@ -20,10 +20,10 @@ end
 end
 
 @testset "substitute" begin
-    @test nd - NanoDate(nd, Yr-Year(2)) == Year(2)
-    @test nd - NanoDate(nd, Quarter(nd) - Quarter(2)) == Quarter(2)
-    @test nd - NanoDate(nd, Mn-Month(-2)) == Month(-2)
-    @test nd - NanoDate(nd, Week(nd) - Week(2)) == Week(2)
+    @test NanoDate(nd, Year(nd) - Year(2)) + Year(2) == nd
+    @test NanoDate(nd, Quarter(nd) - Quarter(2)) + Quarter(2) == nd
+    @test NanoDate(nd, Month(nd) - Month(2)) + Month(2) == nd
+    @test NanoDate(nd, Week(nd) - Week(2)) + Week(2) == nd
     @test nd - NanoDate(nd, Dy+Day(2)) == -Day(2)
  
     @test nd - NanoDate(nd, Hr-Hour(2)) == Hour(2)

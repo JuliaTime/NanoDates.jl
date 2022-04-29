@@ -1,23 +1,34 @@
 ## Conveniences
 
 Here are a few simple timesavers, DateTime work-alikes.
+`nnow()`, `nnow(UTC)` are similar to `now()`, `now(UTC)`,
+with support for specifying microseconds and nanoseconds.
 
 ```
-# nanonow(), nanonow(UTC) work like now(), now(UTC)
+# nnow(), nnow(UTC) work like now(), now(UTC)
 
-julia> now(UTC)                     # 1 millisecond resolution
-2022-04-25T10:09:40.094
+now()                        # 1 millisecond resolution
+# 2022-04-25T10:09:40.094
 
-julia> nanonow(UTC)                 # 100 nanosecond resolution (ymmv)
-2022-04-25T10:09:40.094615300
+nnow()                       # 100 nanosecond resolution (ymmv)
+# 2022-04-25T10:09:40.094615300
+```
+These additional forms are available.
+```
+nnow(Microsecond(cs)), nnow(UTC, Microsecond(ns)),
+nnow(Nanosecond(cs)),  nnow(UTC, Nanosecond(ns))
 
-# nanotoday() nanotoday(UTC) works like today(), adds today(UTC)
+nnow(Microsecond(cs), Nanosecond(ns)),
+nnow(UTC, Microsecond(cs), Nanosecond(ns))
+```
 
-julia> today()
-2022-04-25
+`ntoday()` and `ntoday(UTC)` are provided.
+They work like today(), adding UTC.
+```
+today()
+# 2022-04-25
 
-julia> nanonow(), nanotoday()
-2022-04-25T22:33:44, 2022-04-25
+ntoday(), ntoday(UTC)
+# 2022-04-25, 2022-04-26
+```
 
-julia> nanotoday(UTC)
-2022-04-26

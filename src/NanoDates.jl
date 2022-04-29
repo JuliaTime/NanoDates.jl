@@ -1,16 +1,16 @@
 module NanoDates
 
 export NanoDate,
-        date_time,
+        nnow, ntoday, date_time,
         nanodate2rata, rata2nanodate,
         nanodate2unix, unix2nanodate
 
 using Dates
 using Dates: AbstractDateTime, value,
-             CompoundPeriod, UTD, UTM,
-             days, toms, tons
+        CompoundPeriod, UTD, UTM,
+        days, toms, tons
 
-            
+
 include("constants.jl")
 include("nanodate.jl")
 include("accessors.jl")

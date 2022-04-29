@@ -18,7 +18,8 @@ makedocs(
     pages = [
         "Home" => "index.md",
         "Guide" => Any[
-            "Construction" => Any["use/construction.md", "use/fieldfill.md"],
+            "Construction" => "use/construction.md",
+            "Specification" => "use/fieldfill.md",
             "Conviences" => "use/convenient.md",
             "Strings" => "use/intostring.md",
             "Accessors" => "use/accessors.md",

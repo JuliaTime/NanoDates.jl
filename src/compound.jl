@@ -2,15 +2,6 @@
 Base.iterate(cperiod::CompoundPeriod) = iterate(reverse(cperiod.periods))
 Base.iterate(cperiod::CompoundPeriod, state) = iterate(reverse(cperiod.periods), state)
 
-for T in (:Date, :Time, :DateTime)
-  @eval begin
-    Base.:(+)(nd::NanoDate, x::$T) =
-        nd + retype(CompoundPeriod, x)
-    Base.:(-)(nd::NanoDate, x::$T) =
-        nd - retype(CompoundPeriod, x)
-  end
-end
-
 function Base.:(+)(nd::NanoDate, cperiod::CompoundPeriod)
     for p in cperiod
         nd += p

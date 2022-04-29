@@ -1,24 +1,24 @@
 @testset "value access" begin
-    @test year(ananodate) == yr
-    @test month(ananodate) == mn
-    @test day(ananodate) == dy
-    @test hour(ananodate) == hr
-    @test minute(ananodate) == mi
-    @test second(ananodate) == sc
-    @test millisecond(ananodate) == ms
-    @test microsecond(ananodate) == cs
-    @test nanosecond(ananodate) == ns
+    @test year(nd) == yr
+    @test month(nd) == mn
+    @test day(nd) == dy
+    @test hour(nd) == hr
+    @test minute(nd) == mi
+    @test second(nd) == sc
+    @test millisecond(nd) == ms
+    @test microsecond(nd) == cs
+    @test nanosecond(nd) == ns
 end
 
 @testset "period access" begin
-    @test Year(ananodate) == Yr
-    @test Month(ananodate) == Mn
-    @test Day(ananodate) == Dy
-    @test Hour(ananodate) == Hr
-    @test Minute(ananodate) == Mi
-    @test Second(ananodate) == Sc
-    @test Millisecond(ananodate) == Ms
-    @test Microsecond(ananodate) == Cs
-    @test Nanosecond(ananodate) == Ns
+    @test Year(nd) == Yr
+    @test Month(nd) == Mn
+    @test Day(nd) == Dy
+    @test Hour(nd) == Hr
+    @test Minute(nd) == Mi
+    @test Second(nd) == Sc
+    @test Millisecond(nd) == Ms
+    @test Microsecond(nd) == Cs
+    @test Nanosecond(nd) == Ns
 end
 

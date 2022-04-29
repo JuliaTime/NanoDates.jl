@@ -28,46 +28,46 @@ adatetime = date_time(adate, atime)
 ```
 Here are familiar constructor methods.
 ```
-ananodate = NanoDate(adate)
+nd = NanoDate(adate)
 # 2022-04-28T00:00:00
 
-ananodate = NanoDate(adatetime)
+nd = NanoDate(adatetime)
 # 2022-04-28T14:32:10.123
 
-ananodate = NanoDate(adate, atime)
+nd = NanoDate(adate, atime)
 # 2022-04-28T14:32:10.123456789
 ```
 Here are some of the methods that take values
 ```
-ananodate = NanoDate(years)
+nd = NanoDate(years)
 # 2022-01-01T00:00:00
 
-ananodate = NanoDate(years, months)
+nd = NanoDate(years, months)
 # 2022-04-01T00:00:00
 
-ananodate = NanoDate(years, months, days, 
+nd = NanoDate(years, months, days, 
                      hours, mins, secs)
 # 2022-04-28T14:32:10
 
-ananodate = NanoDate(years, months, days, 
+nd = NanoDate(years, months, days, 
                      hours, mins, secs,
                      millis, micros, nanos)
 # 2022-04-28T14:32:10.123456789
 ```
 And some of the methods that take periods
 ```
-ananodate = NanoDate(Year(years))
+nd = NanoDate(Year(years))
 # 2022-01-01T00:00:00
 
-ananodate = NanoDate(Year(years), Month(months))
+nd = NanoDate(Year(years), Month(months))
 # 2022-04-01T00:00:00
 
-ananodate = NanoDate(
+nd = NanoDate(
     Year(years), Month(months), Day(days), 
     Hour(hours), Minute(mins), Second(secs))
 # 2022-04-28T14:32:10
 
-ananodate = NanoDate(
+nd = NanoDate(
     Year(years), Month(months), Day(days), 
     Hour(hours), Minute(mins), Second(secs),
     Millisecond(millis), Microsecond(micros),

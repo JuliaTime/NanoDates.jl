@@ -1,13 +1,13 @@
 @testset "construction" begin
-    @test DateTime(ananodate) == adatetime
-    @test Date(ananodate) == adate
-    @test Time(ananodate) == atime
+    @test DateTime(nd) == adatetime
+    @test Date(nd) == adate
+    @test Time(nd) == atime
 end
 
 @testset "conversion" begin
-    @test convert(DateTime, ananodate) == adatetime
-    @test convert(Date, ananodate) == adate
-    @test convert(Time, ananodate) == atime
+    @test convert(DateTime, nd) == adatetime
+    @test convert(Date, nd) == adate
+    @test convert(Time, nd) == atime
 end
 
 

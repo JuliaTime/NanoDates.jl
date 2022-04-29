@@ -38,9 +38,9 @@ const ananosecs = nanosecs(Cs, Ns)
 const earliernanosecs = nanosecs(Cs-Microsecond(12), Ns-Nanosecond(100))
 const laternanosecs = nanosecs(Cs+Microsecond(12), Ns+Nanosecond(100))
 
-const ananodate = NanoDate(adatetime, ananosecs)
+const nd = NanoDate(adatetime, ananosecs)
 const earliernanodate = NanoDate(earlierdatetime, earliernanosecs)
 const laternanodate = NanoDate(laterdatetime, laternanosecs)
-const ananodate0 = NanoDate(adatetime)
-const ananodate00 = NanoDate(adate)
+const nd0 = NanoDate(adatetime)
+const nd00 = NanoDate(adate)
 

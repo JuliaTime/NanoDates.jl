@@ -29,7 +29,6 @@ Deploy docs to Github pages.
 =#
 Documenter.deploydocs(
     branch = "gh-pages",
-    latest = "main",
     target = "build",
     deps = nothing,
     make = nothing,

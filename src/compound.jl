@@ -53,10 +53,10 @@ function retype(::Type{Date}, cperiod::CompoundPeriod)
     periods = canonicalize(cperiod).periods
     types = ntuple(i->typeof(periods[i]), length(periods))
     dt = Date0
-    if Month in types
+    if Month in types || Quarter in types
         dt -= Month(1)
     end
-    if Day in types
+    if Day in types || Week in types
         dt -= Day(1)
     end
     for (p, typ) in zip(periods, types)

@@ -14,6 +14,22 @@ function Base.:(-)(x::NanoDate, y::Time)
 end
 =#
 
+Base.:(-)(nd1::NanoDate, nd2::NanoDate) = 
+    canonicalize(retype(CompoundPeriod, nd1) - retype(CompoundPeriod,nd2))
+
+Base.:(-)(nd::NanoDate, dtm::DateTime) = 
+    canonicalize(retype(CompoundPeriod, nd) - retype(CompoundPeriod,dtm))
+
+Base.:(-)(dtm::DateTime, nd::NanoDate) = 
+    canonicalize(retype(CompoundPeriod, dtm) - retype(CompoundPeriod,nd))
+
+Base.:(-)(nd::NanoDate, dt::Date) = 
+    canonicalize(retype(CompoundPeriod, nd) - retype(CompoundPeriod,dt))
+
+Base.:(-)(nd::NanoDate, tm::Time) = 
+    canonicalize(retype(CompoundPeriod, nd) - retype(CompoundPeriod,tm))
+
+
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)
   @eval begin
     Base.:(+)(nd::NanoDate, x::$T) = NanoDate(nd.datetime + x, nd.nanosecs)

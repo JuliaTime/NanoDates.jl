@@ -37,7 +37,7 @@ ananodate = NanoDate(adatetime)
 ananodate = NanoDate(adate, atime)
 # 2022-04-28T14:32:10.123456789
 ```
-Here are some of the methods that values
+Here are some of the methods that take values
 ```
 ananodate = NanoDate(years)
 # 2022-01-01T00:00:00

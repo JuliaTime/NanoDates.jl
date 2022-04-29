@@ -53,8 +53,13 @@ function retype(::Type{Date}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     dt = Date0
     for p in cp.periods
-        typeof(p) in (Hour, Minute, Second, Millisecond, Microsecond, Nanosecond) && continue
-        dt += p
+        typ = typeof(p)
+        typ in (Hour, Minute, Second, Millisecond, Microsecond, Nanosecond) && continue
+        if typ in (Quarter, Month, Day)
+            dt += (p - typ(1))
+        else
+            dt += p
+        end
     end
     dt
 end
@@ -63,8 +68,13 @@ function retype(::Type{DateTime}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     dtm = DateTime0
     for p in cp.periods
-        typeof(p) in (Microsecond, Nanosecond) && continue
-        dtm += p
+        typ = typeof(p)
+        type in (Microsecond, Nanosecond) && continue
+        if typ in (Quarter, Month, Day)
+            dtm += (p - typ(1))
+        else
+            dtm += p
+        end
     end
     dtm
 end
@@ -73,7 +83,13 @@ function retype(::Type{NanoDate}, cperiod::CompoundPeriod)
     cp = canonicalize(cperiod)
     nd = NanoDate0
     for p in cp.periods
-        nd += p
+        typ = typeof(p)
+        type in (Microsecond, Nanosecond) && continue
+        if typ in (Quarter, Month, Day)
+            nd += (p - typ(1))
+        else
+            nd += p
+        end
     end
     dtm
 end

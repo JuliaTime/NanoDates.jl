@@ -30,6 +30,25 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millis
   end
 end
 
+#=
+Base.:(-)(nd::NanoDate, dtm::DateTime) = (-)(promote(nd, dtm)...)
+
+Base.:(-)(dtm::DateTime, nd::NanoDate) = (-)(promote(nd, dtm)...)
+
+Base.:(-)(nd::NanoDate, dt::Date) = (-)(promote(nd, dt)...)
+
+function Base.:(-)(nd::NanoDate, tm::Time)
+     NanoDate(NanoDate(tm), Year(0))
+    = (-)(promote(nd, tm)...)
+=#
+
+for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)
+  @eval begin
+    Base.:(+)(nd::NanoDate, x::$T) = NanoDate(nd.datetime + x, nd.nanosecs)
+    Base.:(-)(nd::NanoDate, x::$T) = NanoDate(nd.datetime - x, nd.nanosecs)
+  end
+end
+
 function Base.:(+)(nd::NanoDate, x::Nanosecond)
     nanos = value(nd.nanosecs) + value(x)
     millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)

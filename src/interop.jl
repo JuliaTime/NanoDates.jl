@@ -1,5 +1,6 @@
 Base.promote_rule(::Type{NanoDate}, ::Type{DateTime}) = NanoDate
 Base.promote_rule(::Type{NanoDate}, ::Type{Date}) = NanoDate
+Base.promote_rule(::Type{NanoDate}, ::Type{Time}) = NanoDate
 
 # important for NanoDates ease of use with DateTime values
 date_time(d::Date, t::Time) = DateTime(d, trunc(t, Millisecond))

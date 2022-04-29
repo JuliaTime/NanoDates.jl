@@ -6,38 +6,20 @@ Base.:(-)(x::NanoDate, y::DateTime) = (-)(promote(x,y)...)
 Base.:(-)(x::NanoDate, y::Date) = (-)(promote(x,y)...)
 Base.:(-)(x::DateTime, y::NanoDate) = (-)(promote(x,y)...)
 Base.:(-)(x::Date, y::NanoDate) = (-)(promote(x,y)...)
-
-function Base.:(-)(x::NanoDate, y::Time)
-    ymillis, ynanos = fldmod(value(y), NanosecondsPerMillisecond)
-    xynanos = Nanosecond(value(x.nanosecs) + ynanos)
-    (x + Millisecond(ymillis)) + xynanos
-end
 =#
 
-function Base.:(-)(nd1::NanoDate, nd2::NanoDate)
-    nd2cs, nd2ns = fldmod(value(nd2.nanosecs), NanosecondsPerMicrosecond)
-    nd2sc, nd2ms = fldmod(value(nd2.datetime), MillisecondsPerSecond)
-    nd2mi, nd2sc = fldmod(nd2sc, SecondsPerMinute)
-           nd2mi = mod(nd2mi, MinutesPerHour)
-    nd2hr = hour(nd2)
-    nd2dy = day(nd2)
-    nd2mn = month(nd2)
-    nd2yr = year(nd2)
-
-    nd1cs, nd1ns = fldmod(value(nd1.nanosecs), NanosecondsPerMicrosecond)
-    nd1sc, nd1ms = fldmod(value(nd1.datetime), MillisecondsPerSecond)
-    nd1mi, nd1sc = fldmod(nd1sc, SecondsPerMinute)
-           nd1mi = mod(nd1mi, MinutesPerHour)
-    nd1hr = hour(nd1)
-    nd1dy = day(nd1)
-    nd1mn = month(nd1)
-    nd1yr = year(nd1)
-
-    ymd = canonicalize(Year(nd1yr - nd2yr) + Month(nd1mn - nd2mn) + Day(nd1dy - nd2dy))
-    hms = canonicalize(Hour(nd1hr - nd2hr) + Minute(nd1mi - nd2mi) + Second(nd1sc - nd2sc))
-    mcn = canonicalize(Millisecond(nd1ms - nd2ms) + Microsecond(nd1cs - nd2cs) + Nanosecond(nd1ns - nd2ns))
-    hmsmcn = canonicalize(hms + mcn)
-    canonicalize(ymd + hmsmcn)
+function Base.:(-)(nd::NanoDate, tm::Time)
+    tm_nd = Time(nd)
+    dt_nd = Date(nd)
+    if tm_nd < tm
+        dt_nd -= Day(1)
+        tm_nd = tm_nd - tm + Hour(24)
+    else
+        tm_md = tm_nd - tm
+    end
+    tm_nd = canonicalize(tm_nd)
+    tm = Time(tm_nd)
+    return NanoDate(dt_nd, tm)
 end
 
 Base.:(-)(nd::NanoDate, dtm::DateTime) = (-)(promote(nd, dtm)...)
@@ -46,7 +28,9 @@ Base.:(-)(dtm::DateTime, nd::NanoDate) = (-)(promote(nd, dtm)...)
 
 Base.:(-)(nd::NanoDate, dt::Date) = (-)(promote(nd, dt)...)
 
-Base.:(-)(nd::NanoDate, tm::Time) = (-)(promote(nd, tm)...)
+function Base.:(-)(nd::NanoDate, tm::Time)
+     NanoDate(NanoDate(tm), Year(0))
+    = (-)(promote(nd, tm)...)
 
 
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)

@@ -8,3 +8,6 @@ end
     @test promote(ananodate, adate) == (ananodate, NanoDate(adate))
 end
 
+@testset "splice" begin
+    @test NanoDate(ananodate, alatertime) == NanoDate(Date(ananodate), alatertime)
+end

@@ -1,13 +1,13 @@
 @testset "isequal" begin
     @test isequal(nd, nd)
-    @test isequal(nd0, daytetime)
-    @test isequal(daytetime, nd0)
+    @test isequal(nd0, daytime)
+    @test isequal(daytime, nd0)
     @test isequal(nd00, dayte)
     @test isequal(dayte, nd00)
 
     @test !isequal(nd, laternanodate)
-    @test !isequal(nd, daytetime)
-    @test !isequal(daytetime, nd)
+    @test !isequal(nd, daytime)
+    @test !isequal(daytime, nd)
     @test !isequal(nd, dayte)
     @test !isequal(dayte, nd)
 end
@@ -22,14 +22,14 @@ end
 
 @testset "(==, !=)" begin
     @test ==(nd, nd)
-    @test ==(nd0, daytetime)
-    @test ==(daytetime, nd0)
+    @test ==(nd0, daytime)
+    @test ==(daytime, nd0)
     @test ==(nd00, dayte)
     @test ==(dayte, nd00)
 
     @test !=(nd, laternanodate)
-    @test !=(nd, daytetime)
-    @test !=(daytetime, nd)
+    @test !=(nd, daytime)
+    @test !=(daytime, nd)
     @test !=(nd, dayte)
     @test !=(dayte, nd)
 end
@@ -48,8 +48,8 @@ end
     @test >=(nd, earlierdate)
 
     @test >=(nd, nd)
-    @test >=(nd0, daytetime)
-    @test >=(daytetime, nd0)
+    @test >=(nd0, daytime)
+    @test >=(daytime, nd0)
     @test >=(nd00, dayte)
     @test >=(dayte, nd00)
 end
@@ -68,8 +68,8 @@ end
     @test <=(earlierdate, nd)
 
     @test <=(nd, nd)
-    @test <=(nd0, daytetime)
-    @test <=(daytetime, nd0)
+    @test <=(nd0, daytime)
+    @test <=(daytime, nd0)
     @test <=(nd00, dayte)
     @test <=(dayte, nd00)
 end

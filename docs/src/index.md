@@ -10,9 +10,16 @@ Offers NanoDate, a date-and-time type with nanosecond resolution
 
 #### introduces enhancements
 
->    - Adds ranges with CompoundPeriod steps
->    - Adds `periods`, a NamedTuple constructor
->    - Adds round(::Time, ::TimePeriod, ::RoundingMode)
+>    - supports splicing in period values
+        - NanoDate(nd, Hour(5))
+          - replaces Hour(nd) with Hour(5)
+        - NanoDate(nd, Week(2))
+          - moves to Week(2) of the Year(nd)
+
+>    - option to separate subseconds
+        - 2022-04-28T02:15:30.124_455_831
+        - 2022-04-28T02:15:30.124◦455◦831
+
 
 ----
 

@@ -32,7 +32,7 @@ Documenter.deploydocs(
     latest = "main",
     target = "build",
     deps = nothing,
-    make = nothing
+    make = nothing,
     repo = "github.com/JeffreySarnoff/NanoDates.jl.git",
 )
 

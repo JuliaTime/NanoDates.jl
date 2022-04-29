@@ -30,8 +30,7 @@ function retype(::Type{CompoundPeriod}, tm::Time)
 end
 
 function retype(::Type{CompoundPeriod}, dt::Date)
-    yr,mn,dy = Date,yearmonthday(dt)
-    Year(yr) + Month(mn) + Day(dy)
+    Year(dt) + Month(dt) + Day(dt)
 end
 
 retype(::Type{CompoundPeriod}, dtm::DateTime) =

@@ -16,7 +16,7 @@ makedocs(
     ),
     pages = [
         "Home" => "index.md",
-        "Guide" = Any[
+        "Guide" => Any[
             "Construction" => "use/construction.md",
             "As a string" => "use/intostring.md",
         ],
@@ -27,6 +27,7 @@ makedocs(
 Deploy docs to Github pages.
 =#
 Documenter.deploydocs(
-    repo="github.com/JeffreySarnoff/NanoDates.jl.git",
+    repo = "github.com/JeffreySarnoff/NanoDates.jl.git",
+    target = "build"
     devbranch = "main",
 )

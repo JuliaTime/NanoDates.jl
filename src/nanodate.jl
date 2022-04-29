@@ -69,12 +69,12 @@ for T in (:Year, :Quarter, :Month, :Week, :Day,
     @eval NanoDate(nd::NanoDate, x::$T) = NanoDate(nd.datetime - $T(nd) + x, nd.nanosecs)
 end
 
+for T in (:Microsecond, :Nanosecond)
+    @eval NanoDates.NanoDate(nd::NanoDate, x::$T) = nd - $T(nd) + x
+end
+
 NanoDate(nd::NanoDate, cs::Microsecond, ns::Nanosecond) =
-    NanoDate(nd.datetime, nanosecs(cs, ns))
-NanoDate(nd::NanoDate, cs::Microsecond) =
-    NanoDate(nd.datetime, nanosecs(cs))
-NanoDate(nd::NanoDate, ns::Nanosecond) =
-    NanoDate(nd.datetime, nanosecs(ns))
+    nd - Microsecond(nd) - Nanosecond(nd) + ns + cs
 
 NanoDate(nd::NanoDate, dtm::DateTime) =
     NanoDate(dtm, nd.nanosecs)

@@ -1,13 +1,13 @@
-function (-)(dt1::DateTime, dt2::DateTime)
+function Base.:(-)(dt1::DateTime, dt2::DateTime)
     Δns  = Time(dt1) - Time(dt2)
     Δday = Date(dt1) - Date(dt2)
     return Nanosecond(Δday) + Δns
 end
 
-(-)(nd::NanoDate, dt::DateTime) = nd - NanoDate(dt)
-(-)(dt::DateTime, nd::NanoDate) = NanoDate(dt) - nd
-(-)(nd::NanoDate, dt::Date) = nd - NanoDate(dt)
-(-)(dt::Date, nd::NanoDate) = NanoDate(dt) - nd
+Base.:(-)(nd::NanoDate, dt::DateTime) = nd - NanoDate(dt)
+Base.:(-)(dt::DateTime, nd::NanoDate) = NanoDate(dt) - nd
+Base.:(-)(nd::NanoDate, dt::Date) = nd - NanoDate(dt)
+Base.:(-)(dt::Date, nd::NanoDate) = NanoDate(dt) - nd
 
 function Base.:(-)(nd::NanoDate, tm::Time)
     tm_nd = Time(nd)

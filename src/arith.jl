@@ -1,6 +1,6 @@
-function Base.:(-)(dt1::DateTime, dt2::DateTime)
-    Δns  = Time(dt1) - Time(dt2)
-    Δday = Date(dt1) - Date(dt2)
+function Base.:(-)(nd1::NanoTime, nd2::NanoTime)
+    Δns  = Time(nd1) - Time(nd2)
+    Δday = Date(nd1) - Date(nd2)
     return Nanosecond(Δday) + Δns
 end
 

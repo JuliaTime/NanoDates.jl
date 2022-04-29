@@ -19,6 +19,7 @@ makedocs(
         "Home" => "index.md",
         "Guide" => Any[
             "Construction" => "use/construction.md",
+            "Conviences" => "use/convenient.md",
             "Strings" => "use/intostring.md",
         ],
     ]

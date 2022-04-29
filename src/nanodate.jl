@@ -64,6 +64,11 @@ NanoDate(ms::Millisecond, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(U
 NanoDate() = NanoDate(now())
 NanoDate(::Type{UTC}) = NanoDate(now(UTC))
 
+for T in (:Year, :Quarter, :Month, :Week, :Day,
+            :Hour, :Minute, :Second, :Millisecond)
+    @eval NanoDate(nd::NanoDate, x::$T) = NanoDate(nd.datetime - $T(nd) + x, nd.nanosecs)
+end
+
 NanoDate(nd::NanoDate, cs::Microsecond, ns::Nanosecond) =
     NanoDate(nd.datetime, nanosecs(cs, ns))
 NanoDate(nd::NanoDate, cs::Microsecond) =

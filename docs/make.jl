@@ -2,7 +2,7 @@
 using Documenter
 
 makedocs(
-    # modules = [NanosecondDates],
+    modules = [NanosecondDates],
     sitename = "NanosecondDates",
     authors = "Jeffrey Sarnoff",
     clean = false,

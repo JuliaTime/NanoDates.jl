@@ -1,3 +1,4 @@
+#=
 function Base.:(-)(x::NanoDate, y::NanoDate)
     canonicalize((x.datetime - y.datetime) + canonicalize(x.nanosecs - y.nanosecs))
 end
@@ -11,6 +12,7 @@ function Base.:(-)(x::NanoDate, y::Time)
     xynanos = Nanosecond(value(x.nanosecs) + ynanos)
     (x + Millisecond(ymillis)) + xynanos
 end
+=#
 
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)
   @eval begin

@@ -2,14 +2,14 @@
     @test isequal(nd, nd)
     @test isequal(nd0, daytime)
     @test isequal(daytime, nd0)
-    @test isequal(nd00, dayte)
-    @test isequal(dayte, nd00)
+    @test isequal(nd00, dayt)
+    @test isequal(dayt, nd00)
 
     @test !isequal(nd, laternanodate)
     @test !isequal(nd, daytime)
     @test !isequal(daytime, nd)
-    @test !isequal(nd, dayte)
-    @test !isequal(dayte, nd)
+    @test !isequal(nd, dayt)
+    @test !isequal(dayt, nd)
 end
 
 @testset "isless" begin
@@ -24,14 +24,14 @@ end
     @test ==(nd, nd)
     @test ==(nd0, daytime)
     @test ==(daytime, nd0)
-    @test ==(nd00, dayte)
-    @test ==(dayte, nd00)
+    @test ==(nd00, dayt)
+    @test ==(dayt, nd00)
 
     @test !=(nd, laternanodate)
     @test !=(nd, daytime)
     @test !=(daytime, nd)
-    @test !=(nd, dayte)
-    @test !=(dayte, nd)
+    @test !=(nd, dayt)
+    @test !=(dayt, nd)
 end
 
 @testset "(<, >=)" begin
@@ -50,8 +50,8 @@ end
     @test >=(nd, nd)
     @test >=(nd0, daytime)
     @test >=(daytime, nd0)
-    @test >=(nd00, dayte)
-    @test >=(dayte, nd00)
+    @test >=(nd00, dayt)
+    @test >=(dayt, nd00)
 end
 
 @testset "(>, <=)" begin
@@ -70,6 +70,6 @@ end
     @test <=(nd, nd)
     @test <=(nd0, daytime)
     @test <=(daytime, nd0)
-    @test <=(nd00, dayte)
-    @test <=(dayte, nd00)
+    @test <=(nd00, dayt)
+    @test <=(dayt, nd00)
 end

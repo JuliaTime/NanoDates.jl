@@ -26,11 +26,11 @@ const latertime = tyme + Minute(4) + Microsecond(12)
 const earliertime_ms = tyme_ms - Minute(4)
 const latertime_ms = tyme_ms + Minute(4)
 
-const dayte = Date(yr, mn, dy)
-const earlierdate = dayte - Month(1) - Day(5)
-const laterdate = dayte + Month(1) + Day(5)
+const dayt = Date(yr, mn, dy)
+const earlierdate = dayt - Month(1) - Day(5)
+const laterdate = dayt + Month(1) + Day(5)
 
-const daytime = DateTime(dayte, tyme_ms)
+const daytime = DateTime(dayt, tyme_ms)
 const earlierdatetime = DateTime(earlierdate, earliertime_ms)
 const laterdatetime = DateTime(laterdate, latertime_ms)
 
@@ -42,5 +42,5 @@ const nd = NanoDate(daytime, ananosecs)
 const earliernanodate = NanoDate(earlierdatetime, earliernanosecs)
 const laternanodate = NanoDate(laterdatetime, laternanosecs)
 const nd0 = NanoDate(daytime)
-const nd00 = NanoDate(dayte)
+const nd00 = NanoDate(dayt)
 

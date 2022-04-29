@@ -13,8 +13,8 @@ end
     @test NanoDate(ananodate, laterdate) == NanoDate(laterdate, Time(ananodate))
     @test NanoDate(ananodate, Nanosecond(444)) ==
         NanoDate(ananodate.datetime, nanosecs(Nanosecond(444)))
-    @test NanoDate(ananodate, Millisecond(888)) ==
-        NanoDate(ananodate.datetime, nanosecs(Millisecond(888)))
-    @test NanoDate(ananodate, Millisecond(888), Nanosecond(444)) ==
-        NanoDate(ananodate.datetime, nanosecs(Millisecond(888),Nanosecond(444)))
+    @test NanoDate(ananodate, Microsecond(888)) ==
+        NanoDate(ananodate.datetime, nanosecs(Microsecond(888)))
+    @test NanoDate(ananodate, Microsecond(888), Nanosecond(444)) ==
+        NanoDate(ananodate.datetime, nanosecs(Microsecond(888),Nanosecond(444)))
 end

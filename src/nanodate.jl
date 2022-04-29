@@ -71,6 +71,12 @@ NanoDate(nd::NanoDate, cs::Microsecond) =
 NanoDate(nd::NanoDate, ns::Nanosecond) =
     NanoDate(nd.datetime, nanosecs(ns))
 
+NanoDate(nd::NanoDate, dtm::DateTime) =
+    NanoDate(dtm, nd.nanosecs)
+NanoDate(nd::NanoDate, tm::Time) =
+    NanoDate(Date(nd.datetime),tm)
+NanoDate(nd::NanoDate, dt::Date) =
+    NanoDate(DateTime(dt, trunc(Time(nd.datetime), Millisecond)), nd.nanosecs)
 
 
 const DateOrDateTime = value(Date(5001, 1, 1))

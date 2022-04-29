@@ -45,12 +45,12 @@ nd = NanoDate(years, months)
 # 2022-04-01T00:00:00
 
 nd = NanoDate(years, months, days, 
-                     hours, mins, secs)
+              hours, mins, secs)
 # 2022-04-28T14:32:10
 
 nd = NanoDate(years, months, days, 
-                     hours, mins, secs,
-                     millis, micros, nanos)
+              hours, mins, secs,
+              millis, micros, nanos)
 # 2022-04-28T14:32:10.123456789
 ```
 And some of the methods that take periods

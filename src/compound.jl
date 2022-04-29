@@ -59,7 +59,7 @@ function retype(::Type{Date}, cperiod::CompoundPeriod)
     if Day in types
         dt -= Day(1)
     end
-    for (typ, p) in zip(periods, types)
+    for (p, typ) in zip(periods, types)
         typ in (Hour, Minute, Second, Millisecond, Microsecond, Nanosecond) && continue
         dt += p
     end
@@ -76,7 +76,7 @@ function retype(::Type{DateTime}, cperiod::CompoundPeriod)
     if Day in types
         dtm -= Day(1)
     end
-    for (typ, p) in zip(periods, types)
+    for (p, typ) in zip(periods, types)
         typ in (Microsecond, Nanosecond) && continue
         dtm += p
     end
@@ -93,7 +93,7 @@ function retype(::Type{NanoDate}, cperiod::CompoundPeriod)
     if Day in types
         nd -= Day(1)
     end
-    for (typ, p) in zip(periods, types)
+    for (p, typ) in zip(periods, types)
         nd += p
     end
     nd

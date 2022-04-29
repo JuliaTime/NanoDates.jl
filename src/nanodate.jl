@@ -37,8 +37,6 @@ NanoDate(yr, mn, dy, hr, mi=0, sc=0, ms=0, us=0, ns=0) =
 
 # for internal use
 
-const NanoDate0 = NanoDate(Date0, Time0)
-
 usns(ns) = ns
 @inline usns(us, ns) = us * 1_000 + ns
 

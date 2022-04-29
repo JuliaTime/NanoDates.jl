@@ -3,8 +3,9 @@ using Documenter
 
 makedocs(
     modules = [NanoDates],
-    sitename = "NanoDates",
+    sitename = "NanoDates.jl",
     authors = "Jeffrey Sarnoff",
+    source = "src",
     clean = false,
     strict = !("strict=false" in ARGS),
     doctest = ("doctest=only" in ARGS) ? :only : true,
@@ -27,7 +28,11 @@ makedocs(
 Deploy docs to Github pages.
 =#
 Documenter.deploydocs(
+    branch = "gh-pages",
+    latest = "main",
+    target = "build",
+    deps = nothing,
+    make = nothing
     repo = "github.com/JeffreySarnoff/NanoDates.jl.git",
-    target = "build"
-    devbranch = "main",
 )
+

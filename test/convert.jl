@@ -12,18 +12,18 @@ end
     @test NanoDate(ananodate, latertime) == NanoDate(Date(ananodate), latertime)
     @test NanoDate(ananodate, laterdate) == NanoDate(laterdate, Time(ananodate))
     @test NanoDate(ananodate, Nanosecond(444)) ==
-        NanoDate(ananodate.datetime, nanosecs(Nanosecond(444)))
+        NanoDate(ananodate.datetime, nanosecs(Microsecond(ananodate), Nanosecond(444)))
     @test NanoDate(ananodate, Microsecond(888)) ==
-        NanoDate(ananodate.datetime, nanosecs(Microsecond(888)))
+        NanoDate(ananodate.datetime, nanosecs(Microsecond(888),Nanosecond(ananodate)))
     @test NanoDate(ananodate, Microsecond(888), Nanosecond(444)) ==
         NanoDate(ananodate.datetime, nanosecs(Microsecond(888),Nanosecond(444)))
 end
 
 @testset "substitute" begin
     @test ananodate - NanoDate(ananodate, Yr-Year(2)) == Year(2)
-    @test ananodate - NanoDate(ananodate, Quarter(2)) == Quarter(ananodate) - Quarter(2)
+    @test ananodate - NanoDate(ananodate, Quarter(ananodate) - Quarter(2)) == Quarter(2)
     @test ananodate - NanoDate(ananodate, Mn-Month(-2)) == Month(-2)
-    @test ananodate - NanoDate(ananodate, Week(2)) == Week(ananodate) - Week(2)
+    @test ananodate - NanoDate(ananodate, Week(ananodate) - Week(2)) == Week(2)
     @test ananodate - NanoDate(ananodate, Dy+Day(2)) == -Day(2)
  
     @test ananodate - NanoDate(ananodate, Hr-Hour(2)) == Hour(2)

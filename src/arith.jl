@@ -14,20 +14,39 @@ function Base.:(-)(x::NanoDate, y::Time)
 end
 =#
 
-Base.:(-)(nd1::NanoDate, nd2::NanoDate) = 
-    canonicalize(retype(CompoundPeriod, nd1) - retype(CompoundPeriod,nd2))
+function Base.:(-)(nd1::NanoDate, nd2::NanoDate)
+    nd2cs, nd2ns = fldmod(value(nd2.nanosecs), NanosecondsPerMicrosecond)
+    nd2sc, nd2ms = fldmod(value(nd2.datetime), MillisecondsPerSecond)
+    nd2mi, nd2sc = fldmod(nd2sc, SecondsPerMinute)
+           nd2mi = mod(nd2mi, MinutesPerHour)
+    nd2hr = hour(nd2)
+    nd2dy = day(nd2)
+    nd2mn = month(nd2)
+    nd2yr = year(nd2)
 
-Base.:(-)(nd::NanoDate, dtm::DateTime) = 
-    canonicalize(retype(CompoundPeriod, nd) - retype(CompoundPeriod,dtm))
+    nd1cs, nd1ns = fldmod(value(nd1.nanosecs), NanosecondsPerMicrosecond)
+    nd1sc, nd1ms = fldmod(value(nd1.datetime), MillisecondsPerSecond)
+    nd1mi, nd1sc = fldmod(nd1sc, SecondsPerMinute)
+           nd1mi = mod(nd1mi, MinutesPerHour)
+    nd1hr = hour(nd1)
+    nd1dy = day(nd1)
+    nd1mn = month(nd1)
+    nd1yr = year(nd1)
 
-Base.:(-)(dtm::DateTime, nd::NanoDate) = 
-    canonicalize(retype(CompoundPeriod, dtm) - retype(CompoundPeriod,nd))
+    ymd = canonicalize(Year(nd1yr - nd2yr) + Month(nd1mn - nd2mn) + Day(nd1dy - nd2dy))
+    hms = canonicalize(Hour(nd1hr - nd2hr) + Minute(nd1mi - nd2mi) + Second(nd1sc - nd2sc))
+    mcn = canonicalize(Millisecond(nd1ms - nd2ms) + Microsecond(nd1cs - nd2cs) + Nanosecond(nd1ns - nd2ns))
+    hmsmcn = canonicalize(hms + mcn)
+    canonicalize(ymd + hmsmcn)
+end
 
-Base.:(-)(nd::NanoDate, dt::Date) = 
-    canonicalize(retype(CompoundPeriod, nd) - retype(CompoundPeriod,dt))
+Base.:(-)(nd::NanoDate, dtm::DateTime) = (-)(promote(nd, dtm)...)
 
-Base.:(-)(nd::NanoDate, tm::Time) = 
-    canonicalize(retype(CompoundPeriod, nd) - retype(CompoundPeriod,tm))
+Base.:(-)(dtm::DateTime, nd::NanoDate) = (-)(promote(nd, dtm)...)
+
+Base.:(-)(nd::NanoDate, dt::Date) = (-)(promote(nd, dt)...)
+
+Base.:(-)(nd::NanoDate, tm::Time) = (-)(promote(nd, tm)...)
 
 
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)

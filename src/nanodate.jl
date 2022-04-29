@@ -31,8 +31,7 @@ NanoDate(yr::Year, mn::Month, dy::Day, hr::Hour, mi::Minute=Minute(0), sc::Secon
     ms::Millisecond=Millisecond(0), us::Microsecond=Microsecond(0), ns::Nanosecond=Nanosecond(0)) =
     NanoDate(DateTime(yr, mn, dy, hr, mi, sc, ms), nanosecs(us, ns))
 
-NanoDate(yr, mn=1, dy=1) = NanoDate(Date(yr, mn, dy))
-NanoDate(yr, mn, dy, hr, mi=0, sc=0, ms=0, us=0, ns=0) =
+NanoDate(yr, mn=1, dy=1, hr=1, mi=0, sc=0, ms=0, us=0, ns=0) =
     NanoDate(DateTime(yr, mn, dy, hr, mi, sc, ms), nanosecs(us, ns))
 
 # for internal use
@@ -63,3 +62,6 @@ NanoDate(ms::Millisecond, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(U
 
 const DateOrDateTime = value(Date(5001, 1, 1))
 datedatetime(x) = (abs(x) < DateOrDateTime) ? Date(UTD(x)) : DateTime(UTM(x))
+
+const NanoDate0 = NanoDate(0,1,1,0,0,0,0,0,0)
+

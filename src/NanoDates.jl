@@ -1,8 +1,7 @@
 module NanoDates
 
-export NanoDate, date_time, retype
+export NanoDate, date_time
 export nanodate2rata, rata2nanodate, nanodate2unix, unix2nanodate
-export CompoundPeriod
 
 using Dates
 using Dates: AbstractDateTime, CompoundPeriod,

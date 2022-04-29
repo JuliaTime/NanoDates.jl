@@ -34,3 +34,6 @@ end
     include("strings.jl")
 end
 
+@testset "compound" begin
+    include("compound.jl")
+end

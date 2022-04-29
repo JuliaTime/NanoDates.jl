@@ -23,13 +23,6 @@ function Base.:(-)(nd::NanoDate, tm::Time)
     return NanoDate(dt_nd, tm)
 end
 
-Base.:(-)(nd::NanoDate, dtm::DateTime) = (-)(promote(nd, dtm)...)
-
-Base.:(-)(dtm::DateTime, nd::NanoDate) = (-)(promote(nd, dtm)...)
-
-Base.:(-)(nd::NanoDate, dt::Date) = (-)(promote(nd, dt)...)
-
-
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)
   @eval begin
     Base.:(+)(nd::NanoDate, x::$T) = NanoDate(nd.datetime + x, nd.nanosecs)

@@ -2,7 +2,7 @@
 using Documenter
 
 makedocs(
-    modules = [NanoDates],
+   # modules = [NanoDates],
     sitename = "NanoDates.jl",
     authors = "Jeffrey Sarnoff",
     source = "src",

@@ -21,6 +21,7 @@ makedocs(
             "Construction" => "use/construction.md",
             "Conviences" => "use/convenient.md",
             "Strings" => "use/intostring.md",
+            "Accessors" => "use/accessors.md",
         ],
     ]
 )

@@ -78,9 +78,5 @@ NanoDate(nd::NanoDate, tm::Time) =
 NanoDate(nd::NanoDate, dt::Date) =
     NanoDate(DateTime(dt, trunc(Time(nd.datetime), Millisecond)), nd.nanosecs)
 
-
-const DateOrDateTime = value(Date(5001, 1, 1))
-datedatetime(x) = (abs(x) < DateOrDateTime) ? Date(UTD(x)) : DateTime(UTM(x))
-
 const NanoDate0 = NanoDate(0,1,1,0,0,0,0,0,0)
 

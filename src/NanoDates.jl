@@ -18,6 +18,7 @@ include("conversions.jl")
 include("compare.jl")
 include("interop.jl")
 include("arith.jl")
+include("compound.jl")
 include("strings.jl")
 include("io.jl")
 

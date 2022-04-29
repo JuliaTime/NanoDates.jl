@@ -4,26 +4,6 @@ Base.iterate(cperiod::CompoundPeriod) = iterate(reverse(cperiod.periods))
  
 Base.iterate(cperiod::CompoundPeriod, state) = iterate(reverse(cperiod.periods), state)
 
-#-
-Base.:(+)(nd::NanoDate, tm::Dates.Time) =
-    nd + retype(Dates.CompoundPeriod, tm)
-
-Base.:(-)(nd::NanoDate, tm::Dates.Time) =
-    nd - retype(Dates.CompoundPeriod, tm)
-
-Base.:(+)(nd::NanoDate, dt::Dates.Date) =
-    nd + retype(Dates.CompoundPeriod, dt)
-
-Base.:(-)(nd::NanoDate, dt::Dates.Date) =
-    nd - retype(Dates.CompoundPeriod, dt)
-
-Base.:(+)(nd::NanoDate, dtm::Dates.DateTime) =
-    nd + retype(Dates.CompoundPeriod, dtm)
-
-Base.:(-)(nd::NanoDate, dtm::Dates.DateTime) =
-    nd -retype(Dates.CompoundPeriod, dtm)
-=#
-
 function Base.:(+)(nd::NanoDate, cperiod::CompoundPeriod)
     for p in cperiod
         nd += p
@@ -38,8 +18,6 @@ function Base.:(-)(nd::NanoDate, cperiod::CompoundPeriod)
     end
     nd
 end
-
-Base.(-)(tm::Time) = -(retype(CompoundPeriod, tm))
 
 function retype(::Type{CompoundPeriod}, tm::Time)
     secs, subsecs = fldmod(value(tm), NanosecondsPerSecond)

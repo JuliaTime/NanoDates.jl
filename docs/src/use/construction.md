@@ -12,29 +12,29 @@ years, months, days = (2022, 4, 28);
 hours, mins, secs, millis, micros, nanos = 
   (14, 32, 10, 123, 456, 789);
 
-adate = Date(years, months, days)
+dayte = Date(years, months, days)
 # 2022-04-28
 
-atime = Time(hours, mins, secs, millis, micros, nanos)
+tyme = Time(hours, mins, secs, millis, micros, nanos)
 # 14:32:10.123456789
 
 # to get a DateTime from a Date and a Time safely
-# > atime_ms = trunc(atime, Millisecond)
-# > adatetime = DateTime(adate, atime_ms)
+# > tyme_ms = trunc(tyme, Millisecond)
+# > daytetime = DateTime(dayte, tyme_ms)
 # NanoDates exports `date_time` that does this
 
-adatetime = date_time(adate, atime)
+daytetime = date_time(dayte, tyme)
 # 2022-04-28T14:32:10.123
 ```
 Here are familiar constructor methods.
 ```
-nd = NanoDate(adate)
+nd = NanoDate(dayte)
 # 2022-04-28T00:00:00
 
-nd = NanoDate(adatetime)
+nd = NanoDate(daytetime)
 # 2022-04-28T14:32:10.123
 
-nd = NanoDate(adate, atime)
+nd = NanoDate(dayte, tyme)
 # 2022-04-28T14:32:10.123456789
 ```
 Here are some of the methods that take values

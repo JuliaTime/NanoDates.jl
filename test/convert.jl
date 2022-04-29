@@ -1,11 +1,11 @@
 @testset "convert" begin
-    @test convert(NanoDate, adatetime) == nd0
-    @test convert(NanoDate, adate) == nd00
+    @test convert(NanoDate, daytetime) == nd0
+    @test convert(NanoDate, dayte) == nd00
 end
 
 @testset "promote" begin
-    @test promote(nd, adatetime) == (nd, NanoDate(adatetime))
-    @test promote(nd, adate) == (nd, NanoDate(adate))
+    @test promote(nd, daytetime) == (nd, NanoDate(daytetime))
+    @test promote(nd, dayte) == (nd, NanoDate(dayte))
 end
 
 @testset "splice" begin

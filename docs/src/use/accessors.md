@@ -8,9 +8,9 @@ You can use `Year`, `Month`, `Day`, ... `Nanosecond`
 ```
 using Dates, NanoDates
 
-adate = Date("2022-04-28")
-atime = Time(14, 32, 10, 123, 456, 789)
-nanodate = NanoDate(adate, atime)
+dayte = Date("2022-04-28")
+tyme = Time(14, 32, 10, 123, 456, 789)
+nanodate = NanoDate(dayte, tyme)
 
 year(nanodate) == 2022
 day(nanodate) == 10

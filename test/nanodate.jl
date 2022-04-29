@@ -8,10 +8,10 @@
 end
 
 @testset "construct by Dates types" begin
-    @test NanoDate(adate, atime) == nd
-    @test NanoDate(adatetime, ananosecs) == nd
-    @test NanoDate(adatetime) == nd0
-    @test NanoDate(adate) == nd00
+    @test NanoDate(dayte, tyme) == nd
+    @test NanoDate(daytetime, ananosecs) == nd
+    @test NanoDate(daytetime) == nd0
+    @test NanoDate(dayte) == nd00
 end
 
 

@@ -50,47 +50,52 @@ function retype(::Type{Time}, cperiod::CompoundPeriod)
 end
 
 function retype(::Type{Date}, cperiod::CompoundPeriod)
-    cp = canonicalize(cperiod)
+    periods = canonicalize(cperiod).periods
+    types = ntuple(i->typeof(periods[i]), length(periods))
     dt = Date0
-    for p in cp.periods
-        typ = typeof(p)
+    if Month in types
+        dt -= Month(1)
+    end
+    if Day in types
+        dt -= Day(1)
+    end
+    for (typ, p) in zip(periods, types)
         typ in (Hour, Minute, Second, Millisecond, Microsecond, Nanosecond) && continue
-        if typ in (Quarter, Month, Day)
-            dt += (p - typ(1))
-        else
-            dt += p
-        end
+        dt += p
     end
     dt
 end
 
 function retype(::Type{DateTime}, cperiod::CompoundPeriod)
-    cp = canonicalize(cperiod)
+    periods = canonicalize(cperiod).periods
+    types = ntuple(i->typeof(periods[i]), length(periods))
     dtm = DateTime0
-    for p in cp.periods
-        typ = typeof(p)
-        type in (Microsecond, Nanosecond) && continue
-        if typ in (Quarter, Month, Day)
-            dtm += (p - typ(1))
-        else
-            dtm += p
-        end
+    if Month in types
+        dtm -= Month(1)
+    end
+    if Day in types
+        dtm -= Day(1)
+    end
+    for (typ, p) in zip(periods, types)
+        typ in (Microsecond, Nanosecond) && continue
+        dtm += p
     end
     dtm
 end
 
 function retype(::Type{NanoDate}, cperiod::CompoundPeriod)
-    cp = canonicalize(cperiod)
+    periods = canonicalize(cperiod).periods
+    types = ntuple(i->typeof(periods[i]), length(periods))
     nd = NanoDate0
-    for p in cp.periods
-        typ = typeof(p)
-        type in (Microsecond, Nanosecond) && continue
-        if typ in (Quarter, Month, Day)
-            nd += (p - typ(1))
-        else
-            nd += p
-        end
+    if Month in types
+        nd -= Month(1)
     end
-    dtm
+    if Day in types
+        nd -= Day(1)
+    end
+    for (typ, p) in zip(periods, types)
+        nd += p
+    end
+    nd
 end
 

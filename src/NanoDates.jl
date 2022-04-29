@@ -21,4 +21,5 @@ include("arith.jl")
 include("strings.jl")
 include("io.jl")
 
+end  # NanoDates
 

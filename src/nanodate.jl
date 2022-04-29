@@ -34,6 +34,7 @@ NanoDate(yr::Year, mn::Month, dy::Day, hr::Hour, mi::Minute=Minute(0), sc::Secon
 NanoDate(yr, mn=1, dy=1, hr=1, mi=0, sc=0, ms=0, us=0, ns=0) =
     NanoDate(DateTime(yr, mn, dy, hr, mi, sc, ms), nanosecs(us, ns))
 
+NanoDate(cs::Microsecond, ns::Nanosecond) = NanoDate(DateTime0, nanosecs(cs,ns))
 # for internal use
 
 usns(ns) = ns
@@ -59,6 +60,18 @@ NanoDate(ms::Millisecond) = NanoDate(DateTime(UTM(ms)), Nanosecond0)
 NanoDate(ms::Millisecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), ns)
 NanoDate(ms::Millisecond, us::Microsecond) = NanoDate(DateTime(UTM(ms)), nanosecs(us))
 NanoDate(ms::Millisecond, us::Microsecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), nanosecs(us, ns))
+
+NanoDate() = NanoDate(now())
+NanoDate(::Type{UTC}) = NanoDate(now(UTC))
+
+NanoDate(nd::NanoDate, cs::Microsecond, ns::Nanosecond) =
+    NanoDate(nd.datetime, nanosecs(cs, ns))
+NanoDate(nd::NanoDate, cs::Microsecond) =
+    NanoDate(nd.datetime, nanosecs(cs))
+NanoDate(nd::NanoDate, ns::Nanosecond) =
+    NanoDate(nd.datetime, nanosecs(ns))
+
+
 
 const DateOrDateTime = value(Date(5001, 1, 1))
 datedatetime(x) = (abs(x) < DateOrDateTime) ? Date(UTD(x)) : DateTime(UTM(x))

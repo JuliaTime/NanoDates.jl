@@ -2,48 +2,32 @@
     struct wrapped character constants for NanoDate formats
 =#
 
+# '⦰' is the reversed empty set 0x29b0
+Base.isempty(ch::Char) = ch === ⦰
+
+const CapitalT = 'T'   # ISO selected char, separates date from time 
+const PunctDot = '.'   # separates fractions of a second, subseconds
+
 struct SepDateTime char::Char  end
 struct SepSubsecs  char::Char  end
 
-const CapitalT   = SepDateTime('T')
-const SmallT     = SepDateTime('ᴛ')
-const InvisbleT  = SepDateTime(' ')
-const EmptyT     = SepDateTime('⦰')         # reversed empty set 0x29b0
+const SepCapitalT  = SepDateTime('T')
+const SepSmallT    = SepDateTime('ᴛ')
+const SepInvisbleT = SepDateTime(' ')
+const SepEmpty     = SepDateTime('⦰')
 
-const Underscore       = SepSubsecs('_')
-const SmallWhiteCirlce = SepSubsecs('◦')
-const SmallWhiteStar   = SepSubsecs('⭒')
-const SingleSpace      = SepSubsecs(' ')
-const NoSeparation     = SepSubsecs('⦰')    # reversed empty set 0x29b0
-
-
-# one white space 
-const SpaceChar = ' '
-
-# standin for the empty char
-const EmptyChar = '⦰'       # reversed empty set 0x29b0
-
-# separate date from time
-const CapitalT = 'T'
-const SmallT='ᴛ'
-
-
-
-
-const TSep = SepDateTime(CapitalT)
-const tSep = SepDateTime(SmallT)
-
-const CircleSep = SepSubsecs(SmallWhiteCircle)
-const UnderscoreSep = SepSubsecs(Underscore)
-const StarSep = SepSubsecs(SmallWhiteStar)
+const SepUnderscore       = SepSubsecs('_')
+const SepSmallWhiteCirlce = SepSubsecs('◦')
+const SepSmallWhiteStar   = SepSubsecs('⭒')
+const SepSingleSpace      = SepSubsecs(' ')
+const SepNoSeparation     = SepSubsecs('⦰')    
 
 
 #=
         make a string representation from a NanoDate
 =#
 
-function Base.string(nd::NanoDate) =
-    nanodate_string(nd)
+Base.string(nd::NanoDate, args...) = nanodate_string(nd, args...)
 
 function nanodate_string(nd)
     str = string(nd.datetime)
@@ -63,16 +47,53 @@ function nanodate_string(nd)
     str * padded
 end
 
-
-function Base.string(nd::NanoDate; sep::Char=EmptyChar)
-    if sep === EmptyChar
-        nanodate_string(nd)
+function nanodate_string(nd::NanoDate, sep::SepDateTime)
+    str = nanodate_string(nd)
+    if occursin(CapitalT, str)
+        datepart, timepart = split(str, CapitalT)
+        if !isempty(sep.char) 
+            return datepart * sep.char * timepart
+        end
+    end
+    datepart * timepart
+end
+    
+function nanodate_string(nd::NanoDate, sep::SepSubsecs)
+    str = nanodate_string(nd)
+    if sep === SepNoSeparation
+        str
     else
-        nanodate_string(nd, sep)
+        if occursin(PunctDot, str)
+            secs, subsecs = split(str, PunctDot)
+            sepsubsecs = separate_subsecs(subsecs, sep)
+            secs * sepsubsecs
+        else
+            str
+        end
     end
 end
+   
+function nanodate_string(nd, sep::SepDateTime)
+    str = nanodate_string(nd.datetime)
+    datepart, timepart = split(str, CapitalT)
+    nanos = value(nd.nanosecs)
+    nanos === 0 && return str
+    micros, nanos = fldmod(nanos, 1_000)
 
-function nanodate_string(nd, sep)
+    millis = millisecond(nd.datetime)
+    if millis === 0 str = str * ".000" end
+
+    if nanos === 0
+        padded = sep * lpad(micros, 3, '0')
+    elseif micros === 0
+        padded = sep * "000" * sep * lpad(nanos, 3, '0')
+    else
+        padded = sep * lpad(micros, 3, '0') * sep * lpad(nanos, 3, '0')
+    end
+    str * padded
+end
+
+function safe_nanodate_string(nd, sep::SepSubsecs)
     str = string(nd.datetime)
     
     nanos = value(nd.nanosecs)
@@ -91,6 +112,7 @@ function nanodate_string(nd, sep)
     end
     str * padded
 end
+
 
 function Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharString="")
     str = Dates.format(nd.datetime, df)

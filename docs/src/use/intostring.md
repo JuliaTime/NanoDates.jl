@@ -1,7 +1,7 @@
-## Converting NanoDates to Strings
+## Converting NanoDates and Strings
 
 The easiest way to obtain your NanoDate as a String is to use `string(nanodate)`.
-Similarly easy, and more readable is `string(nanodate; sep='<choose a Char>' )`.
+More easily readable is `string(nanodate; sep='<choose a Char>' )`.
 
 ```
 using Dates, NanoDates

@@ -19,7 +19,7 @@ makedocs(
         "Home" => "index.md",
         "Basic Use" => Any[
             "Construction" => "use/construction.md",
-            "Specification" => "use/fieldfill.md",
+            "Specification" => "use/specify.md",
             "Accessors" => "use/accessors.md",
         ],
         "Helpful Extras" => Any[

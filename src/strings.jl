@@ -1,10 +1,49 @@
-function Base.string(nd::NanoDate; sep::CharString="")
-    if isempty(sep)
-        nanodate_string(nd)
-    else
-        nanodate_string(nd, sep)
-    end
-end
+#=
+    struct wrapped character constants for NanoDate formats
+=#
+
+struct SepDateTime char::Char  end
+struct SepSubsecs  char::Char  end
+
+const CapitalT   = SepDateTime('T')
+const SmallT     = SepDateTime('ᴛ')
+const InvisbleT  = SepDateTime(' ')
+const EmptyT     = SepDateTime('⦰')         # reversed empty set 0x29b0
+
+const Underscore       = SepSubsecs('_')
+const SmallWhiteCirlce = SepSubsecs('◦')
+const SmallWhiteStar   = SepSubsecs('⭒')
+const SingleSpace      = SepSubsecs(' ')
+const NoSeparation     = SepSubsecs('⦰')    # reversed empty set 0x29b0
+
+
+# one white space 
+const SpaceChar = ' '
+
+# standin for the empty char
+const EmptyChar = '⦰'       # reversed empty set 0x29b0
+
+# separate date from time
+const CapitalT = 'T'
+const SmallT='ᴛ'
+
+
+
+
+const TSep = SepDateTime(CapitalT)
+const tSep = SepDateTime(SmallT)
+
+const CircleSep = SepSubsecs(SmallWhiteCircle)
+const UnderscoreSep = SepSubsecs(Underscore)
+const StarSep = SepSubsecs(SmallWhiteStar)
+
+
+#=
+        make a string representation from a NanoDate
+=#
+
+function Base.string(nd::NanoDate) =
+    nanodate_string(nd)
 
 function nanodate_string(nd)
     str = string(nd.datetime)
@@ -22,6 +61,15 @@ function nanodate_string(nd)
         end
     end
     str * padded
+end
+
+
+function Base.string(nd::NanoDate; sep::Char=EmptyChar)
+    if sep === EmptyChar
+        nanodate_string(nd)
+    else
+        nanodate_string(nd, sep)
+    end
 end
 
 function nanodate_string(nd, sep)

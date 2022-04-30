@@ -8,20 +8,13 @@ Base.isempty(ch::Char) = ch === ⦰
 const CapitalT = 'T'   # ISO selected char, separates date from time 
 const PunctDot = '.'   # separates fractions of a second, subseconds
 
-struct SepDateTime char::Char  end
 struct SepSubsecs  char::Char  end
-
-const SepCapitalT  = SepDateTime('T')
-const SepSmallT    = SepDateTime('ᴛ')
-const SepInvisbleT = SepDateTime(' ')
-const SepEmpty     = SepDateTime('⦰')
 
 const SepUnderscore       = SepSubsecs('_')
 const SepSmallWhiteCirlce = SepSubsecs('◦')
 const SepSmallWhiteStar   = SepSubsecs('⭒')
 const SepSingleSpace      = SepSubsecs(' ')
 const SepNoSeparation     = SepSubsecs('⦰')    
-
 
 #=
         make a string representation from a NanoDate
@@ -46,35 +39,21 @@ function nanodate_string(nd)
     end
     str * padded
 end
-
-function nanodate_string(nd::NanoDate, sep::SepDateTime)
-    str = nanodate_string(nd)
-    if occursin(CapitalT, str)
-        datepart, timepart = split(str, CapitalT)
-        if !isempty(sep.char) 
-            return datepart * sep.char * timepart
-        end
-    end
-    datepart * timepart
-end
     
 function nanodate_string(nd::NanoDate, sep::SepSubsecs)
     str = nanodate_string(nd)
-    if sep === SepNoSeparation
-        str
+    if occursin(PunctDot, str)
+        secs, subsecs = split(str, PunctDot)
+        sepsubsecs = separate_subsecs(subsecs, sep)
+        secs * sepsubsecs
     else
-        if occursin(PunctDot, str)
-            secs, subsecs = split(str, PunctDot)
-            sepsubsecs = separate_subsecs(subsecs, sep)
-            secs * sepsubsecs
-        else
-            str
-        end
+        str
     end
 end
    
-function nanodate_string(nd, sep::SepDateTime)
-    str = nanodate_string(nd.datetime)
+function nanodate_string(nd, sep::SepSubsecs)
+    sepchar = sep.value
+    str = string(nd.datetime)
     datepart, timepart = split(str, CapitalT)
     nanos = value(nd.nanosecs)
     nanos === 0 && return str
@@ -84,11 +63,11 @@ function nanodate_string(nd, sep::SepDateTime)
     if millis === 0 str = str * ".000" end
 
     if nanos === 0
-        padded = sep * lpad(micros, 3, '0')
+        padded = sepchar* lpad(micros, 3, '0')
     elseif micros === 0
-        padded = sep * "000" * sep * lpad(nanos, 3, '0')
+        padded = sepchar * "000" * sepchar * lpad(nanos, 3, '0')
     else
-        padded = sep * lpad(micros, 3, '0') * sep * lpad(nanos, 3, '0')
+        padded = sepchar * lpad(micros, 3, '0') * sepchar * lpad(nanos, 3, '0')
     end
     str * padded
 end

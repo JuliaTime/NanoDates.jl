@@ -18,28 +18,7 @@
     is remains unchanged. These duration
     balancing Nanoseconds are added to
     any that are present already.
-    
-    All of the TimePeriod and the DatePeriod
-    types are found in two distinct contexts.
-    They are most familiar participating in
-    specific clock and calendar designations.
- 
-    "Next year, school starts on Jan 4 at 9:15."
-    "Let's meet for lunch at 12:15 today."
-
-    That way of working with temporal periods relies
-    on the attachment of periods to eventualities.
-    Their other role occurs in a creative, rather
-    than a descriptive context.  Periods exent,
-    available and able, unfettered, nonassociated.
-
-    "I will need at least 10 Nanoseconds to measure
-     the effectiveness of Attosecond light pulses."
-    "We should revisit this over coffee, monthly or better."
-
-    That is the justification for holding extra nanoseconds.
-
-
+   
 
     clock and calendar 
     is thier presence and utilization

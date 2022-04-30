@@ -1,6 +1,6 @@
 # NanoDates.jl
 
-Offers NanoDate, a date-and-time type with nanosecond resolution
+### A date-and-time type with Years .. Nanoseconds
 
 #### plays well with others
 

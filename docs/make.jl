@@ -26,7 +26,7 @@ makedocs(
             "Conviences" => "use/convenient.md",
             "Strings" => "use/intostring.md",
         ],
-        "Representing NanoDates" => "betterinformed/therepresentation.md"
+        "NanoDates" => "betterinformed/therepresentation.md"
     ]
 )
 

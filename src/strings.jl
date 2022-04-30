@@ -48,8 +48,9 @@ function Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharStr
     str = Dates.format(nd.datetime, df)
     nsubsecfields = 0
     lasttoken = df.tokens[end]
-    if isa(lasttoken, Dates.DatePart) && typeof(lasttoken).parameters[1] === 's'
-        nsubsecfields = lasttoken.width
+    if isa(lasttoken, Dates.DatePart) &&
+       typeof(lasttoken).parameters[1] === 's'
+          nsubsecfields = lasttoken.width
     end
     nanos = value(nd.nanosecs)
     iszero(nanos) && return str

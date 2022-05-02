@@ -7,7 +7,7 @@ export NanoDate,
         format,
         CapitalT, SmallCapitalT,
         SingleSpace, Underscore,
-        SmallWhiteCircle, SmallWhiteStart
+        SmallWhiteCircle, SmallWhiteStar
 
 using Dates
 using Dates: AbstractDateTime, CompoundPeriod,

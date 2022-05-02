@@ -4,7 +4,10 @@ export NanoDate,
         nnow, ntoday, date_time,
         nanodate2rata, rata2nanodate,
         nanodate2unix, unix2nanodate,
-        format
+        format,
+        CapitalT, SmallCapitalT,
+        SingleSpace, Underscore,
+        SmallWhiteCircle, SmallWhiteStart
 
 using Dates
 using Dates: AbstractDateTime, CompoundPeriod,

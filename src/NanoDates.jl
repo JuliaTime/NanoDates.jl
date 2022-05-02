@@ -23,5 +23,11 @@ include("compound.jl")
 include("strings.jl")
 include("io.jl")
 
+@inline nanos_elapsed() = time_ns() - NanosAtStart
+
+function __init__()
+    global NanosAtStart = time_ns() 
+end
+
 end  # NanoDates
 

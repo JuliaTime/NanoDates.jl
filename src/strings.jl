@@ -20,63 +20,32 @@ const SmallWhiteStar = '⭒'
         make a string representation from a NanoDate
 =#
 
-Base.string(nd::NanoDate, args...) = nanodate_string(nd, args...)
+Base.string(nd::NanoDate) = nanodate_string(nd)
+Base.string(nd::NanoDate, sep::Char) = nanodate_string(nd, sep)
 
 function nanodate_string(nd)
     str = string(nd.datetime)
-    millis = millisecond(nd)
-    nanos = value(nd.nanosecs)
-    if millis == 0 && nanos != 0
+    micronanos = value(nd.nanosecs)
+    micronanos == 0 && return str
+    millis = millisecond(nd.datetime)
+    if millis == 0 # micronanos != 0
         str *= ".000"
     end
-    padded = ""
-    if nanos != 0
-        if nanos % 1_000 !== 0
-            padded = lpad(nanos, 6, '0')
-        else
-            padded = lpad(div(nanos, 1_000), 3, '0')
-        end
+    micros, nanos = divrem(micronanos, NanosecondsPerMicrosecond)
+    if nanos == 0 # micros != 0
+        str *= lpad(micros, 3, '0')
+    elseif micros == 0 # nanos != 0
+        str *= lpad(nanos, 6, '0')
+    else # micros != 0 && nanos != 0
+        str *= lpad(micros, 3, '0')
+        str *= lpad(nanos, 3, '0')
     end
-    str * padded
+    str
 end
 
-function nanodate_string(nd::NanoDate, sep::CharString="")
-    str = nanodate_string(nd)
-    if occursin(PunctDot, str)
-        secs, subsecs = split(str, PunctDot)
-        sepsubsecs = separate_subsecs(subsecs, sep)
-        secs * sepsubsecs
-    else
-        str
-    end
-end
-
-function nanodate_string(nd, sep::CharString="")
-    sepchar = sep.value
+function nanodate_string(nd::NanoDate, sep::Char)
     str = string(nd.datetime)
     datepart, timepart = split(str, CapitalT)
-    nanos = value(nd.nanosecs)
-    nanos === 0 && return str
-    micros, nanos = fldmod(nanos, 1_000)
-
-    millis = millisecond(nd.datetime)
-    if millis === 0
-        str = str * ".000"
-    end
-
-    if nanos === 0
-        padded = sepchar * lpad(micros, 3, '0')
-    elseif micros === 0
-        padded = sepchar * "000" * sepchar * lpad(nanos, 3, '0')
-    else
-        padded = sepchar * lpad(micros, 3, '0') * sepchar * lpad(nanos, 3, '0')
-    end
-    str * padded
-end
-
-function safe_nanodate_string(nd, sep::CharString="")
-    str = string(nd.datetime)
-
     nanos = value(nd.nanosecs)
     nanos === 0 && return str
     micros, nanos = fldmod(nanos, 1_000)
@@ -95,7 +64,6 @@ function safe_nanodate_string(nd, sep::CharString="")
     end
     str * padded
 end
-
 
 function Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharString="")
     str = Dates.format(nd.datetime, df)

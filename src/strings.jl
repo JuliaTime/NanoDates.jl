@@ -78,6 +78,11 @@ function Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharStr
     cs, ns = divrem(nanos, 1_000)
     millis = millisecond(nd.datetime)
     if nsubsecfields > 1
+        if millis < 10
+            str = str * "00"
+        elseif millis < 100
+            str = str * '0'
+        end
         str = str * sep * lpad(cs, 3, '0')
         iszero(ns) && return str
         if nsubsecfields > 2
@@ -86,6 +91,8 @@ function Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharStr
     end
     str
 end
+
+
 
 function Time(s::String)
     n = length(s)

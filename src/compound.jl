@@ -1,5 +1,4 @@
 # Dates defines CompoundPeriod(t::Time)
-
 Dates.CompoundPeriod(d::Date) =
     Year(d) + Month(d) + Day(d)
 
@@ -134,6 +133,9 @@ function NanoDate(cperiod::CompoundPeriod)
     end
     NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns)
 end
+
+# length, iterate
+Base.length(cperiod::CompoundPeriod) = length(cperiod.periods)
 
 # reverse to process smaller period types before larger period types
 Base.iterate(cperiod::CompoundPeriod) = iterate(reverse(cperiod.periods))

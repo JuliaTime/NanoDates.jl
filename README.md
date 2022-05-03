@@ -25,13 +25,13 @@
  
 ----
 
-`NanoDate` is a date-and-time type giving you all the dates and all the times-of-day.
+`NanoDate`, a type giving you all the dates and all the times-of-day.
 
 ----
 
 
 
-Grace Hopper, with gratitude
+from Grace Hopper
 
 | light nanoseconds | metric distance (units) |
 |------------------:|:-----------------------:|

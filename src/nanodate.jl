@@ -44,7 +44,7 @@ csns(ns) = ns
 nanosecs(ns) = Nanosecond(ns)
 nanosecs(ns::Nanosecond) = ns
 nanosecs(cs::Microsecond) = Nanosecond(1_000 * value(cs))
-nanosecs(cs::Microsecond, ns::Nanosecond) = Nanosecond(1_000 * value(cs) + value(ns))
+
 @inline nanosecs(cs, ns) = Nanosecond(csns(cs, ns))
 @inline nanosecs(cs::Microsecond, ns::Nanosecond) = nanosecs(value(cs), value(ns))
 

@@ -2,7 +2,7 @@
 #### celebrating the finer aspects of time
 
 
-`NanoDates` gives you nanoseconds and microseconds with your dates.
+`NanoDates` gives you all the dates and all the times-of-day
 
 ##### motivation
 
@@ -24,12 +24,6 @@
   -  frendly docs, easily followed, well explained
  
 ----
-
-`NanoDate`, a type giving you all the dates and all the times-of-day.
-
-----
-
-
 
 from Grace Hopper
 

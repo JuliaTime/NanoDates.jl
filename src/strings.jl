@@ -66,8 +66,36 @@ function nanodate_string(nd::NanoDate, sep::Char)
     str * padded
 end
 
-Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::Char=EmptyChar) =
-    sep === EmptyChar ? nanodate_format(nd, df, "") : nanodate_format(nd, df, sep)
+Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT;
+             sep::Char=EmptyChar) =
+    sep === EmptyChar ? nanodate_format(nd, df) :
+                        nanodate_format(nd, df, sep)
+
+function nanodate_format(nd, df)
+    datetime = nd.datetime
+    str = Dates.format(datetime, df)
+    value(nd.nanosecs) == 0 && return str
+
+    millis = millisecond(datetime)
+    millistr = PunctDot * lpad(millis, 3, '0')
+    str = split(str, PunctDot)[1]
+
+    nsubsecfields = 0
+    lasttoken = df.tokens[end]
+    if isa(lasttoken, Dates.DatePart) &&
+       typeof(lasttoken).parameters[1] === 's'
+        nsubsecfields = lasttoken.width
+    end
+    nsubsecfields == 0 && return str
+    str = str * millistr
+    nsubsecfields == 1 && return str
+    nanos = value(nd.nanosecs)
+    cs, ns = divrem(nanos, 1_000)
+    str = str * lpad(cs, 3, '0')
+    nsubsecfields == 2 && return str
+    str = str * lpad(ns, 3, '0')
+    str
+end
 
 function nanodate_format(nd, df, sep)
     datetime = nd.datetime

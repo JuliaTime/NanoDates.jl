@@ -23,6 +23,8 @@ const SmallWhiteStar = '⭒'
 Base.string(nd::NanoDate; sep::CharString=EmptyChar) =
     sep === EmptyChar ? nanodate_string(nd) : nanodate_string(nd, sep)
 
+Base.string(nd::NanoDate, sep) = string(nd; sep=sep)
+
 function nanodate_string(nd)
     str = string(nd.datetime)
     micronanos = value(nd.nanosecs)

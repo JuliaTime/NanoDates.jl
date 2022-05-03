@@ -91,7 +91,7 @@ function nanodate_format(nd, df, sep)
     cs, ns = divrem(nanos, 1_000)
     str = str * sep * lpad(cs, 3, '0')
     nsubsecfields == 2 && return str
-    str = str * spe * lpad(ns, 3, '0')
+    str = str * sep * lpad(ns, 3, '0')
     str
 end
 

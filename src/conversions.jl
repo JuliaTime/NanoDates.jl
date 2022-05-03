@@ -18,15 +18,6 @@ Dates.DateTime(x::NanoDate) = convert(DateTime, x)
 Dates.Time(x::NanoDate) = convert(Time, x)
 Dates.Date(x::NanoDate) = convert(Date, x)
 
-#### Additional Constructors
-
-function NanoDate(date::Date, time::Time)
-    slowtime, fasttime = fldmod(value(time), NanosecondsPerMillisecond)
-    datetime = DateTime(date) + Millisecond(slowtime)
-    NanoDate(datetime, Nanosecond(fasttime))
-end
-
-
 #### External Conversions
 
 nanodate2rata(nd::NanoDate) = datetime2rata(nd.datetime)

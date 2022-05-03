@@ -18,6 +18,17 @@ NanoDate(x::NanoDate) = x
 datetime(x::NanoDate) = x.datetime
 nanosecs(x::NanoDate) = x.nanosecs
 
+
+#### Additional Constructors
+
+function NanoDate(date::Date, time::Time)
+    slowtime, fasttime = fldmod(value(time), NanosecondsPerMillisecond)
+    datetime = DateTime(date) + Millisecond(slowtime)
+    NanoDate(datetime, Nanosecond(fasttime))
+end
+
+NanoDate(time::Time, date::Date) = NanoDate(date, time)
+
 NanoDate(dt::DateTime, cs::Microsecond) = NanoDate(dt, Nanosecond(value(cs) * 1_000))
 NanoDate(dt::DateTime, cs::Microsecond, ns::Nanosecond) =
     NanoDate(dt, nanosecs(cs, ns))

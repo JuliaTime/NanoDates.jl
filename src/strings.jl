@@ -80,11 +80,6 @@ function nanodate_format(nd, df, sep)
     iszero(nanos) && return str
     cs, ns = divrem(nanos, 1_000)
     millis = millisecond(nd.datetime)
-    if millis < 10
-       str = str * "00"
-    elseif millis < 100
-       str = str * "0"
-    end
     if nsubsecfields > 1
         str = str * sep * lpad(cs, 3, '0')
         iszero(ns) && return str

@@ -34,8 +34,8 @@ NanoDate(dt::DateTime, cs::Microsecond, ns::Nanosecond) =
     NanoDate(dt, nanosecs(cs, ns))
 
 NanoDate(dt::Date, cs::Microsecond, ns::Nanosecond) = NanoDate(DateTime(dt), cs, ns)
-NanoDate(d::Date, cs::Microsecond) = NanoDate(DateTime(dt), cs)
-NanoDate(d::Date, ns::Nanosecond) = NanoDate(DateTime(d), ns)
+NanoDate(dt::Date, cs::Microsecond) = NanoDate(DateTime(dt), cs)
+NanoDate(dt::Date, ns::Nanosecond) = NanoDate(DateTime(dt), ns)
 
 NanoDate(yr::Year, mn::Month=Month(1), dy::Day=Day(1)) = NanoDate(Date(yr, mn, dy))
 NanoDate(yr::Year, mn::Month, dy::Day, hr::Hour, mi::Minute=Minute(0), sc::Second=Second(0),

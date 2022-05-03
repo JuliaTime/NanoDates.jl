@@ -70,27 +70,14 @@ Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::Char=EmptyChar) 
     sep === EmptyChar ? nanodate_format(nd, df, "") : nanodate_format(nd, df, sep)
 
 function nanodate_format(nd, df, sep)
-
-    str = Dates.format(nd.datetime, df)
-    if value(nd.nanosecs) == 0
-       return str
-    end
-    millis = millisecond(nd.datetime)
-    ndig = 0
-    for i = length(str):-1:1
-        if isdigit(str[i])
-            ndig += 1
-        else
-            break
-        end
-    end
-    if millis == 0 && ndig == 0
-       str = str * "000"
-    elseif ndig == 1
-       str = str * "00"
-    elseif ndig == 2
-       str = str * "0"
-    end
+    datetime = nd.datetime
+    str = Dates.format(datetime, df)
+    value(nd.nanosecs) == 0 && return str
+    millis = millisecond(datetime)
+    datetime -= Millisecond(millis)
+    str = Dates.format(datetime, df)
+    millistr = lpad(millis, 3, '0')
+    str *= PunctDot * millistr
 
     nsubsecfields = 0
     lasttoken = df.tokens[end]

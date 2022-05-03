@@ -74,13 +74,7 @@ function nanodate_format(nd, df, sep)
        return str
     end
     millis = millisecond(nd.datetime)
-    if millis == 0
-       str = str * ".000"
-    elseif millis % 100 == 0
-       str = str * "00"
-    elseif millis % 10 == 0
-       str = str * "0"
-    end
+
     nsubsecfields = 0
     lasttoken = df.tokens[end]
     if isa(lasttoken, Dates.DatePart) &&

@@ -6,18 +6,25 @@ struct NanoDate
         nanos = value(nanosecs)
         0 <= nanos < 1_000_000 && return new(datetime, nanosecs)
 
-        millisecs = value(datetime)
-        millis, nanos = divrem(nanos, NanosecondsPerMillisecond)
-        datetime = DateTime(Dates.UTM(millisecs + millis))
-        new(datetime, Nanosecond(nanosecs))
+        datetime2, nanosecs2 = safe_canonical(value(datetime), nanos)
+        new(datetime2, nanosecs2)
     end
 end
 
-NanoDate(x::NanoDate) = x
+@inline function safe_canonical(millis, nanos)
+    micros, nanos = fldmod(nanos, NanosecondsPerMicrosecond)
+    micromillis, micros = fldmond(micros, MicrosecondsPerMillisecond)
+    millis += micromillis
+    nanos += micros * NanosecondsPerMicrosecond
+    datetime = DateTime(Dates.UTM(millis))
+    nanosecs = Nanosecond(nanos)
+    datetime, nanosecs
+end
 
 datetime(x::NanoDate) = x.datetime
 nanosecs(x::NanoDate) = x.nanosecs
 
+NanoDate(x::NanoDate) = x
 
 #### Additional Constructors
 
@@ -27,7 +34,7 @@ function NanoDate(date::Date, time::Time)
     NanoDate(datetime, Nanosecond(fasttime))
 end
 
-NanoDate(time::Time, date::Date) = NanoDate(date, time)
+@inline NanoDate(time::Time, date::Date) = NanoDate(date, time)
 
 NanoDate(dt::DateTime, cs::Microsecond) = NanoDate(dt, Nanosecond(value(cs) * 1_000))
 NanoDate(dt::DateTime, cs::Microsecond, ns::Nanosecond) =

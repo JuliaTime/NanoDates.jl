@@ -1,6 +1,9 @@
 # NanoDates.jl
 #### celebrating the finer aspects of time
 
+----
+[![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://jeffreysarnoff.github.io/NanoDates.jl/dev/)
+----
 
 `NanoDates` gives you all the dates and all the times-of-day
 

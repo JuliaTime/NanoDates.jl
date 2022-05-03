@@ -15,7 +15,7 @@
     -  uses `DateTime` methods
 
 - This package is a redesign of `TimesDates`
-  - `TimesDates` is widely used and well liked
+  - `TimesDates` is widely used and well-liked
     - offers nanoseond resolved dates       (as do we)
     - offers nanosecond accurate time zones (we do not)
  

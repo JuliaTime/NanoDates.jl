@@ -1,8 +1,11 @@
 # NanoDates.jl
 #### celebrating the finer aspects of time
 
+----
+[![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://jeffreysarnoff.github.io/NanoDates.jl/dev/)
+----
 
-`NanoDates` gives you nanoseconds and microseconds with your dates.
+`NanoDates` gives you all the dates and all the times-of-day
 
 ##### motivation
 
@@ -15,7 +18,7 @@
     -  uses `DateTime` methods
 
 - This package is a redesign of `TimesDates`
-  - `TimesDates` is widely used and well liked
+  - `TimesDates` is widely used and well-liked
     - offers nanoseond resolved dates       (as do we)
     - offers nanosecond accurate time zones (we do not)
  
@@ -25,13 +28,7 @@
  
 ----
 
-`NanoDate` is a date-and-time type giving you all the dates and all the times-of-day.
-
-----
-
-
-
-Grace Hopper, with gratitude
+from Grace Hopper
 
 | light nanoseconds | metric distance (units) |
 |------------------:|:-----------------------:|

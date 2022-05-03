@@ -73,11 +73,10 @@ function nanodate_format(nd, df, sep)
     datetime = nd.datetime
     str = Dates.format(datetime, df)
     value(nd.nanosecs) == 0 && return str
+
     millis = millisecond(datetime)
-    datetime -= Millisecond(millis)
-    str = Dates.format(datetime, df)
-    millistr = lpad(millis, 3, '0')
-    str *= PunctDot * millistr
+    millistr = PunctDot * lpad(millis, 3, '0')
+    str = split(str, PunctDot)[1]
 
     nsubsecfields = 0
     lasttoken = df.tokens[end]
@@ -85,17 +84,14 @@ function nanodate_format(nd, df, sep)
        typeof(lasttoken).parameters[1] === 's'
         nsubsecfields = lasttoken.width
     end
+    numsubsecfields == 0 && return str
+    str = str * millistr
+    numsubsecfields == 1 && return str
     nanos = value(nd.nanosecs)
-    iszero(nanos) && return str
     cs, ns = divrem(nanos, 1_000)
-    millis = millisecond(nd.datetime)
-    if nsubsecfields > 1
-        str = str * sep * lpad(cs, 3, '0')
-        iszero(ns) && return str
-        if nsubsecfields > 2
-            str = str * sep * lpad(ns, 3, '0')
-        end
-    end
+    str = str * sep * lpad(cs, 3, '0')
+    numsubsecfields == 2 && return str
+    str = str * spe * lpad(ns, 3, '0')
     str
 end
 

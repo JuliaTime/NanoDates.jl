@@ -84,13 +84,13 @@ function nanodate_format(nd, df, sep)
        typeof(lasttoken).parameters[1] === 's'
         nsubsecfields = lasttoken.width
     end
-    numsubsecfields == 0 && return str
+    nsubsecfields == 0 && return str
     str = str * millistr
-    numsubsecfields == 1 && return str
+    nsubsecfields == 1 && return str
     nanos = value(nd.nanosecs)
     cs, ns = divrem(nanos, 1_000)
     str = str * sep * lpad(cs, 3, '0')
-    numsubsecfields == 2 && return str
+    nsubsecfields == 2 && return str
     str = str * spe * lpad(ns, 3, '0')
     str
 end

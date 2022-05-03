@@ -20,7 +20,7 @@ const SmallWhiteStar = '⭒'
         make a string representation from a NanoDate
 =#
 
-Base.string(nd::NanoDate; sep::Char=EmptyChar) =
+Base.string(nd::NanoDate; sep::CharString=EmptyChar) =
     sep === EmptyChar ? nanodate_string(nd) : nanodate_string(nd, sep)
 
 function nanodate_string(nd)
@@ -43,7 +43,7 @@ function nanodate_string(nd)
     str
 end
 
-function nanodate_string(nd::NanoDate, sep::Char)
+function nanodate_string(nd::NanoDate, sep::CharString)
     dtm = nd.datetime 
     str = string(nd.datetime)
     datepart, timepart = split(str, CapitalT)
@@ -67,7 +67,7 @@ function nanodate_string(nd::NanoDate, sep::Char)
 end
 
 Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT;
-             sep::Char=EmptyChar) =
+             sep::CharString=EmptyChar) =
     sep === EmptyChar ? nanodate_format(nd, df) :
                         nanodate_format(nd, df, sep)
 

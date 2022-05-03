@@ -13,7 +13,7 @@ end
 
 @inline function safe_canonical(millis, nanos)
     micros, nanos = fldmod(nanos, NanosecondsPerMicrosecond)
-    micromillis, micros = fldmond(micros, MicrosecondsPerMillisecond)
+    micromillis, micros = fldmod(micros, MicrosecondsPerMillisecond)
     millis += micromillis
     nanos += micros * NanosecondsPerMicrosecond
     datetime = DateTime(Dates.UTM(millis))

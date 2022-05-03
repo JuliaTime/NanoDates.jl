@@ -26,8 +26,8 @@ ntoday(::Type{UTC}) = NanoDate(Date(now(UTC)))
 function datetime2datetime(dtm::DateTime)
     millis = Dates.value(dtm)
     datemillis, timemillis = fldmod(millis, MillisecondsPerDay)
-    Date(UTD(datemillis)), Time(Nanosecond(timemillis * 1_000_000)))
+    Date(UTD(datemillis)), Time(Nanosecond(timemillis * 1_000_000))
 end
 
-function datetime2datetime(date::Date, time::Time) =
+datetime2datetime(date::Date, time::Time) =
     DateTime(date, trunc(time, Millisecond))

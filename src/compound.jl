@@ -80,15 +80,7 @@ function Dates.DateTime(cperiod::CompoundPeriod)
     if !isnothing(idx)
         ms = value(periods[idx])
     end
-    idx = findfirst(x->isa(x,Microsecond), periods)
-    if !isnothing(idx)
-        cs = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Nanosecond), periods)
-    if !isnothing(idx)
-        ns = value(periods[idx])
-    end
-    DateTime(yr,mn,dy,hr,mi,sc,ms,cs,ns)
+    DateTime(yr,mn,dy,hr,mi,sc,ms)
 end
 
 function NanoDate(cperiod::CompoundPeriod)

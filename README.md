@@ -4,13 +4,9 @@
 ----
 
 
-|🕰️| [![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://jeffreysarnoff.github.io/NanoDates.jl/dev/) |  [![Coverage Status](https://coveralls.io/repos/github/JuliaCI/Coverage.jl/badge.svg?branch=master)](https://coveralls.io/github/JeffreySarnoff/NanoDatesjl?branch=main) |  [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl) |📅|
-|--|:------------:|:-----------:|:----------:|--|
-|  | guidance     | well tested | clean code |  | 
-
-
-[![Build Status](https://travis-ci.org/JeffreySarnoff/NanoDates.jl.svg?branch=master)](https://travis-ci.org/JeffreySarnoff/NanoDates.jl)&nbsp;&nbsp;&nbsp;[![codecov](https://codecov.io/gh/JeffreySarnoff/NanoDates.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JeffreySarnoff/NanoDates.jl)&nbsp;&nbsp;&nbsp;[![Docs](https://img.shields.io/badge/docs-stable-blue.svg)](http://jeffreysarnoff.github.io/NanoDates.jl)
-
+|🕰️| [![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://jeffreysarnoff.github.io/NanoDates.jl/dev/) |  [![Coverage Status](https://coveralls.io/repos/github/JuliaCI/Coverage.jl/badge.svg?branch=master)](https://coveralls.io/github/JeffreySarnoff/NanoDatesjl?branch=main) |  [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl) | [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) |📅|
+|--|:------------:|:-----------:|:----------:|:---------:|--|
+|  | guidance     | well tested | clean code | attribution only |  |
 
 
 ----

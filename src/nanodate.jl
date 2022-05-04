@@ -1,4 +1,4 @@
-struct NanoDate
+struct NanoDate <: Dates.AbstractDateTime
     datetime::DateTime      # DateTime(UTM(microsec))
     nanosecs::Nanosecond    # Nanosecond(microsecond * 1_000 + nanosecond)
 

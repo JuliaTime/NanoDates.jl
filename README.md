@@ -9,6 +9,8 @@
 |  | guidance     | well tested | clean code |  | 
 
 
+[![Build Status](https://travis-ci.org/JeffreySarnoff/NanoDates.jl.svg?branch=master)](https://travis-ci.org/JeffreySarnoff/NanoDates.jl)&nbsp;&nbsp;&nbsp;[![codecov](https://codecov.io/gh/JeffreySarnoff/NanoDates.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JeffreySarnoff/NanoDates.jl)&nbsp;&nbsp;&nbsp;[![Docs](https://img.shields.io/badge/docs-stable-blue.svg)](http://jeffreysarnoff.github.io/NanoDates.jl)
+
 
 
 ----

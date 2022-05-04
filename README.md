@@ -13,9 +13,10 @@
 
 ----
 
-*`NanoDates` where every day has all the times-of-day*
 
 ##### motivation
+
+- *Every day should have all of the times*
 
 - The `Time` type from Dates supports nanoseconds when dates are not used.
 - `Time` works incompletely with`DateTime` which is limited to milliseconds.

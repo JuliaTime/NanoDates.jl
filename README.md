@@ -9,9 +9,11 @@
 |  | guidance     | well tested | clean code |  | 
 
 
+
+
 ----
 
-`NanoDates` gives you all the dates and all the times-of-day
+*`NanoDates` where every day has all the times-of-day*
 
 ##### motivation
 

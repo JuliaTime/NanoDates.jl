@@ -4,7 +4,7 @@ using Dates: value, CompoundPeriod, toms, tons, UTM, UTD
 using NanoDates: nanosecs, NanoDate0, DateTime0, Date0, Time0
 using Aqua, Test
 
-Aqua.test_all(NanoDates)
+Aqua.test_all(NanoDates; stale_deps=(; ignore=[:Aqua]))
 
 include("constants.jl")
 

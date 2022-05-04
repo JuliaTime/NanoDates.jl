@@ -3,6 +3,8 @@
 
 ----
 [![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://jeffreysarnoff.github.io/NanoDates.jl/dev/)
+
+[![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 ----
 
 `NanoDates` gives you all the dates and all the times-of-day

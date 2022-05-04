@@ -4,9 +4,9 @@
 ----
 
 
-|⌚ | [![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://jeffreysarnoff.github.io/NanoDates.jl/dev/) |  [![Coverage Status](https://coveralls.io/repos/github/JuliaCI/Coverage.jl/badge.svg?branch=master)](https:1//coveralls.io/github/JuliaMath/DoubleFloats.jl?branch=master) |  [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl) | 🕰️ |
+| 🕰️ | [![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://jeffreysarnoff.github.io/NanoDates.jl/dev/) |  [![Coverage Status](https://coveralls.io/repos/github/JuliaCI/Coverage.jl/badge.svg?branch=master)](https:1//coveralls.io/github/JuliaMath/DoubleFloats.jl?branch=master) |  [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl) | 📅 |
 |--|-------------|---------|----|----|
-|⏳  | read this | its well tested | and runs clean | 📅 | 
+|  | here's how | its well tested | and runs cleanly |   | 
 
 
 ----

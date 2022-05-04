@@ -35,17 +35,17 @@
  
 ----
 
-from Grace Hopper (thank you to her)
 
-| light nanoseconds | metric distance (units) |
-|------------------:|:-----------------------:|
-| 1 ns              | 300 millimeters         |
-| 1000 ns == 1 μs   | 300 meters              |
-| 1000 μs == 1 ms   | 300 kilometers          |
-| 1 ms              | 186 miles               |
-|-------------------|-------------------------|
-|                   | 300 is 299.792458       |
+  
+| light nanoseconds | metric distance          |
+|------------------:|:-------------------------:|
+| 1 ns              | 300 millimeters          |
+| 1000 ns == 1 μs   | 300 meters &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  |
+| 1000 μs == 1 ms   | 300 kilometers&nbsp; |
+| 1 ms              | 186 miles &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   |
+|-------------------|--------------------------|
+|                   | 300 is really 299.792458 |
 
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Grace Hopper (thank you, Grace)
 
 

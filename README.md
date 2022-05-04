@@ -37,7 +37,7 @@
  
 ----
 
-from Grace Hopper
+from Grace Hopper (thank you to her)
 
 | light nanoseconds | metric distance (units) |
 |------------------:|:-----------------------:|

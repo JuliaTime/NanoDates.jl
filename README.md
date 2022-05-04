@@ -16,7 +16,7 @@
 
 ##### motivation
 
-- *Every day should have all of the times*
+- *Every day should have all times-of-day*
 
 - The `Time` type from Dates supports nanoseconds when dates are not used.
 - `Time` works incompletely with`DateTime` which is limited to milliseconds.

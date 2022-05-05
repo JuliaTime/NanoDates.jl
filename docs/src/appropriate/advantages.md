@@ -22,10 +22,9 @@ In 2018 finanical centers, through their host countries, adopted regulations tha
  
  Systems that are syncronized to a [validated network] clock, require timestamp availability at submillisecond resolutions. The shortest interval that is required of very high frequncy trading work is 25ns. 
 
-~~~~
+----
 
 The UTC clock "ticks" smoothly (leap-seconds aside). That does not mean that these ticks are uniform.  The rotation of Earth and other planetary scale events make predicting UTC an inexact science. If you want to know what time it is, wait a while and that information will become available.
 
---  
- 
+
  

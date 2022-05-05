@@ -27,7 +27,9 @@
  Systems that are syncronized to a [validated network] clock,
  require timestamp availability at submillisecond resolutions.
  The shortest interval that is required of very high frequncy
- trading work is 25ns. &nbsp;&nbsp; *While that is required, much faster is desired.*
+ trading work is 25ns. 
+ 
+ *While that is required, much faster is desired.*
   
  
  

@@ -10,8 +10,8 @@
 
 - NanoDates are your fuller realization of dates-with-times.
 - Each NanoDate is con*struct*ed into the temporal context given.
-  - that makes them strongly continumm localic 
-    = "near" and "far" are as *here* and *there*
+    - that makes them strongly continumm localic 
+    - "near" and "far" become as *here* and *there*
    
  -----
  
@@ -27,7 +27,7 @@
  Systems that are syncronized to a [validated network] clock,
  require timestamp availability at submillisecond resolutions.
  The shortest interval that is required of very high frequncy
- trading work is 25ns.  { *that is required, much faster is desired* }
+ trading work is 25ns. &nbsp;&nbsp; *While that is required, much faster is desired.*
   
  
  

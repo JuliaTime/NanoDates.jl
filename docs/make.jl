@@ -17,6 +17,7 @@ makedocs(
     ),
     pages = [
         "Home" => "index.md",
+        "Advantages" => "appropriate/import.md",
         "Basic Use" => Any[
             "Construction" => "use/construction.md",
             "Specification" => "use/specify.md",
@@ -27,7 +28,8 @@ makedocs(
             "Strings" => "use/intostring.md",
         ],
         "NanoDates" => Any["betterinformed/therepresentation.md",
-                           "betterinformed/theirdualnatures.md"]
+                           "betterinformed/theirdualnatures.md",
+        ]
     ]
 )
 

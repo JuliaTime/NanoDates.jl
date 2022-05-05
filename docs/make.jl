@@ -27,8 +27,8 @@ makedocs(
             "Conviences" => "use/convenient.md",
             "Strings" => "use/intostring.md",
         ],
-        "NanoDates" => Any["betterinformed/therepresentation.md",
-                           "betterinformed/theirdualnatures.md",
+        "NanoDates" => Any["betterinformed/the_representation.md",
+                           "betterinformed/their_dual_natures.md",
         ]
     ]
 )

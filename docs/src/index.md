@@ -10,21 +10,21 @@
 
 #### plays well with others
 
->   - NanoDate works like DateTime with more precision
->   - Supports Dates.jl methods
->   - Interconverts with DateTime, Date
+> - NanoDate works like DateTime with more precision
+> - Supports Dates.jl methods
+> - Interconverts with DateTime, Date
 
 #### introduces enhancements
 
->    - supports splicing in period values
-        - NanoDate(nd, Hour(5))
-          - replaces Hour(nd) with Hour(5)
-        - NanoDate(nd, Week(2))
-          - moves to Week(2) of the Year(nd)
+> - supports splicing in period values
+    - NanoDate(nd, Hour(5))
+       - replaces Hour(nd) with Hour(5)
+    - NanoDate(nd, Week(2))
+       - moves to Week(2) of the Year(nd)
 
->    - option to separate subseconds
-        - 2022-04-28T02:15:30.124_455_831
-        - 2022-04-28T02:15:30.124◦455◦831
+>   - option to separate subseconds
+       - 2022-04-28T02:15:30.124_455_831
+       - 2022-04-28T02:15:30.124◦455◦831
 
 
 ----

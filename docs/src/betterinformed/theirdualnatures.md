@@ -16,4 +16,4 @@ That is the justification for holding extra nanoseconds.
 
 ----
     
-clock and calendar is thier presence and utilization As free periods, periods not attached to a specific Time or any given Date, Nanoseconds are allowed to hold type to hold quantities exceeding their own field rollover count (the next nanosecond after the 999th carries all 1_000 of them into a single microsecond). And that lets us keep our struct to two fields while covering all Days of each Year one Nanosecond at a time.
+**clock and calendar** is thier presence and utilization As free periods, periods not attached to a specific Time or any given Date, Nanoseconds are allowed to hold type to hold quantities exceeding their own field rollover count (the next nanosecond after the 999th carries all 1_000 of them into a single microsecond). And that lets us keep our struct to two fields while covering all Days of each Year one Nanosecond at a time.

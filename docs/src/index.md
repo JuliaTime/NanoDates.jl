@@ -6,7 +6,7 @@
 - Milliseconds, Microseconds,
 - Nanoseconds
 
-~~~~
+
 
 #### plays well with others
 

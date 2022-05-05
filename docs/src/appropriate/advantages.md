@@ -10,7 +10,24 @@
 
 - NanoDates are your fuller realization of dates-with-times.
 - Each NanoDate is con*struct*ed into the temporal context given.
-  - that makes them strongly continumm localic, 
-    - where "near" and "far" are merely *here* and *there*
+  - that makes them strongly continumm localic 
+    = "near" and "far" are as *here* and *there*
    
-
+ -----
+ 
+ In 2018 finanical centers, through their host countries,
+ adopted regulations that apply to organizations and 
+ individuals participating in the high frequency 
+ trade-by-trade flow that gives rise to market
+ microdynamics. Here are two quotes from the regulators:
+ 
+ Market events and order transactions must be recorded
+ [and] retraceable to UTC.
+ 
+ Systems that are syncronized to a [validated network] clock,
+ require timestamp availability at submillisecond resolutions.
+ The shortest interval that is required of very high frequncy
+ trading work is 25ns.  { *that is required, much faster is desired* }
+  
+ 
+ 

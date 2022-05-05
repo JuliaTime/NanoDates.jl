@@ -15,21 +15,17 @@
    
  -----
  
- In 2018 finanical centers, through their host countries,
- adopted regulations that apply to organizations and 
- individuals participating in the high frequency 
- trade-by-trade flow that gives rise to market
- microdynamics. Here are two quotes from the regulators:
+In 2018 finanical centers, through their host countries, adopted regulations that apply to organizations and individuals participating in the high frequency  trade-by-trade flow that gives rise to market microdynamics. Here are two quotes from the regulators:
  
  Market events and order transactions must be recorded
  [and] retraceable to UTC.
  
- Systems that are syncronized to a [validated network] clock,
- require timestamp availability at submillisecond resolutions.
- The shortest interval that is required of very high frequncy
- trading work is 25ns. 
- 
- *To resolve 25ns is required of participants; many desire finer grainularity.*
-  
+ Systems that are syncronized to a [validated network] clock, require timestamp availability at submillisecond resolutions. The shortest interval that is required of very high frequncy trading work is 25ns. 
+
+~~~~
+
+The UTC clock "ticks" smoothly (leap-seconds aside). That does not mean that these ticks are uniform.  The rotation of Earth and other planetary scale events make predicting UTC an inexact science. If you want to know what time it is, wait a while and that information will become available.
+
+--  
  
  

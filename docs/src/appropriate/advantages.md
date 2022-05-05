@@ -29,7 +29,7 @@
  The shortest interval that is required of very high frequncy
  trading work is 25ns. 
  
- *While that is required, much faster is desired.*
+ *(written in 2018) While that is required, much faster is desired.*
   
  
  

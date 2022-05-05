@@ -1,6 +1,6 @@
 ## Appealing Advantages
 
-**NanoDate` just works .. well with many, many Julia packages.**
+**NanoDates just work .. well with many, many Julia packages.**
 
 - Are your resources more capable than `DateTime` understands?
 - Do you produce, consume, or otherwise ferry microtimed occurances?

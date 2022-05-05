@@ -1,6 +1,12 @@
 # NanoDates.jl
 
-### A date-and-time type with Years .. Nanoseconds
+### A date-and-time type with
+- Years, Months, Days
+- Hours, Minutes, Seconds
+- Milliseconds, Microseconds,
+- Nanoseconds
+
+~~~~
 
 #### plays well with others
 

@@ -147,3 +147,6 @@ function Base.:(-)(nd::NanoDate, cperiod::CompoundPeriod)
     end
     nd
 end
+
+
+

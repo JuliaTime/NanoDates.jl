@@ -13,7 +13,7 @@ additively combinded.
 using Dates, NanoDates
 using Dates: CompoundPeriod
 ```
-# note these are given smallest period .. largest
+##### note these are given smallest period .. largest
 ```
 const TimeStampPeriods = 
     (Nanosecond, Microsecond, Millsecond, Second, Minute, Hour)

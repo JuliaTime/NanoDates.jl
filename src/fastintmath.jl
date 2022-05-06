@@ -22,6 +22,30 @@ const k3600 =   1_193_047     #  n_mod_3600 = (k3600 * mod32(n)) ÷ k3600
 const   k60 =  71_582_789     #    n_mod_60 = (  k60 * mod32(n)) ÷ k60
 const   k10 = 429_496_730     #    n_mod_10 = (  k10 * mod32(n)) ÷ k10
 
+
+
+const k3600 =   1_193_047     #  n_div_3600 = mod2p32(k3600 * mod32(n)) 
+const   k60 =  71_582_789     #    n_div_60 = mod2p32(  k60 * mod32(n)) 
+const   k10 = 429_496_730     #    n_div_10 = mod2p32(  k10 * mod32(n)) 
+  
+const k3600 =   1_193_047     #  n_mod_3600 = (k3600 * mod32(n)) ÷ k3600
+const   k60 =  71_582_789     #    n_mod_60 = (  k60 * mod32(n)) ÷ k60
+const   k10 = 429_496_730     #    n_mod_10 = (  k10 * mod32(n)) ÷ k10
+
+
+
+
+const k3600 =   1_193_047     #  n_div_3600 = mod2p32(k3600 * mod32(n)) 
+const   k60 =  71_582_789     #    n_div_60 = mod2p32(  k60 * mod32(n)) 
+const   k10 = 429_496_730     #    n_div_10 = mod2p32(  k10 * mod32(n)) 
+  
+const k3600 =   1_193_047     #  n_mod_3600 = (k3600 * mod32(n)) ÷ k3600
+const   k60 =  71_582_789     #    n_mod_60 = (  k60 * mod32(n)) ÷ k60
+const   k10 = 429_496_730     #    n_mod_10 = (  k10 * mod32(n)) ÷ k10
+
+
+
+
 =#
 
 

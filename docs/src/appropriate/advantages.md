@@ -24,7 +24,5 @@ In 2018 finanical centers, through their host countries, adopted regulations tha
 
 ----
 
-The UTC clock "ticks" smoothly (leap-seconds aside). That does not mean that these ticks are uniform.  The rotation of Earth and other planetary scale events make predicting UTC an inexact science. If you want to know what time it is, wait a while and that information will become available.
+*UTC is the timebase of record for most people as convienice and statuory puposes.*
 
-
- 

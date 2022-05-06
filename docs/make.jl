@@ -24,7 +24,7 @@ makedocs(
             "Accessors" => "use/accessors.md",
         ],
         "Helpful Extras" => Any[
-            "Period Compounding" => "use/compoundperiod.jl"
+            "Period Compounding" => "use/compoundperiod.jl",
             "Conviences" => "use/convenient.md",
             "Strings" => "use/intostring.md",
         ],

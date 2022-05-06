@@ -15,7 +15,7 @@
    
  -----
  
-In 2018 finanical centers, through their host countries, adopted regulations that apply to organizations and individuals participating in the high frequency  trade-by-trade flow that gives rise to market microdynamics. Here are two quotes from the regulators:
+In 2018 finanical centers, through their host countries, adopted regulations that apply to organizations and individuals participating in the high frequency  trade-by-trade flow that gives rise to market microdynamics. Here are two quotes from the 2018 regulators:
  
  Market events and order transactions must be recorded
  [and] retraceable to UTC.

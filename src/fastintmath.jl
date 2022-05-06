@@ -1,0 +1,46 @@
+#+
+
+reference
+
+Euclidean Affine Functions and Applications to Calendar Algorithms
+by Cassio Neri, Lorenz Schneider
+    arXiv:2102.06959v1 [cs.DS] 13 Feb2021 
+    https://arxiv.org/pdf/2102.06959.pdf
+    pg 11
+=#
+
+#=
+
+const twopow32 = typemax(UInt32)
+
+const k3600 =   1_193_047     # n_div_36000 = (k3600 * mod32(n)) ÷ k3600
+const   k60 =  71_582_789     #    n_div_60 = (  k60 * mod32(n)) ÷ k60
+const   k10 = 429_496_730     #    n_div_10 = (  k10 * mod32(n)) ÷ k10
+  
+mod2p32(x) = (x & 0xffff)
+
+=#
+
+
+
+    divmod10(k)   -> (k ÷   10, k %   10)     ∀n ∈ [0,     2_257_200]
+    divmod60(k)   -> (k ÷   60, k %   60)     ∀n ∈ [0,    97_612_920]
+    divmod3600(k) -> (k ÷ 3600, k % 3600)     ∀n ∈ [0, 1_073_741_830]
+
+    div10(k)    -> k ÷   10   ↤  ( 429_496_730 * n ) & twopow32
+    div60(k)    -> k ÷   60   ↤  (  71_582_789 * n ) & twopow32
+    div3600(k)  -> k ÷ 3600   ↤  (   1_193_047 * n ) & twopow32
+
+    mod10(k)    -> k %   10   ↤  ( 429_496_730 * n ) % twopow32
+    mod60(k)    -> k %   60
+    mod3600(k)  -> k % 3600
+
+
+divmod60(k)  k -> ÷
+divmod3600(k)
+n/3600 = 1 193 047 · n/2
+32, n%3600 = 1 193 047 · n%232/1 193 047, ∀n ∈ [0, 2 257 199[;
+n/60 = 71 582 789 · n/2
+32, n%60 = 71 582 789 · n%232/71 582 789, ∀n ∈ [0, 97 612 919[;
+n/10 = 429 496 730 · n/2
+32, n%10 = 429 496 730 · n%232/429 496 730, ∀n ∈ [0, 1 073 741 829[.

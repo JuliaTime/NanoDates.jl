@@ -34,4 +34,4 @@ CompoundPeriod(date)      # 2022 years, 6 months, 3 days
 Date(ans)                 # 2022-05-03
 
 compound_date = CompoundPeriod(Date("2022-05-03")
-
+```

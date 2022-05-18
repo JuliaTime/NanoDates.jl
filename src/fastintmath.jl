@@ -13,13 +13,15 @@ fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
     end
 
 function fldmod_1000(x::T) where {T<:Union{Int64,UInt64}}
-    quotient = if (x < 268_435_456)          # 2^28
-              unsafe_div_1000(x)
-          else
-              fld(x, 1_000)
-          end
-remainder = x - quotient *
-                34_359_739
+    quotient =  if (x < 268_435_456)          # 2^28
+                    unsafe_div_1000(x)
+                else
+                    fld(x, 1_000)
+                end
+    remainder = x - quotient * 1_000
+    quotient, remainder
+end
+
 # nanoseconds per millisecond
 # microseconds per second
 # safe for x:2^2:Int64 <= 2^27 - 1

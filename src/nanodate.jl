@@ -3,13 +3,58 @@ struct NanoDate <: Dates.AbstractDateTime
     nanosecs::Nanosecond    # Nanosecond(microsecond * 1_000 + nanosecond)
 
     function NanoDate(datetime::DateTime, nanosecs::Nanosecond)
-        nanos = value(nanosecs)
-        0 <= nanos < 1_000_000 && return new(datetime, nanosecs)
+        nanosec = value(nanosecs)
+        0 <= nanosec < 1_000_000 && return new(datetime, nanosec)
 
-        datetime2, nanosecs2 = safe_canonical(value(datetime), nanos)
+        datetime2, nanosecs2 = canonical(millis=value(datetime), nanos=nanosec)
         new(datetime2, nanosecs2)
     end
 end
+
+function canonical_mn(millis::T, nanos::T) where {T<:Integer}
+    micros, nanos = fldmod_1000(nanos)
+    micromillis, micros = fldmod_1000(micros)
+    millis += micromillis
+    nanos = micros * NanosecondsPerMicrosecond + nanos
+    return Millisecond(millis), Nanosecond(nanos)
+end
+
+function canonical_cn(micros::T, nanos::T) where {T<:Integer}
+    nanomicros, nanos = fldmod_1000(nanos)
+    micros += nanomicros
+    micromillis, micros = fldmod_1000(micros)
+    nanos = micros * NanosecondsPerMicrosecond + nanos
+    return Millisecond(micromillis), Nanosecond(nanos)
+end
+
+function canonical_mc(millis::T, micros::T) where {T<:Integer}
+    micromills, micros = fldmod_1000(micros)
+    millis += micromillis
+    nanos = micros * NanosecondsPerMicrosecond
+    return Millisecond(millis), Nanosecond(nanos)
+end
+
+function canonical_mcn(millis::T, micros::T, nanos::T) where {T<:Integer}
+    micronanos, nanos = fldmod_1000(nanos)
+    micros += micronanos
+    millimicros, micros = fldmod_1000(micros)
+    millis += millimicros
+    nanos = micros * NanosecondsPerMicrosecond + nanos
+    return Millisecond(millis), Nanosecond(nanos)
+end
+
+canonical(micros::Microsecond, nanos::Nanosecond) =
+    canonical_cn(value(micros), value(nanos))
+
+canonical(millis::Millisecond, nanos::Nanosecond) =
+    canonical_mn(value(millis), value(nanos))
+
+canonical(millis::Millisecond, micros::Microsecond) =
+    canonical_mc(value(millis), value(micros))
+
+canonical(millis::Millisecond, micros::Microsecond, nanos::Nanosecond) =
+    canonical_mcn(value(millis), value(micros), value(nanos))
+
 
 @inline function safe_canonical(millis, nanos)
     micros, nanos = fldmod(nanos, NanosecondsPerMicrosecond)

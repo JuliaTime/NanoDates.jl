@@ -7,14 +7,14 @@ unsafe_fld_1000(x::T) where {T} =
 
 fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
     if (x < 268_435_456)          # 2^28
-        unsafe_div_1000(x)
+        unsafe_fld_1000(x)
     else
         fld(x, 1_000)
     end
 
 function fldmod_1000(x::T) where {T<:Union{Int64,UInt64}}
     quotient =  if (x < 268_435_456)          # 2^28
-                    unsafe_div_1000(x)
+                    unsafe_fld_1000(x)
                 else
                     fld(x, 1_000)
                 end
@@ -30,11 +30,21 @@ unsafe_fld_1_000_000(x::T) where {T<:Union{Int64,UInt64}} =
 
 fld_1_000_000(x::T) where {T<:Union{Int64,UInt64}} =
     if (x < 134_217_728)          # 2^27 -1
-        unsafe_div_1_000_000(x)
+        unsafe_fld_1_000_000(x)
     else
-        div(x, 1_000_000)
+        fld(x, 1_000_000)
     end
 
+function fldmod_1_000_000(x::T) where {T<:Union{Int64,UInt64}}
+    quotient = if (x < 134_217_728)          # 2^27 -1
+                    unsafe_fld_1_000_000(x)
+               else
+                    fld(x, 1_000_000)
+               end
+
+    remainder = x - quotient * 1_000_000
+    quotient, remainder
+end
 
 #=
 

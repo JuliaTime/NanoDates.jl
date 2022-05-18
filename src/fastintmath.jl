@@ -1,3 +1,39 @@
+# nanoseconds per microsecond
+# microseconds per millisecond
+# milliseconds per second
+# safe for 0 < x < 268435456  (2^28)
+unsafe_fld_1000(x::T) where {T} =
+    ((x >> 3) * 34_359_739) >> 32
+
+fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
+    if (x < 268_435_456)          # 2^28
+        unsafe_div_1000(x)
+    else
+        fld(x, 1_000)
+    end
+
+function fldmod_1000(x::T) where {T<:Union{Int64,UInt64}}
+    quotient = if (x < 268_435_456)          # 2^28
+              unsafe_div_1000(x)
+          else
+              fld(x, 1_000)
+          end
+remainder = x - quotient *
+                34_359_739
+# nanoseconds per millisecond
+# microseconds per second
+# safe for x:2^2:Int64 <= 2^27 - 1
+unsafe_fld_1_000_000(x::T) where {T<:Union{Int64,UInt64}} =
+    ((x >> 6) * 274_878) >> 32
+
+fld_1_000_000(x::T) where {T<:Union{Int64,UInt64}} =
+    if (x < 134_217_728)          # 2^27 -1
+        unsafe_div_1_000_000(x)
+    else
+        div(x, 1_000_000)
+    end
+
+
 #=
 
 reference

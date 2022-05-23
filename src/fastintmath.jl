@@ -1,6 +1,8 @@
 mulby_1000(x) = (x<<10) - (x << 5) + (x << 3)
 
-safe_mulby_1000(x) = x <= 9223372036854775 ? mulby_100 : ArgumentError("$(x) is too large")
+safe_mulby_1000(x::Int64) = x <= 9_223_372_036_854_775 ? mulby_100(x) : 
+                                                         ArgumentError("$(x) is too large")
+safe_mulby_1000(x::Int32) = x <= 2_147_483 ? mulby_100(x) : ArgumentError("$(x) is too large")
 
 # nanoseconds per microsecond
 # microseconds per millisecond

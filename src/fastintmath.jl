@@ -13,11 +13,11 @@ fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
     end
 
 function fldmod_1000(x::T) where {T<:Union{Int64,UInt64}}
-    quotient =  if (x < 268_435_456)          # 2^28
-                    unsafe_fld_1000(x)
-                else
-                    fld(x, 1_000)
-                end
+    quotient = if (x < 268_435_456)          # 2^28
+        unsafe_fld_1000(x)
+    else
+        fld(x, 1_000)
+    end
     remainder = x - quotient * 1_000
     quotient, remainder
 end
@@ -37,10 +37,10 @@ fld_1_000_000(x::T) where {T<:Union{Int64,UInt64}} =
 
 function fldmod_1_000_000(x::T) where {T<:Union{Int64,UInt64}}
     quotient = if (x < 134_217_728)          # 2^27 -1
-                    unsafe_fld_1_000_000(x)
-               else
-                    fld(x, 1_000_000)
-               end
+        unsafe_fld_1_000_000(x)
+    else
+        fld(x, 1_000_000)
+    end
 
     remainder = x - quotient * 1_000_000
     quotient, remainder
@@ -56,6 +56,101 @@ by Cassio Neri, Lorenz Schneider
     https://arxiv.org/pdf/2102.06959.pdf
     pg 11
 =#
+
+mod2p32(x) = (x & 0xffff)
+
+unsafe_fld_3600(x) =
+    (1193047 * x) >> 32
+
+function fld_3600(x)
+    if x < 2_257_200
+        unsafe_fld_3600(x)
+    else
+        fld(x, 3600)
+    end
+end
+
+unsafe_mod_3600(x) =
+    3600 * mod2p32(1193047 * x) >> 32
+
+function mod_3600(x)
+    if x < 2_255_762
+        unsafe_mod_3600(x)
+    else
+        mod(x, 3600)
+    end
+end
+
+function fldmod_3600(x)
+    if x < 2_255_762
+        (unsafe_fld_3600(x), unsafe_mod_3600(x))
+    else
+        fldmod(x, 3600)
+    end
+end
+
+unsafe_fld_60(x) =
+    mod2p32(71_582_789 * x) >> 32
+
+function fld_60(x)
+    if x < 97_612_920
+        unsafe_fld_60(x)
+    else
+        fld(x, 60)
+    end
+end
+
+unsafe_mod_60(x) =
+    60 * mod2p32(71_582_789 * x) >> 32
+
+function mod_60(x)
+    if x < 97_612_920
+        unsafe_mod_60(x)
+    else
+        mod(x, 60)
+    end
+end
+
+function fldmod_60(x)
+    if x < 2_255_762
+        (unsafe_fld_60(x), unsafe_mod_60(x))
+    else
+        fldmod(x, 60)
+    end
+end
+
+
+unsafe_fld_10(x) =
+    mod2p32(429_496_730 * x) >> 32
+
+function fld_10(x)
+    if x < 1_073_741_829
+        unsafe_fld_10(x)
+    else
+        fld(x, 10)
+    end
+end
+
+unsafe_mod_10(x) =
+    10 * mod2p32(429_496_730 * x) >> 32
+
+function mod_10(x)
+    if x < 1_073_741_829
+        unsafe_mod_10(x)
+    else
+        mod(x, 10)
+    end
+end
+
+function fldmod_10(x)
+    if x < 1_073_741_829
+        (unsafe_fld_10(x), unsafe_mod_10(x))
+    else
+        fldmod(x, 10)
+    end
+end
+
+    
 
 #=
 

@@ -65,6 +65,7 @@ function fldmod_1_000_000(x::T) where {T<:Union{Int64,UInt64}}
     quotient, remainder
 end
 
+# mulby86400000a(x) = (x<<26 + x<<24 + x<<21 + x<<18 + x<<17 + x<<14 + x<<12 + x<<11 + x<<10)
 
 mulby86400(x) = mulby15625(x) << 4
 mulby15625(x) = (((x << 4)-1) << 10) - (x << 9) - ((x << 5) - x)

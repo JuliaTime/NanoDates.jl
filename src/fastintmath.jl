@@ -1,3 +1,6 @@
+mulby_1000(x) = (x<<10) - (x << 5) + (x << 3)
+
+
 # nanoseconds per microsecond
 # microseconds per millisecond
 # milliseconds per second
@@ -6,7 +9,8 @@ unsafe_fld_1000(x::T) where {T} =
     ((x >> 3) * 34_359_739) >> 32
 
 fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
-    if (x < 268_435_456)          # 2^28
+    if (x < 434_934_000) # 2^28 = 268_435_456
+    # if x & ~0xffffffff == 0
         unsafe_fld_1000(x)
     else
         fld(x, 1_000)

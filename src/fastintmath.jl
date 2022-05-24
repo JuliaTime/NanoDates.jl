@@ -31,18 +31,16 @@ end
 
 # nanoseconds per millisecond
 # microseconds per second
-mulby_1000_000(x) = (x << 20) - (x << 15) - (x << 14) + (x << 10) - (x << 9) + (x << 6)
-function mulby_1mm(x)
-    y = x << 10
-    z = y >> 1    # x << 9
-    t = z >> 3    # x << 6
-    a = y << 4    # x << 14
-    b = z << 1    # x << 10
-    c = b << 5    # x << 15
-    d = c << 5    # x << 20
-    d - c - a + b - z + t
+
+function mulby1000000(x)
+    y = x
+    z = (y << 6) - y
+    z = (z << 5) - z
+    z = (z << 3) + y
+    z << 6
 end
-    
+
+
 # safe for x:2^2:Int64 <= 2^27 - 1
 unsafe_fld_1_000_000(x::T) where {T<:Union{Int64,UInt64}} =
     ((x >> 6) * 274_878) >> 32

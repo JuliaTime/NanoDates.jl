@@ -71,6 +71,16 @@ function mulby86400(x)
     z << 7
 end
 
+function mulby86400000(x)
+    y = x
+    z = (y << 5) - y
+    z = (z << 2) + y
+    z = (z << 4) - z
+    z = (z << 4) - z
+    z = (z << 2) - z
+    z << 10
+end
+
 #=
 
 reference

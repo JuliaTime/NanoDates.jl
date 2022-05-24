@@ -24,20 +24,49 @@ nanodate2rata(nd::NanoDate) = datetime2rata(nd.datetime)
 
 rata2nanodate(rata::Integer) = NanoDate(rata2datetime(rata))
 
-function nanodate2unix(nd::NanoDate)
-    millis = (value(nd) - Dates.UNIXEPOCH)
-    nanos  = (millis * NanosecondsPerMillisecond) + nd.nanosecs
-    nanos / NanosecondsPerMillisecond
+function nanodate2unixnanos(nd::NanoDate)
+    millis = (value(nd.datetime) - Dates.UNIXEPOCH)
+    nanos  = (millis * Int128(NanosecondsPerMillisecond)) + nd.nanosecs
+    nanos
 end
 
-function unix2nanodate(x)
-    nanos = x * NanosecondsPerMillisecond
-    millis, nanos = fldmod(nanos, NanosecondsPerMicrosecond)
-    NanoDate(DateTime(Dates.UTM(millis)), nanos)
+function nanodate2unixmicros(nd::NanoDate)
+    nanos = nanodate2unixnanos(nd)
+    div(nanos, 1_000)
+end
+
+function nanodate2unixmillis(nd::NanoDate)
+    micros  = nanodate2unixmicros(nd)
+    div(nanos, 1_000_000)
+end
+
+function nanodate2unixseconds(nd::NanoDate)
+    millis = nanodate2unixmillis(nd)
+    div(millis, 1_000)
+end
+
+
+function unixnanos2nanodate(nanosecs)
+    micros, nanos = fldmod_1000(nanosecs)
+    millimicros, micros = fldmod_1000(micros)
+    millis = fld_1000000(nanosecs) + millimicros
+    nanos = (micros * 1_000) + nanos
+    NanoDate(DateTime(Dates.UTM(millis)), Nanosecond(nanos))
+end
+
+function unixmicros2nanodate(microsecs)
+    unixnanos2nanodate(Int128(microsecs) * 1_000)
+end
+
+function unixmillis2nanodate(millisecs)
+    unixnanos2nanodate(Int128(millisecs) * 1_000_000)
+end
+
+function unixseconds2nanodate(seconds)
+    unixnanos2nanodate(Int128(seconds) * 1_000_000_000)
 end
 
 
 julian2nanodate(x) = NanoDate(julian2datetime(x))
 
 nanodate2julian(nd::NanoDate) = datetime2julian(DateTime(nd))
-

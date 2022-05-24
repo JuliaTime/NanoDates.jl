@@ -4,7 +4,7 @@ struct NanoDate <: Dates.AbstractDateTime
 
     function NanoDate(datetime::DateTime, nanosecs::Nanosecond)
         nanosec = value(nanosecs)
-        0 <= nanosec < 1_000_000 && return new(datetime, nanosec)
+        0 <= nanosec < 1_000_000 && return new(datetime, Nanosecond(nanosec))
 
         datetime2, nanosecs2 = canonical(millis=value(datetime), nanos=nanosec)
         new(datetime2, nanosecs2)

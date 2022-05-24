@@ -20,12 +20,19 @@ fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
     end
 
 function fldmod_1000(x::T) where {T<:Union{Int64,UInt64}}
-    quotient = if (x < 268_435_456)          # 2^28
+    quotient = if (x < 434_934_000)          # in 2^28 .. 2^29
         unsafe_fld_1000(x)
     else
         fld(x, 1_000)
     end
-    remainder = x - quotient * 1_000
+
+    remainder = x - mulby_1000(quotient)
+    
+    if signbit(quotient) && signbit(remainder)
+        quotient -= 1
+        remainder += 1000
+    end
+    
     quotient, remainder
 end
 

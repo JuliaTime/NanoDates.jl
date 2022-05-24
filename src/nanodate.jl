@@ -56,9 +56,9 @@ canonical(millis::Millisecond, micros::Microsecond, nanos::Nanosecond) =
     canonical_mcn(value(millis), value(micros), value(nanos))
 
 
-@inline function safe_canonical(millis, nanos)
-    micros, nanos = fldmod(nanos, NanosecondsPerMicrosecond)
-    micromillis, micros = fldmod(micros, MicrosecondsPerMillisecond)
+@inline function canonical(millis, nanos)
+    micros, nanos = fldmod_1000(nanos)
+    micromillis, micros = fldmod_1000(micros)
     millis += micromillis
     nanos += micros * NanosecondsPerMicrosecond
     datetime = DateTime(Dates.UTM(millis))

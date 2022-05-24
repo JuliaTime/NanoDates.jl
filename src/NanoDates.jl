@@ -15,6 +15,9 @@ using Dates: AbstractDateTime, CompoundPeriod,
              format, value, days,
              toms, tons, UTD, UTM
 
+export Dates.AbstractDateTime, Dates.CompoundPeriod, 
+    Dates.value, Dates.days, Dates.format
+
 include("constants.jl")
 include("nanodate.jl")
 include("accessors.jl")

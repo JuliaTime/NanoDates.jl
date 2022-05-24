@@ -6,10 +6,8 @@ using Aqua, Test
 
 Aqua.test_ambiguities([NanoDates, Base, Core])
 Aqua.test_unbound_args(NanoDates)
-#=
 Aqua.test_undefined_exports(NanoDates)
 Aqua.test_project_extras(NanoDates)
-=#
 Aqua.test_stale_deps(NanoDates; ignore=[:Aqua])
 Aqua.test_deps_compat(NanoDates)
 

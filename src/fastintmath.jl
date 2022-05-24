@@ -63,6 +63,7 @@ function fldmod_1_000_000(x::T) where {T<:Union{Int64,UInt64}}
     quotient, remainder
 end
 
+# 86_400 (SecondsPerDay)
 function mulby86400(x)
     y = x
     z = (y << 4) - y
@@ -71,6 +72,7 @@ function mulby86400(x)
     z << 7
 end
 
+# 86_400_000 (MillisecondsPerDay)
 function mulby86400000(x)
     y = x
     z = (y << 5) - y
@@ -80,6 +82,30 @@ function mulby86400000(x)
     z = (z << 2) - z
     z << 10
 end
+
+# 60 (SecondsPerMinute, MinutesPerHour)
+function mulby60(x)
+    y = x
+    z = (y << 4) - y
+    z << 2
+end
+
+# 3600 = 60*60 (SecondsPerHour)
+function mulby3600(x)
+    y = x
+    z = (y << 4) - y
+    z = (z << 4) - z
+    z << 4
+end
+
+# 1440 = 24*60 (MinutesPerDay)
+function mulby1440(x)
+    y = x
+    z = (y << 4) - y
+    z = (z << 2) - z
+    z << 5
+end
+
 
 #=
 

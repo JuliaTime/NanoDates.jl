@@ -3,7 +3,8 @@ module NanoDates
 export NanoDate,
         nnow, ntoday, date_time,
         nanodate2rata, rata2nanodate,
-        nanodate2unix, unix2nanodate,
+        nanodate2unixseconds, unixseconds2nanodate, nanodate2unixmillisecs, unixmillisecs2nanodate,
+        nanodate2unixmicrosecs, unixmicrosecs2nanodate, nanodate2unixnanosecs, unixnanosecs2nanodate,
         format,
         CapitalT, SmallCapitalT,
         SingleSpace, Underscore,
@@ -13,7 +14,6 @@ using Dates
 using Dates: AbstractDateTime, CompoundPeriod,
              format, value, days,
              toms, tons, UTD, UTM
-
 
 include("constants.jl")
 include("nanodate.jl")

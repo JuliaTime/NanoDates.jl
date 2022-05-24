@@ -204,5 +204,30 @@ end
 
 Base.:(*)(b::CompoundPeriod, a::Integer) = a * b
 
+function Base.:(fld)(a::CompoundPeriod, b::Integer)
+    b = canonicalize(a)
+    accum = similar(a.periods)
+    for idx in eachindex(accum)
+       accum[idx] = fld(a.periods[idx], b)
+    end
+    CompoundPeriod(accum)
+end
 
+function Base.:(cld)(a::CompoundPeriod, b::Integer)
+    b = canonicalize(a)
+    accum = similar(a.periods)
+    for idx in eachindex(accum)
+       accum[idx] = cld(a.periods[idx], b)
+    end
+    CompoundPeriod(accum)
+end
+
+function Base.:(div)(a::CompoundPeriod, b::Integer)
+    b = canonicalize(a)
+    accum = similar(a.periods)
+    for idx in eachindex(accum)
+       accum[idx] = div(a.periods[idx], b)
+    end
+    CompoundPeriod(accum)
+end
 

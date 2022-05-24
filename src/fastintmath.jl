@@ -33,7 +33,7 @@ end
 # microseconds per second
 
 function mulby1000000(x)
-    y = x
+    y = Int128(x)
     z = (y << 6) - y
     z = (z << 5) - z
     z = (z << 3) + y

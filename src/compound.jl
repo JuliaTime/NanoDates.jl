@@ -193,5 +193,16 @@ function Base.:(-)(nd::NanoDate, cperiod::CompoundPeriod)
     nd
 end
 
+function Base.:(*)(a::Integer, b::CompoundPeriod)
+    b = canonicalize(b)
+    accum = similar(b.periods)
+    for idx in eachindex(accum)
+       accum[idx] = a * b.periods[idx]
+    end
+    CompoundPeriod(accum)
+end
+
+Base.:(*)(b::CompoundPeriod, a::Integer) = a * b
+
 
 

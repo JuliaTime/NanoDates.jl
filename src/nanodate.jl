@@ -56,7 +56,7 @@ canonical(millis::Millisecond, micros::Microsecond, nanos::Nanosecond) =
     canonical_mcn(value(millis), value(micros), value(nanos))
 
 
-@inline function canonical(millis, nanos)
+@inline function canonical(;millis, nanos)
     micros, nanos = fldmod_1000(nanos)
     micromillis, micros = fldmod_1000(micros)
     millis += micromillis

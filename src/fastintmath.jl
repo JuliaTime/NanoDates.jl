@@ -106,6 +106,17 @@ function mulby1440(x)
     z << 5
 end
 
+# 1_000_000_000 (NanosecondsPerSecond)
+function mulby_1000000000(x)
+    y = x
+    z = (y << 6) - y
+    z = (z << 5) - z
+    z = (z << 3) + y
+    z = (z << 2) + z
+    z = (z << 2) + z
+    z = (z << 2) + z
+    z << 9
+end
 
 #=
 

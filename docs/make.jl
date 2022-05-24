@@ -22,6 +22,7 @@ makedocs(
             "Construction" => "use/construction.md",
             "Specification" => "use/specify.md",
             "Accessors" => "use/accessors.md",
+            "Timestamps" => "use/timestamps.md",
         ],
         "Helpful Extras" => Any[
             "Period Compounding" => "use/compoundperiod.md",

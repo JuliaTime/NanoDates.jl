@@ -15,18 +15,29 @@ Dates.CompoundPeriod(nd::NanoDate) =
 function Dates.Date(cperiod::CompoundPeriod)
     periods = canonicalize(cperiod).periods
     yr, mn, dy = 0, 1, 1
+    qt, wk = 0, 0
     idx = findfirst(x->isa(x,Year), periods)
     if !isnothing(idx)
         yr = value(periods[idx])
+    end
+    idx = findfirst(x->isa(x,Quarter), periods)
+    if !isnothing(idx)
+        qt = value(periods[idx])
     end
     idx = findfirst(x->isa(x,Month), periods)
     if !isnothing(idx)
         mn = value(periods[idx])
     end
+    idx = findfirst(x->isa(x,Week), periods)
+    if !isnothing(idx)
+        wk = value(periods[idx])
+    end
     idx = findfirst(x->isa(x,Day), periods)
     if !isnothing(idx)
         dy = value(periods[idx])
     end
+    mn = mn + 3*qt
+    dy = dy + 7*wk
     Date(yr,mn,dy)
 end
 
@@ -63,7 +74,28 @@ end
 function Dates.DateTime(cperiod::CompoundPeriod)
     periods = canonicalize(cperiod).periods
     yr, mn, dy = 0, 1, 1
+    qt, wk = 0, 0
     hr, mi, sc, ms = 0, 0, 0, 0
+    idx = findfirst(x->isa(x,Year), periods)
+    if !isnothing(idx)
+        yr = value(periods[idx])
+    end
+    idx = findfirst(x->isa(x,Quarter), periods)
+    if !isnothing(idx)
+        qt = value(periods[idx])
+    end
+    idx = findfirst(x->isa(x,Month), periods)
+    if !isnothing(idx)
+        mn = value(periods[idx])
+    end
+    idx = findfirst(x->isa(x,Week), periods)
+    if !isnothing(idx)
+        wk = value(periods[idx])
+    end
+    idx = findfirst(x->isa(x,Day), periods)
+    if !isnothing(idx)
+        dy = value(periods[idx])
+    end    
     idx = findfirst(x->isa(x,Hour), periods)
     if !isnothing(idx)
         hr = value(periods[idx])
@@ -80,20 +112,31 @@ function Dates.DateTime(cperiod::CompoundPeriod)
     if !isnothing(idx)
         ms = value(periods[idx])
     end
+    mn = mn + 3*qt
+    dy = dy + 7*wk
     DateTime(yr,mn,dy,hr,mi,sc,ms)
 end
 
 function NanoDate(cperiod::CompoundPeriod)
     periods = canonicalize(cperiod).periods
     yr, mn, dy = 0, 1, 1
+    qt, wk = 0, 0
     hr, mi, sc, ms, cs, ns = 0, 0, 0, 0, 0, 0
     idx = findfirst(x->isa(x,Year), periods)
     if !isnothing(idx)
         yr = value(periods[idx])
     end
+    idx = findfirst(x->isa(x,Quarter), periods)
+    if !isnothing(idx)
+        qt = value(periods[idx])
+    end
     idx = findfirst(x->isa(x,Month), periods)
     if !isnothing(idx)
         mn = value(periods[idx])
+    end
+    idx = findfirst(x->isa(x,Week), periods)
+    if !isnothing(idx)
+        wk = value(periods[idx])
     end
     idx = findfirst(x->isa(x,Day), periods)
     if !isnothing(idx)
@@ -123,6 +166,8 @@ function NanoDate(cperiod::CompoundPeriod)
     if !isnothing(idx)
         ns = value(periods[idx])
     end
+    mn = mn + 3*qt
+    dy = dy + 7*wk
     NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns)
 end
 

@@ -25,6 +25,7 @@ include("arith.jl")
 include("fastintmath.jl")
 include("compound.jl")
 include("strings.jl")
+include("timestamp.jl")
 include("io.jl")
 
 @inline nanos_elapsed() = time_ns() - NanosAtStart

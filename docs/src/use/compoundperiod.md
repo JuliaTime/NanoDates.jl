@@ -17,15 +17,15 @@ using Dates: CompoundPeriod
 ```
 const TimeStampPeriods = 
     (Nanosecond, Microsecond, Millsecond, Second, Minute, Hour)
-const DateStampPeriods = (:Day, ::Month, :Year)
+const DateStampPeriods = (Day, Month, Year)
 
 const TimeStampPeriods = 
-    (Nanosecond, Microsecond, Millsecond, Second, Minute, :Hour)
-const DateLikePeriods  = (:Day, :Week, :Month, :Quarter, :Year)
+    (Nanosecond, Microsecond, Millsecond, Second, Minute, Hour)
+const DateLikePeriods  = (Day, Week, Month, Quarter, Year)
 
 const NanoStampPeriods =
-    (Nanosecond, Microsecond, Millsecond, Second, Minute,:Hour,
-     :Day, :Week, :Month, :Quarter, :Year)
+    (Nanosecond, Microsecond, Millsecond, Second, Minute, Hour,
+     Day, Week, Month, Quarter, Year)
 ```
 ### nothing to see, nothing to here
 ```

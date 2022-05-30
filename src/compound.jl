@@ -3,12 +3,12 @@ Dates.CompoundPeriod(d::Date) =
     Year(d) + Month(d) + Day(d)
 
 Dates.CompoundPeriod(dtm::DateTime) =
-    Year(dtm) + Month(dtm) + Day(dtm) + 
+    Year(dtm) + Month(dtm) + Day(dtm) +
     Hour(dtm) + Minute(dtm) + Second(dtm) +
     Millisecond(dtm)
 
 Dates.CompoundPeriod(nd::NanoDate) =
-    Year(nd) + Month(nd) + Day(nd) + 
+    Year(nd) + Month(nd) + Day(nd) +
     Hour(nd) + Minute(nd) + Second(nd) +
     Millisecond(nd) + Microsecond(nd) + Nanosecond(nd)
 

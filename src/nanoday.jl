@@ -5,9 +5,13 @@ end
 
 function NanoDay(days::Day, nanosecs::Nanosecond)
     dy, ns = Dates.value(days), Dates.value(nanosecs)
-    ddy, ns = fldmod(ns, NanosecondsPerDay)
-    dy += ddy
-    Day_Nano(Day(dy), Nanosecond(ns))
+    if 0<= ns < NanosecondsPerDay
+        Nano_Day(days, nanosecs)
+    else
+       ddy, ns = fldmod(ns, NanosecondsPerDay)
+       dy += ddy
+       Nano_Day(Day(dy), Nanosecond(ns))
+    end
 end
 
 NanoDay(datetime::DateTime) =

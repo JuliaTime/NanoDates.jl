@@ -12,7 +12,8 @@ export NanoDate,
         CapitalT, SmallCapitalT,
         SingleSpace, Underscore,
         SmallWhiteCircle, SmallWhiteStar,
-        canonical
+        canonical,
+        timestamp
 
 using Dates
 using Dates: AbstractDateTime, CompoundPeriod,

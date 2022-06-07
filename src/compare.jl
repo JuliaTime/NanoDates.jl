@@ -54,12 +54,14 @@ for (T) in (:DateTime, :Date)
 end
 
 for i in 1:Nperiods
-  Base.isequal(::Type{AllPeriods[i]}, ::Type{AllPeriods[i]}) = true
-  Base.isless(::Type{AllPeriods[i]}, ::Type{AllPeriods[i]}) = false
+  Base.isequal(::Type{AllPeriodsDecreasing[i]}, ::Type{AllPeriodsDecreasing[i]}) = true
+  Base.isless(::Type{AllPeriodsDecreasing[i]}, ::Type{AllPeriodsDecreasing[i]}) = false
   for k in i+1:Nperiods
-    Base.isequal(::Type{AllPeriods[i]}, ::Type{AllPeriods[k]}) = false
-    Base.isequal(::Type{AllPeriods[k]}, ::Type{AllPeriods[i]}) = false
-    Base.isless(::Type{AllPeriods[i]}, ::Type{AllPeriods[k]}) = false
-    Base.isless(::Type{AllPeriods[k]}, ::Type{AllPeriods[i]}) = true
+    Base.isequal(::Type{AllPeriodsDecreasing[i]}, ::Type{AllPeriodsDecreasing[k]}) = false
+    Base.isequal(::Type{AllPeriodsDecreasing[k]}, ::Type{AllPeriodsDecreasing[i]}) = false
+    Base.isless(::Type{AllPeriodsDecreasing[i]}, ::Type{AllPeriodsDecreasing[k]}) = false
+    Base.isless(::Type{AllPeriodsDecreasing[k]}, ::Type{AllPeriodsDecreasing[i]}) = true
   end
 end
+
+S

@@ -42,7 +42,6 @@
 | 1 ns              | 300 millimeters          |
 | 1000 ns == 1 μs   | 300 meters &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  |
 | 1000 μs == 1 ms   | 300 kilometers&nbsp; |
-| 1 ms              | 186 miles &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   |
 |-------------------|--------------------------|
 |                   | 300 is really 299.792458 |
 

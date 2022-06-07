@@ -2,6 +2,10 @@ const CharString = Union{Char, AbstractString}
 
 const NANODATE_FORMAT = dateformat"yyyy-mm-ddTHH:MM:SS.sss"
 
+const QuartersPerYear = Int64(4)
+const MonthsPerQuarter = Int64(3)
+const MonthsPerYear = Int64(12)
+
 const DaysPerWeek = Int64(7)
 const HoursPerDay = Int64(24)
 const MinutesPerHour = Int64(60)

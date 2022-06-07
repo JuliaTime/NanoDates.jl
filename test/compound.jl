@@ -1,7 +1,7 @@
 @testset "CompoundPeriod" begin
 
-  @test dnd == Day(19) + Nanosecond(28656000000000)
-  @test cdnd == Day(19) + Hour(7) + Minute(57) + Second(36) 
+  @test dnd == Day(91) + Nanosecond(28656000000000)
+  @test cdnd == Day(91) + Hour(7) + Minute(57) + Second(36) 
 
 end
 

@@ -146,3 +146,36 @@ function timefromstring(s::String)
         return tm + Microsecond(micros) + Nanosecond(nanos)
     end
 end
+
+internal_string(df::DateFormat) = string(typeof(df).parameters[1]) 
+
+function internal_strings(str::AbstractString)
+    if occursin('.', str)
+        secsplus, subsecs = split(str, '.')
+    else
+        secsplus = str
+        subsecs = ""
+    end
+    (secsplus, subsecs)
+end
+
+internal_strings(df::DateFormat) = internal_strings(internal_string(df))
+
+function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat)
+    str_secsplus, str_subsecs = string.(internal_strings(str))
+    df_secsplus, df_subsecs = string.(internal_strings(df))
+    secsplus = DateTime(str_secsplus, df_secsplus)
+    if isempty(str_subsecs) 
+        subsecs = 0
+    else
+        n = length(str_subsecs)
+        dv,rm = divrem(n, 3)
+        zeroslen = 3 - (rm == 0 ? 3 : rm)
+        str_subsecs = (str_subsecs * "00000000")[1:9]
+        subsecs = parse(Int, rpad(parse(Int,str_subsecs), zeroslen, "0"))
+    end
+    subsec = Nanosecond(subsecs)
+    NanoDate(secsplus, subsec)
+end
+
+    

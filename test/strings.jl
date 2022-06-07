@@ -6,7 +6,8 @@
 end
 
 @testset "parse" begin
-
+    df = dateformat
+    
     @test parse(NanoDate, "1999-07-12 08:15:30", df"yyyy-mm-dd HH:MM:SS") == NanoDate(1999,07,12,08,15,30)
     @test parse(NanoDate, "2022-7-8 4:5:6.1", df"yyyy-m-d H:M:S.s") == NanoDate(2022,7,8,4,5,6,1)
     @test parse(NanoDate, "2022/07/18 04:15:16.124", df"yyyy/mm/dd HH:MM:SS.s") == NanoDate(2022,7,18,4,15,16,124)

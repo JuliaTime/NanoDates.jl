@@ -13,7 +13,7 @@
     - that makes them a strong and robust localized timekeeper 
 - Full temporal resolution (all available periods) are shared for NanoDates and Times
     - "near" and "far" `(now(), now()+Month(2))` become
-    - *here* and *there* `(nnow(), nnow()+Month(2)+Nanosecond(5))`
+    - *first* and *final* `(nnow(Microsecond(35), nnow(Microsecond(35),Nanosecond(987))+Month(2))`
    
  -----
  

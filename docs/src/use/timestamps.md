@@ -17,10 +17,10 @@
 
 |               timestamp                | resolution  | method(nd::NanoDate)                           |
 |:---------------------------------------|:------------|:-----------------------------------------------|
-| `2022-05-24T10:43:22-04:00`            | second      | timestamp(floor(nd, Second); local=true)       |
-| `2022-05-24T10:43:22.350-04:00`        | millisecond | timestamp(floor(nd, Milliecond); local=true)   |
-| `2022-05-24T10:43:22.350789-04:00`     | microsecond | timestamp(floor(nd, Microsecond); local=true)  |
-| `2022-05-24T10:43:22.350789123-04:00`  | nanosecond  | timestamp(floor(nd, Nanosecond); local=true)   |
+| `2022-05-24T10:43:22-04:00`            | second      | timestamp(floor(nd, Second); localtime=true)       |
+| `2022-05-24T10:43:22.350-04:00`        | millisecond | timestamp(floor(nd, Milliecond); localtime=true)   |
+| `2022-05-24T10:43:22.350789-04:00`     | microsecond | timestamp(floor(nd, Microsecond); localtime=true)  |
+| `2022-05-24T10:43:22.350789123-04:00`  | nanosecond  | timestamp(floor(nd, Nanosecond); localtime=true)   |
 
 #### timestamp formats where no zone is specified
 

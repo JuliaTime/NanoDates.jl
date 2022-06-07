@@ -29,23 +29,23 @@ function utc_delta()
     delta_time_str, (delta_hours, delta_minutes)
 end
 
-utc_delta_str, (utc_delta_hours, utc_delta_minutes) = utc_delta()
+utc_delta_str, utc_delta_hours_minutes = utc_delta()
 const LOCAL_TZ_DELTA = delta_str 
-const LOCAL_TZ_DELTA_HOURS = utc_delta_hours
-const LOCAL_TZ_DELTA_MINUTES = utc_delta_minutes
+const LOCAL_TZ_DELTA_HOURS = utc_delta_hours_minutes[1]
+const LOCAL_TZ_DELTA_MINUTES = utc_delta_hours_minutes[2]
 
-function timestamp(nd::NanoDate; sep="", utctime=true, localtime=false, postfix=true)
+function timestamp(nd::NanoDate; sep="", utc=true, localtime=false, postfix=true)
     if localtime == true
-        utctime = false
-    elseif utctime == true
+        utc = false
+    elseif utc == true
         localtime = false
     else
-        utctime = false
+        utc = false
         localtime = true
         postfix = false
     end
 
-    if utctime && postfix
+    if utc && postfix
         suffix = "Z"
     elseif localtime
         if postfix

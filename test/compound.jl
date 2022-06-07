@@ -1,8 +1,3 @@
-nd = NanoDate(2022,05,24,18,26,21,123,456,789)
-nd0 = nd - Month(3) - Hour(55) - Second(3456)
-dnd = nd - dn0
-cdnd = canonical(dnd)
-
 @testset "CompoundPeriod" begin
 
   @test dnd == Day(19) + Nanosecond(28656000000000)

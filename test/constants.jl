@@ -44,3 +44,7 @@ const laternanodate = NanoDate(laterdatetime, laternanosecs)
 const nd0 = NanoDate(daytime)
 const nd00 = NanoDate(dayt)
 
+nd2 = NanoDate(2022,05,24,18,26,21,123,456,789)
+nd1 = nd2 - Month(3) - Hour(55) - Second(3456)
+dnd = nd2 - dn1
+cdnd = canonical(dnd)

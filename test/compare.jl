@@ -73,3 +73,24 @@ end
     @test <=(nd00, dayt)
     @test <=(dayt, nd00)
 end
+
+@testset "isequal with period types" begin
+
+    @test isequal(Year, Year)
+    @test isequal(Second, Second)
+    @test !isequal(Minute, Month)
+    @test !isequal(Microsecond, Nanosecond)
+
+end
+
+@testset "isless with period types" begin
+
+    @test !isless(Year, Year)
+    @test !isless(Second, Second)
+    @test isless(Minute, Month)
+    @test isless(Microsecond, Nanosecond)
+    @test isless(Week, Quarter)
+    @test isless(Day, Week)
+    @test isless(Month, Quarter)
+
+end

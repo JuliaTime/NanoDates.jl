@@ -52,3 +52,19 @@ for (T) in (:DateTime, :Date)
     Base.:(>=)(x::$T, y::NanoDate) = (x > y) || (x == y)
   end
 end
+
+allperiods = (Year, Quarter, Month, Week, Day, Hour, Minute, Second,
+              Millisecond, Microsecond, Nanosecond)
+
+nperiods = length(allperiods)
+
+for i in 1:nperiods
+  Base.isequal(::Type{allperiods[i]}, ::Type{allperiods[i]}) = true
+  Base.isless(::Type{allperiods[i]}, ::Type{allperiods[i]}) = false
+  for k in i+1:nperiods
+    Base.isequal(::Type{allperiods[i]}, ::Type{allperiods[k]}) = false
+    Base.isequal(::Type{allperiods[k]}, ::Type{allperiods[i]}) = false
+    Base.isless(::Type{allperiods[i]}, ::Type{allperiods[k]}) = false
+    Base.isless(::Type{allperiods[k]}, ::Type{allperiods[i]}) = true
+  end
+end

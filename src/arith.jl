@@ -69,7 +69,7 @@ end
 # for internal use
 # cnurt(CompoundPeriod, Period) removes Periods larger than Period
 
-function cnurt(cp::CompoundPeriod, p::T}) where {T<:Dates.Period}
+function cnurt(cp::CompoundPeriod, p::Type{T}) where {T<:Dates.Period}
    v = cp.periods
    relsize = (!).(isless.(v, Ref(T)))
    greaters = v[relsize]

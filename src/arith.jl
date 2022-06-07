@@ -83,6 +83,10 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second)
   end  
 end
 
+Base.ceil(nd::NanoDate, ::Type{Hour}) = trunc(nd) + Hour(!iszero(minute(nd)))
+Base.ceil(nd::NanoDate, ::Type{Minute}) = trunc(nd) + Hour(!iszero(second(nd)))
+Base.ceil(nd::NanoDate, ::Type{Second}) = trunc(nd) + Hour(!iszero(millisecond(nd)))
+
 Base.trunc(nd::NanoDate, ::Type{Millisecond}) = NanoDate(trunc(nd.datetime, Millisecond))
 Base.floor(nd::NanoDate, ::Type{Millisecond}) = trunc(nd, Millisecond)
 Base.ceil(nd::NanoDate, ::Type{Millisecond}) =

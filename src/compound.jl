@@ -1,3 +1,5 @@
+Base.iszero(x::CompoundPeriod) = isempty(x)
+
 # Dates defines CompoundPeriod(t::Time)
 Dates.CompoundPeriod(d::Date) =
     Year(d) + Month(d) + Day(d)

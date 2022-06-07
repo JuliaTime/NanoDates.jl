@@ -1,8 +1,6 @@
 val(x::CompoundPeriod) = isempty(x) ? 0 : canonicalize(x)
 val(x) = isempty(x) ? 0 : value(x)
 
-
-
 function utc_delta()
     utctime, localtime = now(UTC), now()
     i = 6
@@ -12,7 +10,9 @@ function utc_delta()
     end
     delta_time = canonicalize((Hour(localtime) + Minute(localtime)) - (Hour(utctime) + Minute(utctime)))
     delta_hours = Hour(delta_time)
+    delta_hour_value = value(delta_hours)
     delta_minutes = Minute(delta_time)
+    delta_minute_value = value(delta_minutes)
     delta_sign = '+'
     if value(delta_hours) < 0
         delta_sign = '-'

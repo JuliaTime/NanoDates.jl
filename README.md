@@ -1,12 +1,12 @@
 # NanoDates.jl
-#### celebrating the finer aspects of time
+### celebrating the finer aspects of time
 
 ----
 
 
-|🕰️| [![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://jeffreysarnoff.github.io/NanoDates.jl/dev/) |  [![Coverage Status](https://coveralls.io/repos/github/JuliaCI/Coverage.jl/badge.svg?branch=master)](https://coveralls.io/github/JeffreySarnoff/NanoDatesjl?branch=main) |  [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl) | [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) |📅|
-|--|:------------:|:-----------:|:----------:|:---------:|--|
-|  | guidance     | well tested | clean code | attribution only |  |
+|&nbsp; 📅 &nbsp;  | [![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://jeffreysarnoff.github.io/NanoDates.jl/dev/) |  [![Coverage Status](https://coveralls.io/repos/github/JuliaCI/Coverage.jl/badge.svg?branch=master)](https://coveralls.io/github/JeffreySarnoff/NanoDatesjl?branch=main) |  [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl) | [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) |
+|--|:------------:|:-----------:|:----------:|:---------:|
+| &nbsp; 🕰️  &nbsp; |  guidance     | well tested | clean code | attribution only |
 
 
 ----
@@ -14,7 +14,7 @@
 
 ##### motivation
 
-- *Every day should have all times-of-day*
+- *Every day should have all the times-of-day* (except where timezone changes apply)
 
 - The `Time` type from Dates supports nanoseconds when dates are not used.
 - `Time` works incompletely with`DateTime` which is limited to milliseconds.
@@ -38,13 +38,9 @@
 
   
 | light nanoseconds | metric distance          |
-|------------------:|:-------------------------:|
-| 1 ns              | 300 millimeters          |
-| 1000 ns == 1 μs   | 300 meters &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  |
-| 1000 μs == 1 ms   | 300 kilometers&nbsp; |
-| 1 ms              | 186 miles &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   |
-|-------------------|--------------------------|
-|                   | 300 is really 299.792458 |
+|:-----------------:|:-------------------------:|
+| 1 ns              | 299_793_458 nanometers    |
+| 1 ns              | 0.299_793_458 kilometers  |
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Grace Hopper (thank you, Grace)
 

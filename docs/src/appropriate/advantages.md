@@ -24,5 +24,5 @@ In 2018 finanical centers, through their host countries, adopted regulations tha
 
 ----
 
-*UTC is the timebase of record for most people as convienice and for statuory puposes.*
+*UTC is the timebase of record for statutory purposes and for most people as a shared convienience.*
 

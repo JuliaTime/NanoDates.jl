@@ -5,6 +5,7 @@ for (P,p) in ((:Year, :year), (:Quarter, :quarter), (:Month, :month),
               (:Week, :week), (:Day, :day), (:Hour, :hour), (:Minute, :minute), (:Second, :second),
               (:Millisecond, :millisecond), (:Microsecond, :microsecond), (:Nanosecond, :nanosecond))
     @eval begin
+        $P(x::$P) = x
         $p(x::$P) = value(x)
 
         $P(x::Period) = $P(0)

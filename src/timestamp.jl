@@ -30,7 +30,7 @@ function utc_delta()
 end
 
 utc_delta_str, utc_delta_hours_minutes = utc_delta()
-const LOCAL_TZ_DELTA = delta_str 
+const LOCAL_TZ_DELTA = utc_delta_str 
 const LOCAL_TZ_DELTA_HOURS = utc_delta_hours_minutes[1]
 const LOCAL_TZ_DELTA_MINUTES = utc_delta_hours_minutes[2]
 

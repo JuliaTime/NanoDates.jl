@@ -53,18 +53,13 @@ for (T) in (:DateTime, :Date)
   end
 end
 
-allperiods = (Year, Quarter, Month, Week, Day, Hour, Minute, Second,
-              Millisecond, Microsecond, Nanosecond)
-
-nperiods = length(allperiods)
-
-for i in 1:nperiods
-  Base.isequal(::Type{allperiods[i]}, ::Type{allperiods[i]}) = true
-  Base.isless(::Type{allperiods[i]}, ::Type{allperiods[i]}) = false
-  for k in i+1:nperiods
-    Base.isequal(::Type{allperiods[i]}, ::Type{allperiods[k]}) = false
-    Base.isequal(::Type{allperiods[k]}, ::Type{allperiods[i]}) = false
-    Base.isless(::Type{allperiods[i]}, ::Type{allperiods[k]}) = false
-    Base.isless(::Type{allperiods[k]}, ::Type{allperiods[i]}) = true
+for i in 1:Nperiods
+  Base.isequal(::Type{AllPeriods[i]}, ::Type{AllPeriods[i]}) = true
+  Base.isless(::Type{AllPeriods[i]}, ::Type{AllPeriods[i]}) = false
+  for k in i+1:Nperiods
+    Base.isequal(::Type{AllPeriods[i]}, ::Type{AllPeriods[k]}) = false
+    Base.isequal(::Type{AllPeriods[k]}, ::Type{AllPeriods[i]}) = false
+    Base.isless(::Type{AllPeriods[i]}, ::Type{AllPeriods[k]}) = false
+    Base.isless(::Type{AllPeriods[k]}, ::Type{AllPeriods[i]}) = true
   end
 end

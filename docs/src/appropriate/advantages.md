@@ -24,7 +24,7 @@ In 2018 finanical centers, through their host countries, adopted regulations tha
  Market events and order transactions must be recorded
  [and] retraceable to UTC.
  
- Systems that are syncronized to a [validated network] clock, require timestamp availability at submillisecond resolutions. The shortest interval that is required of very high frequncy trading work is 25ns. 
+ Systems that are syncronized to a [validated network] clock, require timestamp availability at submillisecond resolutions. The shortest interval that is required of very high frequncy trading work by regulations at the time of this writing (2022) is 25ns. 
 
 ----
 

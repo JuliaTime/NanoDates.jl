@@ -1,5 +1,5 @@
 # NanoDates.jl
-#### celebrating the finer aspects of time
+### celebrating the finer aspects of time
 
 ----
 

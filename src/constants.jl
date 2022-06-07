@@ -82,8 +82,8 @@ const AllPeriodsDecreasing =
 
 const AllPeriodSymsDecreasing = Symbol.(AllPeriodsDecreasing)
 
-const Nperiods = length(AllPeriods)
+const Nperiods = length(AllPeriodsDecreasing)
 
-const AllPeriodsIncreasing = reverse(AllPeriods)
+const AllPeriodsIncreasing = reverse(AllPeriodsDecreasing)
 const AllPeriodSymsIncreasing = Symbol(AllPeriodsIncreasing)
 

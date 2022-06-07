@@ -13,7 +13,7 @@ end
   @test Minute(dnd) == Minute(0)
   @test Minute(cdnd) == Minute(57)
 
-  @test week(dnd) == Week(0)
+  @test week(dnd) == 0
   @test week(canonicalize(dnd)) == 13
 
 end

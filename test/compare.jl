@@ -88,7 +88,7 @@ end
     @test !isless(Year, Year)
     @test !isless(Second, Second)
     @test isless(Minute, Month)
-    @test isless(Microsecond, Nanosecond)
+    @test isless(Nanosecond, Microsecond)
     @test isless(Week, Quarter)
     @test isless(Day, Week)
     @test isless(Month, Quarter)

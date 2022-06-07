@@ -8,7 +8,7 @@ end
 @testset "within CompoundPeriods" begin
 
   @test hour(cdnd) == 7
-  @test Day(dnd) == Day(19)
+  @test Day(dnd) == Day(91)
 
   @test Minute(dnd) == Minute(0)
   @test Minute(cdnd) == Minute(57)

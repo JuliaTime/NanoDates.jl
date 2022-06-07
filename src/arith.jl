@@ -89,13 +89,9 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second)
   @eval begin
     Base.trunc(nd::NanoDate, ::Type{$T}) = NanoDate(trunc(nd.datetime, $T))
     Base.floor(nd::NanoDate, ::Type{$T}) = trunc(nd, $T)
-    Base.ceil(nd::NanoDate, ::Type{$T}) = NanoDate(ceil(nd.datetime, $T))
+    Base.ceil(nd::NanoDate, ::Type{$T}) = trunc(nd, $T) = $T(!iszero(tons(cnurt(nd, %T))))
   end  
 end
-
-Base.ceil(nd::NanoDate, ::Type{Hour}) = trunc(nd) + Hour(!iszero(tons(cnurt(nd, Hour))))
-Base.ceil(nd::NanoDate, ::Type{Minute}) = trunc(nd) + Hour(!iszero(tons(cnurt(nd, Minute))))
-Base.ceil(nd::NanoDate, ::Type{Second}) = trunc(nd) + Hour(!iszero(tons(cnurt(nd, Hour))))
 
 Base.trunc(nd::NanoDate, ::Type{Millisecond}) = NanoDate(trunc(nd.datetime, Millisecond))
 Base.floor(nd::NanoDate, ::Type{Millisecond}) = trunc(nd, Millisecond)

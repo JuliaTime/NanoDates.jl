@@ -1,5 +1,8 @@
 @testset "CompoundPeriod" begin
 
+  @test Day(Day(5)) == Day(5)
+  @test hour(Hour(5)) == 5
+
   @test dnd == Day(91) + Nanosecond(28656000000000)
   @test cdnd == Day(91) + Hour(7) + Minute(57) + Second(36)
 

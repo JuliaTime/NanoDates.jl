@@ -69,12 +69,14 @@ end
 # for internal use
 # cnurt(CompoundPeriod, Period) removes Periods larger than Period
 
-function cnurt(cp::CompoundPeriod, p::Type{T}) where {T<:Dates.Period}
+function cnurt(cp::CompoundPeriod, p::Type{<:Dates.Period})
    v = cp.periods
-   relsize = (!).(isless.(v, Ref(T)))
+   relsize = (!).(isless.(v, Ref(p)))
    greaters = v[relsize]
    cp - CompoundPeriod(greaters)
 end
+
+cnurt(nd::NanoDate, p::Type{<:Dates.Period}) = cnurt(CompoundPeriod(nd), p)
 
 # trunc, floor, ceil
 

@@ -1,17 +1,19 @@
 ## Appealing Advantages
 
-**NanoDates just work; they play well with Julia packages.**
+**NanoDates.jl integrates Nanoseconds into timekeeping and interoperates with many Julia packages.**
 
-- Are your resources more capable than `DateTime` understands?
-- Do you produce, consume, or otherwise ferry microtimed occurances?
-- Is your masterful realtime design standing by as the nanoseconds fly?
+- Are your timestamp requirements more capable than `DateTime` supports?
+- Does your application produce, consume, or otherwise ferry microtimed occurances?
+- Is your masterful realtime design standing by as the nanoseconds fly away?
 
 -----
 
 - NanoDates are your fuller realization of dates-with-times.
-- Each NanoDate is con*struct*ed into the temporal context given.
-    - that makes them strongly continumm localic 
-    - "near" and "far" become as *here* and *there*
+- Each NanoDate is con*struct*ed within the temporal context given.
+    - that makes them a strong and robust localized timekeeper 
+- Full temporal resolution (all available periods) are shared for NanoDates and Times
+    - "near" and "far" `(now(), now()+Month(2))` become
+    - *here* and *there* `(nnow(), nnow()+Month(2)+Nanosecond(5))`
    
  -----
  

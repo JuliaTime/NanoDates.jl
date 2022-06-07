@@ -13,5 +13,9 @@ end
     @test parse(NanoDate, "2022-07-18T04:15:16.1245", dateformat"yyyy-mm-ddTHH:MM:SS.ss") == NanoDate(2022,7,18,4,15,16,124,500)
     @test parse(NanoDate, "2022-07-18T04:15:16.12456789", dateformat"yyyy-mm-ddTHH:MM:SS.sss") == NanoDate(2022,7,18,4,15,16,124,567,890)
 
+    str = "2022-05-24 18 26 21.123456789"
+    df = dateformat"yyyy-mm-dd HH MM SS.sss"
+    @test parse(NanoDate, str, df) == NanoDate(2022,5,24,18,26,21,123,456,789)
+    
 end
 

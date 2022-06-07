@@ -28,9 +28,6 @@ for (P,p) in ((:Year, :year), (:Quarter, :quarter), (:Month, :month),
     end
 end
 
-Base.convert(::Type{Day}, x::Week) = Day(value(x) * DaysPerWeek)
-Base.convert(::Type{Month}, x::Quarter) = Day(value(x) * MonthsPerQuarter)
-
 function canonical(x::CompoundPeriod)
     y = canonicalize(x)
     ydays = Day(y)

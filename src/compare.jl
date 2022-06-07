@@ -64,4 +64,3 @@ for i in 1:Nperiods
   end
 end
 
-S

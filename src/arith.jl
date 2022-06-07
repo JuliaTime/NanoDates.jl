@@ -73,6 +73,16 @@ function Base.:(-)(nd::NanoDate, x::Microsecond)
     NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
 end
 
+# for internal use
+# cnurt(CompoundPeriod, Period) removes Periods larger than Period
+
+function cnurt(cp::CompoundPeriod, p::Period)
+   v = cp.periods
+   relsize = !(isless.(v, Ref(p)))
+   greaters = v[relsize]
+   cp - CompoundPeriod(greaters)
+end
+
 # trunc, floor, ceil
 
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second)
@@ -83,9 +93,9 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second)
   end  
 end
 
-Base.ceil(nd::NanoDate, ::Type{Hour}) = trunc(nd) + Hour(!iszero(minute(nd)))
-Base.ceil(nd::NanoDate, ::Type{Minute}) = trunc(nd) + Hour(!iszero(second(nd)))
-Base.ceil(nd::NanoDate, ::Type{Second}) = trunc(nd) + Hour(!iszero(millisecond(nd)))
+Base.ceil(nd::NanoDate, ::Type{Hour}) = trunc(nd) + Hour(!iszero(tons(cnurt(nd, Hour))))
+Base.ceil(nd::NanoDate, ::Type{Minute}) = trunc(nd) + Hour(!iszero(tons(cnurt(nd, Minute))))
+Base.ceil(nd::NanoDate, ::Type{Second}) = trunc(nd) + Hour(!iszero(tons(cnurt(nd, Hour))))
 
 Base.trunc(nd::NanoDate, ::Type{Millisecond}) = NanoDate(trunc(nd.datetime, Millisecond))
 Base.floor(nd::NanoDate, ::Type{Millisecond}) = trunc(nd, Millisecond)

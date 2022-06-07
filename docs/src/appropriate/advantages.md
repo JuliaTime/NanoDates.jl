@@ -1,17 +1,21 @@
 ## Appealing Advantages
 
-**NanoDates just work; they play well with Julia packages.**
+**NanoDates.jl integrates Nanoseconds into timekeeping and interoperates with many Julia packages.**
 
-- Are your resources more capable than `DateTime` understands?
-- Do you produce, consume, or otherwise ferry microtimed occurances?
-- Is your masterful realtime design standing by as the nanoseconds fly?
+- Are your timestamp requirements more capable than `DateTime` supports?
+- Does your application produce, consume, or otherwise ferry microtimed occurances?
+- Is your masterful realtime design standing by as the nanoseconds fly away?
 
 -----
 
 - NanoDates are your fuller realization of dates-with-times.
-- Each NanoDate is con*struct*ed into the temporal context given.
-    - that makes them strongly continumm localic 
-    - "near" and "far" become as *here* and *there*
+- Each NanoDate is con*struct*ed within the temporal context given.
+    - that makes them a strong and robust localized timekeeper 
+- Full temporal resolution (all available periods) are shared for NanoDates and Times
+    - "near" and "far"
+        - `(now(), now() + Month(2)`
+    - become fully resolved as the ClOpen interval [*begins*, *ends*)
+        - `(nnow(Microsecond(35), nnow(Microsecond(35),Nanosecond(987))+Month(2))`
    
  -----
  
@@ -20,9 +24,9 @@ In 2018 finanical centers, through their host countries, adopted regulations tha
  Market events and order transactions must be recorded
  [and] retraceable to UTC.
  
- Systems that are syncronized to a [validated network] clock, require timestamp availability at submillisecond resolutions. The shortest interval that is required of very high frequncy trading work is 25ns. 
+ Systems that are syncronized to a [validated network] clock, require timestamp availability at submillisecond resolutions. The shortest interval that is required of very high frequncy trading work by regulations as of 2022-Jun-01 is 25ns. 
 
 ----
 
-*UTC is the timebase of record for most people as convienice and for statuory puposes.*
+*UTC is the timebase of record for statutory purposes and for most people as a shared convienience.*
 

@@ -179,4 +179,23 @@ function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat)
 end
 
 NanoDate(str::String; df=dateformat"yyyy-mm-ddTHH:MM:SS.sss") = parse(NanoDate, str, df)
+
+#=
+ref: https://github.com/Kotlin/kotlinx-datetime/issues/139
+
+fun Instant.Companion.parseWithBasicOffset(string: String): Instant {
+    var lastDigit = string.length
+    while (lastDigit > 0 && string[lastDigit - 1].isDigit()) { --lastDigit }
+    val digits = string.length - lastDigit // how many digits are there at the end of the string
+    if (digits <= 2)
+        return parse(string) // no issue in any case
+    var newString = string.substring(0, lastDigit + 2)
+    lastDigit += 2
+    while (lastDigit < string.length) {
+        newString += ":" + string.substring(lastDigit, lastDigit + 2)
+        lastDigit += 2
+    }
+    return parse(newString)
+}
+=#
     

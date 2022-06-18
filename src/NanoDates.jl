@@ -18,13 +18,12 @@ export NanoDate,
 
 using Dates
 using Dates: AbstractDateTime, CompoundPeriod,
-             format, value, days,
+             quarter, format, value, days,
              toms, tons, UTD, UTM
 
 export AbstractDateTime, CompoundPeriod, 
-    value, days, format
+    quarter, value, days, format
     
-
 using Parsers
 # using InlineStrings ambiguity
 

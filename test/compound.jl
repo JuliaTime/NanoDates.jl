@@ -27,3 +27,13 @@ end
   @test week(canonicalize(dnd)) == 13
 
 end
+
+@testset "canonical" begin
+
+    @test canonical(Microsecond(5)) == Microsecond(5)
+    @test canonical(Microsecond(1234)) == Millisecond(1) + Microsecond(234)
+
+    @test canonical(Quarter(2)) == Month(6)
+    @test canonical(Week(1) + Day(3)) == Day(10)
+
+end

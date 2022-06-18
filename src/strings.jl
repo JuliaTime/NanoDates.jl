@@ -178,7 +178,7 @@ function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat)
     NanoDate(secsplus, subsec)
 end
 
-NanoDate(str::String; df=dateformat"yyyy-mm-ddTHH:MM:SS.sss") = parse(NanoDate, str, df)
+NanoDate(str::String, df=dateformat"yyyy-mm-ddTHH:MM:SS.sss") = parse(NanoDate, str, df)
 
 #=
 ref: https://github.com/Kotlin/kotlinx-datetime/issues/139

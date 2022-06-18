@@ -23,7 +23,7 @@ using Dates: AbstractDateTime, CompoundPeriod,
 export AbstractDateTime, CompoundPeriod, 
     value, days, format
 
-using InlineStrings
+# using InlineStrings ambiguity
 
 include("constants.jl")
 include("nanodate.jl")

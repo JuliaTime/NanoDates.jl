@@ -22,7 +22,10 @@ using Dates: AbstractDateTime, CompoundPeriod,
              toms, tons, UTD, UTM
 
 export AbstractDateTime, CompoundPeriod, 
-    value, days, format
+    value, days, format,
+    firstdayofweek, firstdayofmonth, firstdayofquarter, firstdayofyear,
+    lastdayofweek, lastdayofmonth, lastdayofquarter, lastdayofyear
+    
 
 using Parsers
 # using InlineStrings ambiguity

@@ -81,6 +81,12 @@ cnurt(nd::NanoDate, p::Type{<:Dates.Period}) = cnurt(CompoundPeriod(nd), p)
 
 # trunc, floor, ceil
 
+# missing from Dates
+Base.trunc(d::Date, ::Type{Week}) = 
+    trunc(firstdayofweek(d), Day)
+Base.trunc(dt::DateTime, ::Type{Week}) = 
+    trunc(firstdayofweek(dt), Day)
+
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second)
   @eval begin
     Base.trunc(nd::NanoDate, ::Type{$T}) = NanoDate(trunc(nd.datetime, $T))

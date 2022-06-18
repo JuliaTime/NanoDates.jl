@@ -54,7 +54,7 @@ end
    
 function canonical(x::CompoundPeriod)
     c = canonicalized(x)
-    canonicaliized(c)
+    canonicalized(c)
 end
 
 function canonical(x::Period)

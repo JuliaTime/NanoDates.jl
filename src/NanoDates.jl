@@ -23,6 +23,7 @@ using Dates: AbstractDateTime, CompoundPeriod,
 export AbstractDateTime, CompoundPeriod, 
     value, days, format
 
+using Parsers
 # using InlineStrings ambiguity
 
 include("constants.jl")

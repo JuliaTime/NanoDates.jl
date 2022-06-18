@@ -2,7 +2,7 @@
 
    trunc(nd, Year) == firstdayofyear(nd)
    trunc(nd, Quarter) == firstdayofquarter(nd)
-   trunc(nd, Month) == firstdayofmonth(nd))
+   trunc(nd, Month) == firstdayofmonth(nd)
    trunc(nd, Week) == firstdayofweek(nd)
    trunc(nd, Day) == firsthourofday(nd)
    trunc(nd, Hour) == firstminuteofhour(nd)

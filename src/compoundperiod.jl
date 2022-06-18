@@ -1,52 +1,65 @@
-import Dates: Year, Quarter, Month, Week, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond,
-    year, quarter, month, week, day, hour, minute, second, millisecond, microsecond, nanosecond
+#=
+import Dates: Year, Quarter, Month, Week, Day,
+              Hour, Minute, Second, Millisecond, 
+              Microsecond, Nanosecond,
+              year, quarter, month, week, day,
+              hour, minute, second, millisecond,
+              microsecond, nanosecond
+=#
+import Dates: quarter
 
-for (P,p) in ((:Year, :year), (:Quarter, :quarter), (:Month, :month), 
-              (:Week, :week), (:Day, :day), (:Hour, :hour), (:Minute, :minute), (:Second, :second),
-              (:Millisecond, :millisecond), (:Microsecond, :microsecond), (:Nanosecond, :nanosecond))
+for (P,p) in ((:Year, :year), 
+              (:Quarter, :quarter), (:Month, :month), 
+              (:Week, :week), (:Day, :day), 
+              (:Hour, :hour), (:Minute, :minute), (:Second, :second),
+              (:Millisecond, :millisecond), 
+              (:Microsecond, :microsecond), (:Nanosecond, :nanosecond))
     @eval begin
-        $P(x::$P) = x
-        $p(x::$P) = value(x)
+        Dates.$P(x::Dates.$P) = x
+        Dates.$p(x::Dates.$P) = value(x)
 
-        $P(x::Period) = $P(0)
-        $p(x::Period) = 0
+        Dates.$P(x::Period) = Dates.$P(0)
+        Dates.$p(x::Period) = 0
   
-        $P(x::CompoundPeriod) = $P(x.periods)
-        $p(x::CompoundPeriod) = $p(x.periods)
+        Dates.$P(x::CompoundPeriod) = Dates.$P(x.periods)
+        Dates.$p(x::CompoundPeriod) = Dates.$p(x.periods)
 
-        function $P(x::Vector{Period})
+        function Dates.$P(x::Vector{Period})
             idx = findfirst(v -> isa(v, $P), x)
             if isnothing(idx)
-                $P(0)
+                Dates.$P(0)
             else
                 x[idx]
             end
         end
 
-        $p(x::Vector{Period}) = value($P(x))
-
+        Dates.$p(x::Vector{Period}) = value(Dates.$P(x))
     end
 end
 
+function canonicalized(x::CompoundPeriod)
+   c = canonicalize(x)
+   if !iszero(Dates.quarter(x))
+       q = Quarter(c)
+       c -= q
+       c += convert(Month, q)
+   end
+   if !iszero(Dates.week(x))
+       w = Week(x)
+       c -= w
+       c += convert(Day, w)
+   end
+   c
+end
+   
 function canonical(x::CompoundPeriod)
-    y = canonicalize(x)
-    ydays = Day(y)
-    ymonths = Month(y)
-    yweeks = Week(y)
-    yqrtrs = Quarter(y)
-    yyears = Year(y)
-    ydays += convert(Day, yweeks)
-    ymonths += convert(Month, yqrtrs)
-    ymd = yyears + ymonths + ydays
-    if !isempty(ymd)
-        ymd + (y - ymd)
-    else
-        y
-    end    
+    c = canonicalized(x)
+    canonicaliized(c)
 end
 
 function canonical(x::Period)
-    y = canonicalize(x)
+    y = canonicalized(x)
     if length(y.periods) == 1 return x end
-    canonical(y)
+    canonicalized(y)
 end
+

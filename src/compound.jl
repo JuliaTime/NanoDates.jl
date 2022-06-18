@@ -15,6 +15,7 @@ Dates.CompoundPeriod(nd::NanoDate) =
     Millisecond(nd) + Microsecond(nd) + Nanosecond(nd)
 
 function Dates.Date(cperiod::CompoundPeriod)
+    cperiod = canonicalize(cperiod)
     periods = canonicalize(cperiod).periods
     yr, mn, dy = 0, 1, 1
     qt, wk = 0, 0

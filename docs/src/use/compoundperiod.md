@@ -44,7 +44,8 @@ nd = NanoDate(adate, atime)
 2022-06-03T12:15:30.123456789
 
 compound_nd = CompoundPeriod(nd)
-2022 years, 6 months, 3 days, 12 hours, 15 minutes, 30 seconds, 123 milliseconds, 456 microseconds, 789 nanoseconds
+2022 years, 6 months, 3 days, 12 hours, 15 minutes, 30 seconds,
+123 milliseconds, 456 microseconds, 789 nanoseconds
 
 NanoDate(compound_nd) == nd
 # true

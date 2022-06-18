@@ -22,9 +22,7 @@ using Dates: AbstractDateTime, CompoundPeriod,
              toms, tons, UTD, UTM
 
 export AbstractDateTime, CompoundPeriod, 
-    value, days, format,
-    firstdayofweek, firstdayofmonth, firstdayofquarter, firstdayofyear,
-    lastdayofweek, lastdayofmonth, lastdayofquarter, lastdayofyear
+    value, days, format
     
 
 using Parsers

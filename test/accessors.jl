@@ -28,3 +28,12 @@ end
     @test yearmonth(nd) == (year(nd), month(nd))
     @test monthday(nd) == (month(nd), day(nd))
 end
+
+@testset "Quarter, Week" begin
+    @test Quarter(Quarter(2)) == Quarter(2)
+    @test quarter(Quarter(2)) == 2
+
+    @test Week(Week(2)) == Week(2)
+    @test week(Week(2)) == 2
+end
+

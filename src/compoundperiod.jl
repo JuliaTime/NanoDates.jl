@@ -58,7 +58,7 @@ function canonical(x::CompoundPeriod)
 end
 
 function canonical(x::Period)
-    y = canonicalized(x)
+    y = canonicalize(x)
     if length(y.periods) == 1 return x end
     canonicalized(y)
 end

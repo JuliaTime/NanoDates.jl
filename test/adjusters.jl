@@ -7,9 +7,9 @@
    trunc(nd, Day) == firsthourofday(nd)
    trunc(nd, Hour) == firstminuteofhour(nd)
    trunc(nd, Minute) == firstsecondofminute(nd)
-   trunc(nd, Second) = firstmillisecondofsecond(nd)
-   trunc(nd, Millisecond) = firstmillisecondofsecond(nd)
-   trunc(nd, Microsecond) = firstmicrosecondofmillisecond(nd)
-   trunc(nd, Nanosecond) = firstnanosecondofmicrosecond(nd)
+   trunc(nd, Second) == firstmillisecondofsecond(nd)
+   trunc(nd, Millisecond) == firstmillisecondofsecond(nd)
+   trunc(nd, Microsecond) == firstmicrosecondofmillisecond(nd)
+   trunc(nd, Nanosecond) == firstnanosecondofmicrosecond(nd)
    
 end

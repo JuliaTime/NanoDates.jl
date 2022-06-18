@@ -11,7 +11,6 @@ additively combinded.
 
 ```
 using Dates, NanoDates
-using Dates: CompoundPeriod
 ```
 ##### note these are given smallest period .. largest
 ```

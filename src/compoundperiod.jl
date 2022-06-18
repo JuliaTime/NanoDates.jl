@@ -34,8 +34,19 @@ function canonical(x::CompoundPeriod)
     ymonths = Month(y)
     yweeks = Week(y)
     yqrtrs = Quarter(y)
-    delta = yqrtrs + ymonths + yweeks + ydays
+    yyears = Year(y)
     ydays += convert(Day, yweeks)
     ymonths += convert(Month, yqrtrs)
-    y + (-delta + ymonths + ydays)
+    ymd = yyears + ymonths + ydays
+    if !isempty(ymd)
+        ymd + (y - ymd)
+    else
+        y
+    end    
+end
+
+function canonical(x::Period)
+    y = canonicalize(x)
+    if length(y.periods) == 1 return x end
+    canonical(y)
 end

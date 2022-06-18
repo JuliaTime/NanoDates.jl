@@ -23,6 +23,8 @@ using Dates: AbstractDateTime, CompoundPeriod,
 export AbstractDateTime, CompoundPeriod, 
     value, days, format
 
+using InlineStrings
+
 include("constants.jl")
 include("nanodate.jl")
 include("accessors.jl")

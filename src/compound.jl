@@ -39,6 +39,10 @@ function Dates.Date(cperiod::CompoundPeriod)
         dy = value(periods[idx])
     end
     mn = mn + 3*qt
+    if iszero(mn) && !iszero(yr)
+        mn = 12
+        yr = yr - 1
+    end
     dy = dy + 7*wk
     Date(yr,mn,dy)
 end
@@ -116,6 +120,10 @@ function Dates.DateTime(cperiod::CompoundPeriod)
     end
     mn = mn + 3*qt
     dy = dy + 7*wk
+    if iszero(mn) && !iszero(yr)
+        mn = 12
+        yr = yr - 1
+    end
     DateTime(yr,mn,dy,hr,mi,sc,ms)
 end
 
@@ -170,6 +178,10 @@ function NanoDate(cperiod::CompoundPeriod)
     end
     mn = mn + 3*qt
     dy = dy + 7*wk
+    if iszero(mn) && !iszero(yr)
+        mn = 12
+        yr = yr - 1
+    end
     NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns)
 end
 

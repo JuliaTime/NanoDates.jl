@@ -15,15 +15,15 @@ using Dates, NanoDates
 ##### note these are given smallest period .. largest
 ```
 const TimeStampPeriods = 
-    (Nanosecond, Microsecond, Millsecond, Second, Minute, Hour)
+    (Nanosecond, Microsecond, Millisecond, Second, Minute, Hour)
 const DateStampPeriods = (Day, Month, Year)
 
 const TimeStampPeriods = 
-    (Nanosecond, Microsecond, Millsecond, Second, Minute, Hour)
+    (Nanosecond, Microsecond, Millisecond, Second, Minute, Hour)
 const DateLikePeriods  = (Day, Week, Month, Quarter, Year)
 
 const NanoStampPeriods =
-    (Nanosecond, Microsecond, Millsecond, Second, Minute, Hour,
+    (Nanosecond, Microsecond, Millisecond, Second, Minute, Hour,
      Day, Week, Month, Quarter, Year)
 ```
 ### nothing to see, nothing to here

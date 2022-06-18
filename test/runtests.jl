@@ -17,6 +17,11 @@ include("constants.jl")
     include("nanodate.jl")
 end
 
+    @test days(nd) == days(nd.datetime)
+    @test yearmonthday(nd) == (year(nd), month(nd), day(nd)) 
+    @test yearmonth(nd) == (year(nd), month(nd))
+    @test monthday(nd) == (month(nd), day(nd))
+    
 @testset "accessors" begin
     include("accessors.jl")
 end

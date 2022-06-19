@@ -28,6 +28,9 @@ function Dates.Date(cperiod::CompoundPeriod, utc::Bool=false)
     
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
+    elseif iszero(month(ccperiod))
+        ccperiod -= Year(1)
+        ccperiod += Month(12)
     end
     result = Date(year(ccperiod))
     mn = Month(ccperiod)
@@ -70,6 +73,9 @@ function Dates.DateTime(cperiod::CompoundPeriod, utc=false)
     
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
+    elseif iszero(month(ccperiod))
+        ccperiod -= Year(1)
+        ccperiod += Month(12)
     end
     result = DateTime(year(ccperiod))
     mn = Month(ccperiod)
@@ -108,6 +114,9 @@ function NanoDate(cperiod::CompoundPeriod, utc=false)
     
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
+    elseif iszero(month(ccperiod))
+        ccperiod -= Year(1)
+        ccperiod += Month(12)
     end
     result = DateTime(year(ccperiod))
     mn = Month(ccperiod)

@@ -14,13 +14,13 @@ Dates.CompoundPeriod(nd::NanoDate) =
     Hour(nd) + Minute(nd) + Second(nd) +
     Millisecond(nd) + Microsecond(nd) + Nanosecond(nd)
 
-Dates.Date(yr::Year; utc=false) =
+Dates.Date(yr::Year; utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()))
 
-Dates.Date(mn::Month; utc=false) =
+Dates.Date(mn::Month; utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()), value(mn))
 
-Dates.Date(dy::Day; utc=false) =
+Dates.Date(dy::Day; utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()), 1, value(dy))
 
 function Dates.Date(cperiod::CompoundPeriod; utc=false)
@@ -43,24 +43,24 @@ function Dates.Date(cperiod::CompoundPeriod; utc=false)
     result
 end
 
-Dates.DateTime(yr::Year, utc::Bool=false) =
-    Date(year(utc ? now(UTC) : now()))
+Dates.DateTime(yr::Year; utc::Bool=false) =
+    DateTime(Date(yr; utc))
 
-Dates.DateTime(mn::Month, utc::Bool=false) =
-    Date(year(utc ? now(UTC) : now()), value(mn))
+Dates.DateTime(mn::Month; utc::Bool=false) =
+    DateTime(Date(mn; utc))
 
-Dates.DateTime(dy::Day, utc::Bool=false) =
-    Date(year(utc ? now(UTC) : now()), 1, value(dy))
+Dates.DateTime(dy::Day; utc::Bool=false) =
+    DateTime(Date(dy; utc))
 
 for P in (:Hour, :Minute, :Second, :Millisecond)
-  @eval function Dates.DateTime(p::$P, utc::Bool=false)
-            thedate = utc ? now(UTC) : now()
+  @eval function Dates.DateTime(p::$P; utc::Bool=false)
+            thedatetime = utc ? now(UTC) : now()
             cperiod = canonical(p)
-            thedate + cperiod
+            thedatetime + cperiod
         end
 end
 
-function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
+function Dates.DateTime(cperiod::CompoundPeriod; utc::Bool=false)
     ccperiod = canonical(cperiod)
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
@@ -69,7 +69,7 @@ function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
         ccperiod -= Year(1)
         ccperiod += Month(12)
     end
-    result = Date(year(ccperiod), month(ccperiod))
+    result = DateTime(Date(year(ccperiod), month(ccperiod)))
     dy = day(ccperiod)
     if iszero(dy)
        result -= Month(1)
@@ -81,20 +81,20 @@ function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
 end
 
 NanoDate(yr::Year; utc::Bool=false) =
-    Date(year(utc ? now(UTC) : now()))
+    NanoDate(DateTime(yr; utc))
 
 NanoDate(mn::Month; utc::Bool=false) =
-    Date(year(utc ? now(UTC) : now()), value(mn))
+    NanoDate(DateTime(mn; utc))
 
 NanoDate(dy::Day; utc::Bool=false) =
-    Date(year(utc ? now(UTC) : now()), 1, value(dy))
+    NanoDate(DateTime(dy; utc))
 
 for P in (:Hour, :Minute, :Second, :Millisecond,
           :Microsecond, :Nanosecond)
   @eval function NanoDate(p::$P; utc::Bool=false)
-            thedate = utc ? now(UTC) : now()
+            thenanodate = NanoDate(utc ? now(UTC) : now())
             cperiod = canonical(p)
-            thedate + cperiod
+            thenanodate + cperiod
         end
 end
 

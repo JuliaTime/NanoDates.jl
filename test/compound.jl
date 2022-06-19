@@ -73,11 +73,13 @@ end
 end
 
 @testset "NanoDate(CompoundPeriod)" begin
+    nd = NanoDate(2022, 6, 18,  12, 15, 30,  123, 456, 789);
+    cnd = CompoundPeriod(nd)
     
-    tda = NanoDate(today())
     @test NanoDate(Month(2) + Day(5)) ==
         firstdayofyear(tda) + Month(2-1) + Day(5-1)
     @test NanoDate(Month(2) + Hour(3)) ==
         firstdayofyear(tda) + Month(2-1) + Hour(3)
 
+    @test NanoDate(CompoundPeriod(nd)) == nd
 end

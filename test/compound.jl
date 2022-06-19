@@ -40,6 +40,7 @@ end
 
 @testset "Date" begin
    
+   tda = today()
    da = Date(2022,6,18)
    cpda = CompoundPeriod(da)
 
@@ -56,4 +57,6 @@ end
    
    @test Date(cpda - Month(da) - Day(da)) == da - Month(da) - Day(da)
 
+   @test Date(Month(11)) == Date(year(tda), 11, 1)
+   @test Date(Day(11)) == Date(year(tda), 1, 11)
 end

@@ -97,7 +97,7 @@ for (P,Q) in ((:Hour, :Day), (:Minute, :Hour),
             thenanodate + cperiod
         end
 end
-s
+
 function NanoDate(cperiod::CompoundPeriod, utc::Bool=false)
     ccperiod = canonical(cperiod)
     yr = year(ccperiod)

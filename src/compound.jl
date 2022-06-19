@@ -25,21 +25,15 @@ Dates.Date(dy::Day, utc::Bool=false) =
 
 function Dates.Date(cperiod::CompoundPeriod, utc::Bool=false)
     ccperiod = trunc(canonical(cperiod), Day)
-    
-    if iszero(year(ccperiod))
-        ccperiod += Year(utc ? now(UTC) : now())
-    elseif iszero(month(ccperiod))
-        ccperiod -= Year(1)
-        ccperiod += Month(12)
+    yr = year(ccperiod)
+    if iszero(yr)
+        result = Date(year(utc ? now(UTC) : now()))
+    else
+        result = Date(yr)
     end
-    result = Date(year(ccperiod))
-    mn = Month(ccperiod)
-    mn -= Month(!iszero(mn))
-    result += mn
-    dy = Day(ccperiod)
-    dy -= Day(!iszero(dy))
-    result += dy
-    return result
+    result += Month(month(ccperiod)-1)
+    result += Day(day(ccperiod)-1)
+    result
 end
 
 for P in (:Hour, :Minute, :Second, :Millisecond, :Microsecond, :Nanosecond)
@@ -67,28 +61,18 @@ for P in (:Microsecond, :Nanosecond)
     @eval Dates.DateTime(p::$P, utc::Bool=false) = utc ? now(UTC) : now()
 end
 
-
-function Dates.DateTime(cperiod::CompoundPeriod, utc=false)
-    ccperiod = trunc(canonical(cperiod), Millisecond)
-    
-    if iszero(year(ccperiod))
-        ccperiod += Year(utc ? now(UTC) : now())
-    elseif iszero(month(ccperiod))
-        ccperiod -= Year(1)
-        ccperiod += Month(12)
+function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
+    ccperiod = canonical(cperiod)
+    yr = year(ccperiod)
+    if iszero(yr)
+        result = DateTime(year(utc ? now(UTC) : now()))
+    else
+        result = DateTime(yr)
     end
-    result = DateTime(year(ccperiod))
-    mn = Month(ccperiod)
-    mn -= Month(!iszero(mn))
-    result += mn
-    dy = Day(ccperiod)
-    dy -= Day(!iszero(dy))
-    result += dy
-    result += Hour(ccperiod)
-    result += Minute(ccperiod)
-    result += Second(ccperiod)
-    result += Millisecond(ccperiod)
-    return result
+    result += Month(month(ccperiod)-1)
+    result += Day(day(ccperiod)-1)
+    result += cnurt(ccperiod, Day)
+    result
 end
 
 NanoDate(yr::Year; utc::Bool=false) =
@@ -109,29 +93,18 @@ for P in (:Hour, :Minute, :Second, :Millisecond,
         end
 end
 
-function NanoDate(cperiod::CompoundPeriod, utc=false)
+function NanoDate(cperiod::CompoundPeriod; utc::Bool=false)
     ccperiod = canonical(cperiod)
-    
-    if iszero(year(ccperiod))
-        ccperiod += Year(utc ? now(UTC) : now())
-    elseif iszero(month(ccperiod))
-        ccperiod -= Year(1)
-        ccperiod += Month(12)
+    yr = year(ccperiod)
+    if iszero(yr)
+        result = DateTime(year(utc ? now(UTC) : now()))
+    else
+        result = DateTime(yr)
     end
-    result = DateTime(year(ccperiod))
-    mn = Month(ccperiod)
-    mn -= Month(!iszero(mn))
-    result += mn
-    dy = Day(ccperiod)
-    dy -= Day(!iszero(dy))
-    result += dy
-    result += Hour(ccperiod)
-    result += Minute(ccperiod)
-    result += Second(ccperiod)
-    result += Millisecond(ccperiod)
-    result += Microsecond(ccperiod)
-    result += Nanosecond(ccperiod)
-    return result
+    result += Month(month(ccperiod)-1)
+    result += Day(day(ccperiod)-1)
+    result += cnurt(ccperiod, Day)
+    result
 end
 
 # length, iterate

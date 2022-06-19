@@ -104,7 +104,7 @@ for P in (:Hour, :Minute, :Second, :Millisecond,
 end
 
 function NanoDate(cperiod::CompoundPeriod, utc=false)
-    ccperiod = trunc(canonical(cperiod), Millisecond)
+    ccperiod = canonical(cperiod)
     
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())

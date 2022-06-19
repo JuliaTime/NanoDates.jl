@@ -43,24 +43,24 @@ function Dates.Date(cperiod::CompoundPeriod; utc=false)
     result
 end
 
-Dates.DateTime(yr::Year, utc=false) =
+Dates.DateTime(yr::Year, utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()))
 
-Dates.DateTime(mn::Month, utc=false) =
+Dates.DateTime(mn::Month, utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()), value(mn))
 
-Dates.DateTime(dy::Day, utc=false) =
+Dates.DateTime(dy::Day, utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()), 1, value(dy))
 
 for P in (:Hour, :Minute, :Second, :Millisecond)
-  @eval function Dates.DateTime(p::$P; utc=false)
+  @eval function Dates.DateTime(p::$P, utc::Bool=false)
             thedate = utc ? now(UTC) : now()
             cperiod = canonical(p)
             thedate + cperiod
         end
 end
 
-function Dates.DateTime(cperiod::CompoundPeriod; utc=false)
+function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
     ccperiod = canonical(cperiod)
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
@@ -80,25 +80,25 @@ function Dates.DateTime(cperiod::CompoundPeriod; utc=false)
     result + (ccperiod - CompoundPeriod(result))
 end
 
-NanoDate(yr::Year; utc=false) =
+NanoDate(yr::Year; utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()))
 
-NanoDate(mn::Month; utc=false) =
+NanoDate(mn::Month; utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()), value(mn))
 
-NanoDate(dy::Day; utc=false) =
+NanoDate(dy::Day; utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()), 1, value(dy))
 
 for P in (:Hour, :Minute, :Second, :Millisecond,
           :Microsecond, :Nanosecond)
-  @eval function NanoDate(p::$P; utc=false)
+  @eval function NanoDate(p::$P; utc::Bool=false)
             thedate = utc ? now(UTC) : now()
             cperiod = canonical(p)
             thedate + cperiod
         end
 end
 
-function NanoDate(cperiod::CompoundPeriod; utc=false)
+function NanoDate(cperiod::CompoundPeriod; utc::Bool=false)
     ccperiod = canonical(cperiod)
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())

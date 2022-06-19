@@ -46,12 +46,14 @@ end
    @test Date(cpda) == da
    @test Date(cpda - Day(da)) == da - Day(da)
    @test Date(cpda - Day(da) + Day(1)) == da - Day(da) + Day(1)
-   @test Date(cpda - Day(da) - Day(1)) == da - Day(da) - Day(1)
+   @test Date(cpda - Day(da)) - Day(1) == (da - Day(da)) - Day(1)
+   @test Date(cpda - (Day(da) - Day(1))) == da - (Day(da) - Day(1))
    
    @test Date(cpda - Month(da)) == da - Month(da)
    @test Date(cpda - Month(da) + Month(1)) == da - Month(da) + Month(1)
-   @test Date(cpda - Month(da) - Month(1)) == da - Month(da) - Month(1)
-
+   @test Date(cpda - Month(da)) - Month(1) == (da - Month(da)) - Month(1)
+   @test Date(cpda - (Month(da) - Month(1))) == da - (Month(da) - Month(1))
+   
    @test Date(cpda - Month(da) - Day(da)) == da - Month(da) - Day(da)
 
 end

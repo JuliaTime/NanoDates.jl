@@ -40,23 +40,44 @@ end
 
 @testset "Date" begin
    
-   tda = today()
-   da = Date(2022,6,18)
-   cpda = CompoundPeriod(da)
+    tda = today()
+    da = Date(2022,6,18)
+    cpda = CompoundPeriod(da)
 
-   @test Date(cpda) == da
-   @test Date(cpda - Day(da)) == da - Day(da)
-   @test Date(cpda - Day(da) + Day(1)) == da - Day(da) + Day(1)
-   @test Date(cpda - Day(da)) - Day(1) == (da - Day(da)) - Day(1)
-   @test Date(cpda - (Day(da) - Day(1))) == da - (Day(da) - Day(1))
+    @test Date(cpda) == da
+    @test Date(cpda - Day(da)) == da - Day(da)
+    @test Date(cpda - Day(da) + Day(1)) == da - Day(da) + Day(1)
+    @test Date(cpda - Day(da)) - Day(1) == (da - Day(da)) - Day(1)
+    @test Date(cpda - (Day(da) - Day(1))) == da - (Day(da) - Day(1))
    
-   @test Date(cpda - Month(da)) == da - Month(da)
-   @test Date(cpda - Month(da) + Month(1)) == da - Month(da) + Month(1)
-   @test Date(cpda - Month(da)) - Month(1) == (da - Month(da)) - Month(1)
-   @test Date(cpda - (Month(da) - Month(1))) == da - (Month(da) - Month(1))
+    @test Date(cpda - Month(da)) == da - Month(da)
+    @test Date(cpda - Month(da) + Month(1)) == da - Month(da) + Month(1)
+    @test Date(cpda - Month(da)) - Month(1) == (da - Month(da)) - Month(1)
+    @test Date(cpda - (Month(da) - Month(1))) == da - (Month(da) - Month(1))
    
-   @test Date(cpda - Month(da) - Day(da)) == da - Month(da) - Day(da)
+    @test Date(cpda - Month(da) - Day(da)) == da - Month(da) - Day(da)
 
-   @test Date(Month(11)) == Date(year(tda), 11, 1)
-   @test Date(Day(11)) == Date(year(tda), 1, 11)
+    @test Date(Month(11)) == Date(year(tda), 11, 1)
+    @test Date(Day(11)) == Date(year(tda), 1, 11)
+
+end
+
+@testset "NanoDate(Period)" begin
+
+    tda = NanoDate(today())
+    @test NanoDate(Month(3)) == 
+        tda - (Month(month(tda)-1)) + Month(3-1) - Day(day(tda)-1)
+    @test NanoDate(Day(5)) == firstdayofyear(tda) + Day(5-1)
+    @test NanoDate(Hour(3)) == firsthourofday(tda) + Hour(3)
+
+end
+
+@testset "NanoDate(CompoundPeriod)" begin
+    
+    tda = NanoDate(today())
+    @test NanoDate(Month(2) + Day(5)) ==
+        firstdayofyear(tda) + Month(2-1) + Day(5-1)
+    @test NanoDate(Month(2) + Hour(3)) ==
+        firstdayofyear(tda) + Month(2-1) + Hour(3)
+
 end

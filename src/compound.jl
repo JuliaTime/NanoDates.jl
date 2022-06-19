@@ -23,7 +23,7 @@ Dates.Date(mn::Month, utc::Bool=false) =
 Dates.Date(dy::Day, utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()), 1, value(dy))
 
-function Dates.Date(cperiod::CompoundPeriod, utc=false)
+function Dates.Date(cperiod::CompoundPeriod, utc::Bool=false)
     ccperiod = trunc(canonical(cperiod), Day)
     
     if iszero(year(ccperiod))
@@ -40,7 +40,7 @@ function Dates.Date(cperiod::CompoundPeriod, utc=false)
 end
 
 for P in (:Hour, :Minute, :Second, :Millisecond, :Microsecond, :Nanosecond)
-    @eval Dates.Date(p::$P, utc=false) = utc ? today(UTC) : today()
+    @eval Dates.Date(p::$P, utc::Bool=false) = utc ? today(UTC) : today()
 end
 
 Dates.DateTime(yr::Year, utc::Bool=false) =
@@ -61,7 +61,7 @@ for P in (:Hour, :Minute, :Second, :Millisecond)
 end
 
 for P in (:Microsecond, :Nanosecond)
-    @eval Dates.DateTime(p::$P, utc=false) = utc ? now(UTC) : now()
+    @eval Dates.DateTime(p::$P, utc::Bool=false) = utc ? now(UTC) : now()
 end
 
 

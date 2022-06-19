@@ -14,6 +14,16 @@ Dates.CompoundPeriod(nd::NanoDate) =
     Hour(nd) + Minute(nd) + Second(nd) +
     Millisecond(nd) + Microsecond(nd) + Nanosecond(nd)
 
+
+Dates.Date(yr::Year; utc=false) =
+    Date(year(utc ? now(UTC) : now()))
+
+Dates.Date(mn::Month; utc=false) =
+    Date(year(utc ? now(UTC) : now()), value(mn))
+
+Dates.Date(dy::Day; utc=false) =
+    Date(year(utc ? now(UTC) : now()), 1, dy)
+
 function Dates.Date(cperiod::CompoundPeriod; utc=false)
     ccperiod = canonical(cperiod)
     if iszero(year(ccperiod))

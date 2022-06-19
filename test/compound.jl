@@ -62,6 +62,18 @@ end
 
 end
 
+@testset "DateTime([Compound]Period)" begin
+    tda = today()
+
+    @test DateTime(Month(2)) == firstdayofyear(tda) + Month(2-1)
+    @test DateTime(Month(2) + Second(5)) ==
+        firstdayofyear(tda) + Month(2-1) + Second(5)
+    @test DateTime(Month(2) + Microsecond(0)) ==
+        firstdayofyear(tda) + Month(2-1)
+    @test DateTime(Month(2) + Microsecond(999)) ==
+        firstdayofyear(tda) + Month(2-1)
+end
+
 @testset "NanoDate(Period)" begin
 
     tda = NanoDate(today())

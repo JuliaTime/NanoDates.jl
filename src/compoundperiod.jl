@@ -91,15 +91,35 @@ Base.trunc(x::CompoundPeriod, ::Type{Microsecond}) = let c = canonical(x)
 end
 Base.trunc(x::CompoundPeriod, ::Type{Nanosecond}) = canonical(x)
 
-cnurt(x::CompoundPeriod, ::Type{Nanosecond}) = trunc(x, Microsecond)
-cnurt(x::CompoundPeriod, ::Type{Microsecond}) = trunc(x, Millisecond)
-cnurt(x::CompoundPeriod, ::Type{Millisecond}) = trunc(x, Second)
-cnurt(x::CompoundPeriod, ::Type{Second}) = trunc(x, Minute)
-cnurt(x::CompoundPeriod, ::Type{Minute}) = trunc(x, Hour)
-cnurt(x::CompoundPeriod, ::Type{Hour}) = trunc(x, Day)
-cnurt(x::CompoundPeriod, ::Type{Day}) = trunc(x, Month)
-cnurt(x::CompoundPeriod, ::Type{Month}) = trunc(x, Year)
-cnurt(x::CompoundPeriod, ::Type{Year}) = Month(0) + Minute(0)
+cnurt(x::CompoundPeriod, ::Type{Nanosecond}) = let c = canonical(x)
+     c - trunc(x, Nanosecond)
+end
+cnurt(x::CompoundPeriod, ::Type{Microsecond}) = let c = canonical(x)
+     c - trunc(x, Microsecond)
+end
+cnurt(x::CompoundPeriod, ::Type{Milliecond}) = let c = canonical(x)
+     c - trunc(x, Millisecond)
+end
+
+cnurt(x::CompoundPeriod, ::Type{Second}) = let c = canonical(x)
+     c - trunc(x, Second)
+end
+cnurt(x::CompoundPeriod, ::Type{Minute}) = let c = canonical(x)
+     c - trunc(x, Minute)
+end
+cnurt(x::CompoundPeriod, ::Type{Hour}) = let c = canonical(x)
+     c - trunc(x, Hour)
+end
+
+cnurt(x::CompoundPeriod, ::Type{Day}) = let c = canonical(x)
+     c - trunc(x, Day)
+end
+cnurt(x::CompoundPeriod, ::Type{Month}) = let c = canonical(x)
+     c - trunc(x, Month)
+end
+cnurt(x::CompoundPeriod, ::Type{Year}) = let c = canonical(x)
+     c - trunc(x, Year)
+end
 
 
 

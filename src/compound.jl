@@ -90,7 +90,7 @@ NanoDate(dy::Day; utc=false) =
     Date(year(utc ? now(UTC) : now()), 1, value(dy))
 
 for P in (:Hour, :Minute, :Second, :Millisecond,
-          :Microsecond, :Nanosecod)
+          :Microsecond, :Nanosecond)
   @eval function NanoDate(p::$P; utc=false)
             thedate = utc ? now(UTC) : now()
             cperiod = canonical(p)

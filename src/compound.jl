@@ -14,7 +14,6 @@ Dates.CompoundPeriod(nd::NanoDate) =
     Hour(nd) + Minute(nd) + Second(nd) +
     Millisecond(nd) + Microsecond(nd) + Nanosecond(nd)
 
-
 Dates.Date(yr::Year; utc=false) =
     Date(year(utc ? now(UTC) : now()))
 
@@ -44,143 +43,83 @@ function Dates.Date(cperiod::CompoundPeriod; utc=false)
     result
 end
 
-function Dates.Time(cperiod::CompoundPeriod)
-    periods = canonicalize(cperiod).periods
-    hr, mi, sc, ms, cs, ns = 0, 0, 0, 0, 0, 0
-    idx = findfirst(x->isa(x,Hour), periods)
-    if !isnothing(idx)
-        hr = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Minute), periods)
-    if !isnothing(idx)
-        mi = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Second), periods)
-    if !isnothing(idx)
-        sc = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Millisecond), periods)
-    if !isnothing(idx)
-        ms = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Microsecond), periods)
-    if !isnothing(idx)
-        cs = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Nanosecond), periods)
-    if !isnothing(idx)
-        ns = value(periods[idx])
-    end
-    Time(hr,mi,sc,ms,cs,ns)
+Dates.DateTime(yr::Year; utc=false) =
+    Date(year(utc ? now(UTC) : now()))
+
+Dates.DateTime(mn::Month; utc=false) =
+    Date(year(utc ? now(UTC) : now()), value(mn))
+
+Dates.DateTime(dy::Day; utc=false) =
+    Date(year(utc ? now(UTC) : now()), 1, value(dy))
+
+for P in (:Hour, :Minute, :Second, :Millisecond)
+  @eval function Dates.DateTime(p::$P; utc=false)
+            thedate = utc ? now(UTC) : now()
+            cperiod = canonical(p)
+            thedate + cperiod
+        end
+  end
 end
 
-function Dates.DateTime(cperiod::CompoundPeriod)
-    periods = canonicalize(cperiod).periods
-    yr, mn, dy = 0, 1, 1
-    qt, wk = 0, 0
-    hr, mi, sc, ms = 0, 0, 0, 0
-    idx = findfirst(x->isa(x,Year), periods)
-    if !isnothing(idx)
-        yr = value(periods[idx])
+function Dates.DateTime(cperiod::CompoundPeriod; utc=false)
+    ccperiod = canonical(cperiod)
+    if iszero(year(ccperiod))
+        ccperiod += Year(utc ? now(UTC) : now())
     end
-    idx = findfirst(x->isa(x,Quarter), periods)
-    if !isnothing(idx)
-        qt = value(periods[idx])
+    if iszero(month(ccperiod))
+        ccperiod -= Year(1)
+        ccperiod += Month(12)
     end
-    idx = findfirst(x->isa(x,Month), periods)
-    if !isnothing(idx)
-        mn = value(periods[idx])
+    result = Date(year(ccperiod), month(ccperiod))
+    dy = day(ccperiod)
+    if iszero(dy)
+       result -= Month(1)
+       result = lastdayofmonth(result)
+    else
+       result += Day(dy - (dy > 0))  
     end
-    idx = findfirst(x->isa(x,Week), periods)
-    if !isnothing(idx)
-        wk = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Day), periods)
-    if !isnothing(idx)
-        dy = value(periods[idx])
-    end    
-    idx = findfirst(x->isa(x,Hour), periods)
-    if !isnothing(idx)
-        hr = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Minute), periods)
-    if !isnothing(idx)
-        mi = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Second), periods)
-    if !isnothing(idx)
-        sc = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Millisecond), periods)
-    if !isnothing(idx)
-        ms = value(periods[idx])
-    end
-    mn = mn + 3*qt
-    dy = dy + 7*wk
-    if iszero(mn) && !iszero(yr)
-        mn = 12
-        yr = yr - 1
-    end
-    DateTime(yr,mn,dy,hr,mi,sc,ms)
+    result + (ccperiod - CompoundPeriod(result))
 end
 
-function NanoDate(cperiod::CompoundPeriod)
-    periods = canonicalize(cperiod).periods
-    yr, mn, dy = 0, 1, 1
-    qt, wk = 0, 0
-    hr, mi, sc, ms, cs, ns = 0, 0, 0, 0, 0, 0
-    idx = findfirst(x->isa(x,Year), periods)
-    if !isnothing(idx)
-        yr = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Quarter), periods)
-    if !isnothing(idx)
-        qt = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Month), periods)
-    if !isnothing(idx)
-        mn = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Week), periods)
-    if !isnothing(idx)
-        wk = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Day), periods)
-    if !isnothing(idx)
-        dy = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Hour), periods)
-    if !isnothing(idx)
-        hr = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Minute), periods)
-    if !isnothing(idx)
-        mi = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Second), periods)
-    if !isnothing(idx)
-        sc = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Millisecond), periods)
-    if !isnothing(idx)
-        ms = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Microsecond), periods)
-    if !isnothing(idx)
-        cs = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Nanosecond), periods)
-    if !isnothing(idx)
-        ns = value(periods[idx])
-    end
-    mn = mn + 3*qt
-    dy = dy + 7*wk
-    if iszero(mn) && !iszero(yr)
-        mn = 12
-        yr = yr - 1
-    end
-    NanoDate(yr,mn,dy,hr,mi,sc,ms,cs,ns)
+NanoDate(yr::Year; utc=false) =
+    Date(year(utc ? now(UTC) : now()))
+
+NanoDate(mn::Month; utc=false) =
+    Date(year(utc ? now(UTC) : now()), value(mn))
+
+NanoDate(dy::Day; utc=false) =
+    Date(year(utc ? now(UTC) : now()), 1, value(dy))
+
+for P in (:Hour, :Minute, :Second, :Millisecond,
+          :Microsecond, :Nanosecod)
+  @eval function NanoDate(p::$P; utc=false)
+            thedate = utc ? now(UTC) : now()
+            cperiod = canonical(p)
+            thedate + cperiod
+        end
+  end
 end
+
+function NanoDate(cperiod::CompoundPeriod; utc=false)
+    ccperiod = canonical(cperiod)
+    if iszero(year(ccperiod))
+        ccperiod += Year(utc ? now(UTC) : now())
+    end
+    if iszero(month(ccperiod))
+        ccperiod -= Year(1)
+        ccperiod += Month(12)
+    end
+    result = NanoDate(year(ccperiod), month(ccperiod))
+    dy = day(ccperiod)
+    if iszero(dy)
+       result -= Month(1)
+       result = lastdayofmonth(result)
+    else
+       result += Day(dy - (dy > 0))  
+    end
+    result + (ccperiod - CompoundPeriod(result))
+end
+
 
 # length, iterate
 Base.length(cperiod::CompoundPeriod) = length(cperiod.periods)

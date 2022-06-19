@@ -96,7 +96,6 @@ for P in (:Hour, :Minute, :Second, :Millisecond,
             cperiod = canonical(p)
             thedate + cperiod
         end
-  end
 end
 
 function NanoDate(cperiod::CompoundPeriod; utc=false)
@@ -118,7 +117,6 @@ function NanoDate(cperiod::CompoundPeriod; utc=false)
     end
     result + (ccperiod - CompoundPeriod(result))
 end
-
 
 # length, iterate
 Base.length(cperiod::CompoundPeriod) = length(cperiod.periods)

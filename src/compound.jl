@@ -24,24 +24,23 @@ Dates.Date(dy::Day, utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()), 1, value(dy))
 
 function Dates.Date(cperiod::CompoundPeriod, utc=false)
-    ccperiod = canonical(cperiod)
+    ccperiod = trunc(canonical(cperiod), Day)
     
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
     end
-    if iszero(month(ccperiod))
-        ccperiod -= Year(1)
-        ccperiod += Month(12)
-    end
-    result = Date(year(ccperiod), month(ccperiod))
-    dy = day(ccperiod)
-    if iszero(dy)
-       result -= Month(1)
-       result = lastdayofmonth(result)
-    else
-       result += Day(dy - (dy > 0))  
-    end
-    result
+    result = Date(year(ccperiod))
+    mn = Month(ccperiod)
+    mn -= Month(!iszero(mn))
+    result += mn
+    dy = Day(ccperiod)
+    dy -= Day(!iszero(dy))
+    result += dy
+    return result
+end
+
+for P in (:Hour, :Minute, :Second, :Millisecond, :Microsecond, :Nanosecond)
+    @eval Dates.Date(p::$P, utc=false) = utc ? today(UTC) : today()
 end
 
 Dates.DateTime(yr::Year, utc::Bool=false) =
@@ -61,8 +60,12 @@ for P in (:Hour, :Minute, :Second, :Millisecond)
         end
 end
 
+for P in (:Microsecond, :Nanosecond)
+    @eval Dates.DateTime(p::$P, utc=false) = utc ? now(UTC) : now()
+end
+
 function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
-    ccperiod = canonical(cperiod)
+    ccperiod = trunc(canonical(cperiod), Millisecond)
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
     end

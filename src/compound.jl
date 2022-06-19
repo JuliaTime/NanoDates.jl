@@ -97,9 +97,9 @@ function NanoDate(cperiod::CompoundPeriod; utc::Bool=false)
     ccperiod = canonical(cperiod)
     yr = year(ccperiod)
     if iszero(yr)
-        result = DateTime(year(utc ? now(UTC) : now()))
+        result = NanoDate(year(utc ? now(UTC) : now()))
     else
-        result = DateTime(yr)
+        result = NanoDate(yr)
     end
     result += Month(month(ccperiod)-1)
     result += Day(day(ccperiod)-1)

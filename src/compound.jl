@@ -25,6 +25,7 @@ Dates.Date(dy::Day; utc::Bool=false) =
 
 function Dates.Date(cperiod::CompoundPeriod; utc=false)
     ccperiod = canonical(cperiod)
+    
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
     end

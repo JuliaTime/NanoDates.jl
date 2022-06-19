@@ -63,3 +63,43 @@ function canonical(x::Period)
     canonicalized(y)
 end
 
+# trunc a compoundperiod and cnurt
+
+Base.trunc(x::CompoundPeriod, ::Type{Year}) = Year(canonical(x)) + Day(0)
+Base.trunc(x::CompoundPeriod, ::Type{Month}) = let c = canonical(x)
+    Year(c) + Month(c)
+end
+Base.trunc(x::CompoundPeriod, ::Type{Day}) = let c = canonical(x)
+    Year(c) + (Month(c) + Day(c))
+end
+Base.trunc(x::CompoundPeriod, ::Type{Hour}) = let c = canonical(x)
+    Year(c) + (Month(c) + Day(c) + Hour(c))
+end
+Base.trunc(x::CompoundPeriod, ::Type{Minute}) = let c = canonical(x)
+    Year(c) + (Month(c) + Day(c) + Hour(c) + Minute(c))
+end
+Base.trunc(x::CompoundPeriod, ::Type{Second}) = let c = canonical(x)
+    Year(c) + (Month(c) + Day(c) + Hour(c) + Minute(c) + Second(c))
+end
+Base.trunc(x::CompoundPeriod, ::Type{Millisecond}) = let c = canonical(x)
+    Year(c) + (Month(c) + Day(c) + Hour(c) + Minute(c) + Second(c) +
+     Millisecond(c))
+end
+Base.trunc(x::CompoundPeriod, ::Type{Microsecond}) = let c = canonical(x)
+    Year(c) + (Month(c) + Day(c) + Hour(c) + Minute(c) + Second(c) +
+     Millisecond(c) + Microsecond(c))
+end
+Base.trunc(x::CompoundPeriod, ::Type{Nanosecond}) = canonical(x)
+
+cnurt(x::CompoundPeriod, ::Type{Nanosecond}) = trunc(x, Microsecond)
+cnurt(x::CompoundPeriod, ::Type{Microsecond}) = trunc(x, Millisecond)
+cnurt(x::CompoundPeriod, ::Type{Millisecond}) = trunc(x, Second)
+cnurt(x::CompoundPeriod, ::Type{Second}) = trunc(x, Minute)
+cnurt(x::CompoundPeriod, ::Type{Minute}) = trunc(x, Hour)
+cnurt(x::CompoundPeriod, ::Type{Hour}) = trunc(x, Day)
+cnurt(x::CompoundPeriod, ::Type{Day}) = trunc(x, Month)
+cnurt(x::CompoundPeriod, ::Type{Month}) = trunc(x, Year)
+cnurt(x::CompoundPeriod, ::Type{Year}) = Month(0) + Minute(0)
+
+
+

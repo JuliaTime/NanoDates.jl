@@ -77,8 +77,7 @@ end
 @testset "NanoDate(Period)" begin
     tda = NanoDate(now())
 
-    @test NanoDate(Month(3)) == 
-        tda - (Month(month(tda)-1)) + Month(3-1) - Day(day(tda)-1)
+    @test NanoDate(Month(3)) == trunc(tda, Year) + Month(3-1)
     @test NanoDate(Day(5)) == firstdayofyear(tda) + Day(5-1)
     @test NanoDate(Hour(3)) == firsthourofday(tda) + Hour(3)
 

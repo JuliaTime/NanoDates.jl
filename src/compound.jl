@@ -58,7 +58,6 @@ for P in (:Hour, :Minute, :Second, :Millisecond)
             cperiod = canonical(p)
             thedate + cperiod
         end
-  end
 end
 
 function Dates.DateTime(cperiod::CompoundPeriod; utc=false)

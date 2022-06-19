@@ -69,8 +69,11 @@ function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
     else
         result = DateTime(yr)
     end
-    result += Month(month(ccperiod)-1)
-    result += Day(day(ccperiod)-1)
+    md = month(ccperiod)
+    dy = day(ccperiod)
+    result += Month(md - !iszero(md))
+    result += Day(dy - !iszero(dy))
+#    result += Day(day(ccperiod)-1)
     result += cnurt(ccperiod, Day)
     result
 end
@@ -93,7 +96,7 @@ for P in (:Hour, :Minute, :Second, :Millisecond,
         end
 end
 
-function NanoDate(cperiod::CompoundPeriod; utc::Bool=false)
+function NanoDate(cperiod::CompoundPeriod, utc::Bool=false)
     ccperiod = canonical(cperiod)
     yr = year(ccperiod)
     if iszero(yr)
@@ -101,8 +104,11 @@ function NanoDate(cperiod::CompoundPeriod; utc::Bool=false)
     else
         result = NanoDate(yr)
     end
-    result += Month(month(ccperiod)-1)
-    result += Day(day(ccperiod)-1)
+    md = month(ccperiod)
+    dy = day(ccperiod)
+    result += Month(md - !iszero(md))
+    result += Day(dy - !iszero(dy))
+#    result += Day(day(ccperiod)-1)
     result += cnurt(ccperiod, Day)
     result
 end

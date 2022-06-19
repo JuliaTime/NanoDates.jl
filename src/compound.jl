@@ -64,24 +64,25 @@ for P in (:Microsecond, :Nanosecond)
     @eval Dates.DateTime(p::$P, utc=false) = utc ? now(UTC) : now()
 end
 
-function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
+
+function Dates.DateTime(cperiod::CompoundPeriod, utc=false)
     ccperiod = trunc(canonical(cperiod), Millisecond)
+    
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
     end
-    if iszero(month(ccperiod))
-        ccperiod -= Year(1)
-        ccperiod += Month(12)
-    end
-    result = DateTime(Date(year(ccperiod), month(ccperiod)))
-    dy = day(ccperiod)
-    if iszero(dy)
-       result -= Month(1)
-       result = lastdayofmonth(result)
-    else
-       result += Day(dy - (dy > 0))  
-    end
-    result + (ccperiod - CompoundPeriod(result))
+    result = DateTime(year(ccperiod))
+    mn = Month(ccperiod)
+    mn -= Month(!iszero(mn))
+    result += mn
+    dy = Day(ccperiod)
+    dy -= Day(!iszero(dy))
+    result += dy
+    result += Hour(ccperiod)
+    result += Minute(ccperiod)
+    result += Second(ccperiod)
+    result += Millisecond(ccperiod)
+    return result
 end
 
 NanoDate(yr::Year; utc::Bool=false) =
@@ -102,24 +103,26 @@ for P in (:Hour, :Minute, :Second, :Millisecond,
         end
 end
 
-function NanoDate(cperiod::CompoundPeriod; utc::Bool=false)
-    ccperiod = canonical(cperiod)
+function NanoDate(cperiod::CompoundPeriod, utc=false)
+    ccperiod = trunc(canonical(cperiod), Millisecond)
+    
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())
     end
-    if iszero(month(ccperiod))
-        ccperiod -= Year(1)
-        ccperiod += Month(12)
-    end
-    result = NanoDate(year(ccperiod), month(ccperiod))
-    dy = day(ccperiod)
-    if iszero(dy)
-       result -= Month(1)
-       result = lastdayofmonth(result)
-    else
-       result += Day(dy - (dy > 0))  
-    end
-    result + (ccperiod - CompoundPeriod(result))
+    result = DateTime(year(ccperiod))
+    mn = Month(ccperiod)
+    mn -= Month(!iszero(mn))
+    result += mn
+    dy = Day(ccperiod)
+    dy -= Day(!iszero(dy))
+    result += dy
+    result += Hour(ccperiod)
+    result += Minute(ccperiod)
+    result += Second(ccperiod)
+    result += Millisecond(ccperiod)
+    result += Microsecond(ccperiod)
+    result += Nanosecond(ccperiod)
+    return result
 end
 
 # length, iterate

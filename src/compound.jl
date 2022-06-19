@@ -45,13 +45,13 @@ function Dates.Date(cperiod::CompoundPeriod, utc=false)
 end
 
 Dates.DateTime(yr::Year, utc::Bool=false) =
-    DateTime(Date(yr; utc))
+    DateTime(Date(yr, utc))
 
 Dates.DateTime(mn::Month, utc::Bool=false) =
-    DateTime(Date(mn; utc))
+    DateTime(Date(mn, utc))
 
 Dates.DateTime(dy::Day, utc::Bool=false) =
-    DateTime(Date(dy; utc))
+    DateTime(Date(dy, utc))
 
 for P in (:Hour, :Minute, :Second, :Millisecond)
   @eval function Dates.DateTime(p::$P, utc::Bool=false)
@@ -61,7 +61,7 @@ for P in (:Hour, :Minute, :Second, :Millisecond)
         end
 end
 
-function Dates.DateTime(cperiod::CompoundPeriod; utc::Bool=false)
+function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
     ccperiod = canonical(cperiod)
     if iszero(year(ccperiod))
         ccperiod += Year(utc ? now(UTC) : now())

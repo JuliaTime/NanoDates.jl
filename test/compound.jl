@@ -63,7 +63,7 @@ end
 end
 
 @testset "DateTime([Compound]Period)" begin
-    tda = today()
+    tda = now()
 
     @test DateTime(Month(2)) == firstdayofyear(tda) + Month(2-1)
     @test DateTime(Month(2) + Second(5)) ==
@@ -75,8 +75,8 @@ end
 end
 
 @testset "NanoDate(Period)" begin
+    tda = NanoDate(now())
 
-    tda = NanoDate(today())
     @test NanoDate(Month(3)) == 
         tda - (Month(month(tda)-1)) + Month(3-1) - Day(day(tda)-1)
     @test NanoDate(Day(5)) == firstdayofyear(tda) + Day(5-1)

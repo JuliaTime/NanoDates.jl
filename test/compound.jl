@@ -37,3 +37,21 @@ end
     @test canonical(Week(1) + Day(3)) == Day(10)
 
 end
+
+@testset "Date" begin
+   
+   da = Date(2022,6,18)
+   cpda = CompoundPeriod(da)
+
+   @test Date(cpda) == da
+   @test Date(cpda - Day(da)) == da - Day(da)
+   @test Date(cpda - Day(da) + Day(1)) == da - Day(da) + Day(1)
+   @test Date(cpda - Day(da) - Day(1)) == da - Day(da) - Day(1)
+   
+   @test Date(cpda - Month(da)) == da - Month(da)
+   @test Date(cpda - Month(da) + Month(1)) == da - Month(da) + Month(1)
+   @test Date(cpda - Month(da) - Month(1)) == da - Month(da) - Month(1)
+
+   @test Date(cpda - Month(da) - Day(da)) == da - Month(da) - Day(da)
+
+end

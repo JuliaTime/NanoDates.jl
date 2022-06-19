@@ -14,38 +14,24 @@ Dates.CompoundPeriod(nd::NanoDate) =
     Hour(nd) + Minute(nd) + Second(nd) +
     Millisecond(nd) + Microsecond(nd) + Nanosecond(nd)
 
-function Dates.Date(cperiod::CompoundPeriod)
-    cperiod = canonicalize(cperiod)
-    periods = canonicalize(cperiod).periods
-    yr, mn, dy = 0, 1, 1
-    qt, wk = 0, 0
-    idx = findfirst(x->isa(x,Year), periods)
-    if !isnothing(idx)
-        yr = value(periods[idx])
+function Dates.Date(cperiod::CompoundPeriod; utc=false)
+    ccperiod = canonical(cperiod)
+    if iszero(year(ccperiod))
+        ccperiod += Year(utc ? now(UTC) : now())
     end
-    idx = findfirst(x->isa(x,Quarter), periods)
-    if !isnothing(idx)
-        qt = value(periods[idx])
+    if iszero(month(ccperiod))
+        ccperiod -= Year(1)
+        ccperiod += Month(12)
     end
-    idx = findfirst(x->isa(x,Month), periods)
-    if !isnothing(idx)
-        mn = value(periods[idx])
+    result = Date(year(ccperiod), month(ccperiod))
+    dy = day(ccperiod)
+    if iszero(dy)
+       result -= Month(1)
+       result = lastdayofmonth(result)
+    else
+       result += Day(dy - (dy > 0))  
     end
-    idx = findfirst(x->isa(x,Week), periods)
-    if !isnothing(idx)
-        wk = value(periods[idx])
-    end
-    idx = findfirst(x->isa(x,Day), periods)
-    if !isnothing(idx)
-        dy = value(periods[idx])
-    end
-    mn = mn + 3*qt
-    if iszero(mn) && !iszero(yr)
-        mn = 12
-        yr = yr - 1
-    end
-    dy = dy + 7*wk
-    Date(yr,mn,dy)
+    result
 end
 
 function Dates.Time(cperiod::CompoundPeriod)

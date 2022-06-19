@@ -116,14 +116,10 @@ NanoDate(dt::DateTime, cs, ns) = NanoDate(dt, nanosecs(cs, ns))
 NanoDate(d::Date, x) = NanoDate(d, nanosecs(x))
 NanoDate(d::Date, cs, ns) = NanoDate(d, nanosecs(cs, ns))
 
-# see compound.jl
-# NanoDate(dy::Day) = NanoDate(Date(UTD(dy)), Nanosecond0)
 NanoDate(dy::Day, ns::Nanosecond) = NanoDate(Date(UTD(dy)), ns)
 NanoDate(dy::Day, cs::Microsecond) = NanoDate(Date(UTD(dy)), nanosecs(cs))
 NanoDate(dy::Day, cs::Microsecond, ns::Nanosecond) = NanoDate(Date(UTD(dy)), nanosecs(cs, ns))
 
-# see compound.jl
-$ NanoDate(ms::Millisecond) = NanoDate(DateTime(UTM(ms)), Nanosecond0)
 NanoDate(ms::Millisecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), ns)
 NanoDate(ms::Millisecond, cs::Microsecond) = NanoDate(DateTime(UTM(ms)), nanosecs(cs))
 NanoDate(ms::Millisecond, cs::Microsecond, ns::Nanosecond) = NanoDate(DateTime(UTM(ms)), nanosecs(cs, ns))

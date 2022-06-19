@@ -97,7 +97,7 @@ end
 cnurt(x::CompoundPeriod, ::Type{Microsecond}) = let c = canonical(x)
      c - trunc(x, Microsecond)
 end
-cnurt(x::CompoundPeriod, ::Type{Milliecond}) = let c = canonical(x)
+cnurt(x::CompoundPeriod, ::Type{Millisecond}) = let c = canonical(x)
      c - trunc(x, Millisecond)
 end
 

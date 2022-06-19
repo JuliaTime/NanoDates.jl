@@ -7,6 +7,9 @@ date_time(d::Date, t::Time) = DateTime(d, trunc(t, Millisecond))
 
 # similar to `Dates.now()`, with subsecond support
 
+# enhance `today()`
+Dates.today(::Type{UTC}) = Date(now(UTC))
+
 nnow() = NanoDate(now())
 nnow(ns::Nanosecond) = NanoDate(now(), nanosecs(ns))
 nnow(ms::Microsecond) = NanoDate(now(), nanosecs(ms))
@@ -21,7 +24,7 @@ nnow(::Type{UTC}, subsecs) = NanoDate(now(UTC), nanosecs(subsecs))
 nnow(::Type{UTC}, cs::Integer, ns::Integer=0) = NanoDate(now(), nanosecs(cs, ns))
 
 ntoday() = NanoDate(today())
-ntoday(::Type{UTC}) = NanoDate(Date(now(UTC)))
+ntoday(::Type{UTC}) = NanoDate(Dates.today(UTC))
 
 function datetime2datetime(dtm::DateTime)
     millis = Dates.value(dtm)

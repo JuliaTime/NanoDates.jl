@@ -82,13 +82,13 @@ function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
 end
 
 NanoDate(yr::Year; utc::Bool=false) =
-    NanoDate(DateTime(yr; utc))
+    NanoDate(DateTime(yr, utc))
 
 NanoDate(mn::Month; utc::Bool=false) =
-    NanoDate(DateTime(mn; utc))
+    NanoDate(DateTime(mn, utc))
 
 NanoDate(dy::Day; utc::Bool=false) =
-    NanoDate(DateTime(dy; utc))
+    NanoDate(DateTime(dy, utc))
 
 for P in (:Hour, :Minute, :Second, :Millisecond,
           :Microsecond, :Nanosecond)

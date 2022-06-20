@@ -26,7 +26,7 @@ rata2nanodate(rata::Integer) = NanoDate(rata2datetime(rata))
 
 function nanodate2unixnanos(nd::NanoDate)
     millis = (value(nd.datetime) - Dates.UNIXEPOCH)
-    nanos  = (millis * Int128(NanosecondsPerMillisecond)) + nd.nanosecs
+    nanos  = (millis * Int128(NanosecondsPerMillisecond)) + value(nd.nanosecs)
     nanos
 end
 
@@ -37,7 +37,7 @@ end
 
 function nanodate2unixmillis(nd::NanoDate)
     micros  = nanodate2unixmicros(nd)
-    div(nanos, 1_000_000)
+    div(micros, 1_000_000)
 end
 
 function nanodate2unixseconds(nd::NanoDate)

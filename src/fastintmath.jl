@@ -21,11 +21,11 @@ fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
 
 function fldmod_1000(x::T) where {T<:Union{Int64,UInt64}}
     if abs(x) <= 9_780_955_816
-        quotient = if (x < 434_934_000)          # in 2^28 .. 2^29
-            unsafe_fld_1000(x)
-        else
-            fld(x, 1_000)
-        end
+        quotient =  if (x < 434_934_000)          # in 2^28 .. 2^29
+                        unsafe_fld_1000(x)
+                    else
+                        fld(x, 1_000)
+                    end
 
         remainder = x - unsafe_mulby_1000(quotient)
         

@@ -21,18 +21,18 @@ fldby60(x::T) where T = fld(x, 60)
 
 fldby86400(x::T)   where T = fld(x,              86_400)
 fldby86400e3(x::T) where T = fld(x,          86_400_000)
-fldby86400e6(x::T) where T = fld(x,     (86_400_000_000 % Int128))
-fldby86400e9(x::T) where T = fld(x, (86_400_000_000_000 % Int128))
+fldby86400e6(x::T) where T = fld(x,      86_400_000_000)
+fldby86400e9(x::T) where T = fld(x,  86_400_000_000_000)
 
 fldby10(x::T)   where T = fld(x,             10)
 fldby100(x::T)  where T = fld(x,            100)
 fldby1e3(x::T)  where T = fld(x,          1_000)
 fldby1e6(x::T)  where T = fld(x,      1_000_000)
-fldby1e9(x::T)  where T = fld(x, (1_000_000_000 % Int128))
+fldby1e9(x::T)  where T = fld(x,  1_000_000_000)
 
 mulby60e3(x::T) where T = (x *          60_000)
 mulby60e6(x::T) where T = (x *      60_000_000)
-mulby60e9(x::T) where T = (x * (60_000_000_000 % Int128))
+mulby60e9(x::T) where T = (x *  60_000_000_000)
 
 
 # nanos per micro, micros per milli, millis per second

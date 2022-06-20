@@ -80,7 +80,7 @@ fldmodby86400e9(x::T) where T = fldby86400e9(x), modby86400e9(x)
 fldmodby10(x::T)   where T = fldby10(x), modby10(x)
 fldmodby100(x::T)  where T = fldby100(x), modby100(x)
 fldmodby1e3(x::T)  where T = fldby1e3(x), modby1e3(x)
-fldmodby1e6(x::T)  where T = fldby1e6(x), modby10e6x)
+fldmodby1e6(x::T)  where T = fldby1e6(x), modby1e6(x)
 fldmodby1e9(x::T)  where T = fldby1e9(x), modby1e9(x)
 
 fldmodby60e3(x::T) where T = fldby60e3(x), fldby60e3(x)

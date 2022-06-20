@@ -16,6 +16,23 @@ mulby60e3(x::T) where T = (x *          60_000)
 mulby60e6(x::T) where T = (x *      60_000_000)
 mulby60e9(x::T) where T = (x * (60_000_000_000 % Int128))
 
+fldby60(x::T) where T = fld(x, 60)
+
+fldby86400(x::T)   where T = fld(x,              86_400)
+fldby86400e3(x::T) where T = fld(x,          86_400_000)
+fldby86400e6(x::T) where T = fld(x,      86_400_000_000)
+fldby86400e9(x::T) where T = fld(x,  86_400_000_000_000)
+
+fldby10(x::T)   where T = fld(x,             10)
+fldby100(x::T)  where T = fld(x,            100)
+fldby1e3(x::T)  where T = fld(x,          1_000)
+fldby1e6(x::T)  where T = fld(x,      1_000_000)
+fldby1e9(x::T)  where T = fld(x,  1_000_000_000)
+
+fldby60e3(x::T) where T = fld(x,          60_000)
+fldby60e6(x::T) where T = fld(x,      60_000_000)
+fldby60e9(x::T) where T = fld(x,  60_000_000_000)
+
 
 fldby60(x::T) where T = fld(x, 60)
 
@@ -30,9 +47,47 @@ fldby1e3(x::T)  where T = fld(x,          1_000)
 fldby1e6(x::T)  where T = fld(x,      1_000_000)
 fldby1e9(x::T)  where T = fld(x,  1_000_000_000)
 
-mulby60e3(x::T) where T = (x *          60_000)
-mulby60e6(x::T) where T = (x *      60_000_000)
-mulby60e9(x::T) where T = (x *  60_000_000_000)
+fldby60e3(x::T) where T = fld(x,          60_000)
+fldby60e6(x::T) where T = fld(x,      60_000_000)
+fldby60e9(x::T) where T = fld(x,  60_000_000_000)
+
+
+modby60(x::T) where T = mod(x, 60)
+
+modby86400(x::T)   where T = mod(x,              86_400)
+modby86400e3(x::T) where T = mod(x,          86_400_000)
+modby86400e6(x::T) where T = mod(x,      86_400_000_000)
+modby86400e9(x::T) where T = mod(x,  86_400_000_000_000)
+
+modby10(x::T)   where T = mod(x,             10)
+modby100(x::T)  where T = mod(x,            100)
+modby1e3(x::T)  where T = mod(x,          1_000)
+modby1e6(x::T)  where T = mod(x,      1_000_000)
+modby1e9(x::T)  where T = mod(x,  1_000_000_000)
+
+modby60e3(x::T) where T = mod(x,          60_000)
+modby60e6(x::T) where T = mod(x,      60_000_000)
+modby60e9(x::T) where T = mod(x,  60_000_000_000)
+
+
+fldmodby60(x::T) where T = fldby60(x), modby60(x)
+
+fldmodby86400(x::T)   where T = fldby86400(x), modby86400(x)
+fldmodby86400e3(x::T) where T = fldby86400e3(x), modby86400e3(x)
+fldmodby86400e6(x::T) where T = fldby86400e6(x), modby86400e6(x)
+fldmodby86400e9(x::T) where T = fldby86400e9(x), modby86400e9(x)
+
+fldmodby10(x::T)   where T = fldby10(x), modby10(x)
+fldmodby100(x::T)  where T = fldby100(x), modby100(x)
+fldmodby1e3(x::T)  where T = fldby1e3(x), modby1e3(x)
+fldmodby1e6(x::T)  where T = fldby1e6(x), modby10e6x)
+fldmodby1e9(x::T)  where T = fldby1e9(x), modby1e9(x)
+
+fldmodby60e3(x::T) where T = fldby60e3(x), fldby60e3(x)
+fldmodby60e6(x::T) where T = fldby60e6(x), fldby60e6(x)
+fldmodby60e9(x::T) where T = fldby60e9(x), fldby60e9(x)
+
+# ------------------------------------------------------------------
 
 
 # nanos per micro, micros per milli, millis per second

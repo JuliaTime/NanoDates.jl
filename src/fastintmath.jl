@@ -1,3 +1,18 @@
+
+for K in (10, 60, 100, 1000, 3600, 10000, 86400, 1000000)
+    @inline mulby_$K(x) = $K * x
+end
+
+@inline mulby_1000(x::T) where {T<:Signed} = (x * T(1_000))
+@inline mulby_100(x)
+    x5  = x  << 5
+    x3  = x5 >> 2
+    x10 = x5 << 5
+    x10 - x5 + x3
+end
+
+
+
 unsafe_mulby_1000(x) = (x<<10) - (x << 5) + (x << 3)
 
 safe_mulby_1000(x::Int64) = x <= 9_223_372_036_854_775 ? mulby_100(x) : 

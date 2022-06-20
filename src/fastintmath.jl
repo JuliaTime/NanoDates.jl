@@ -1,16 +1,20 @@
 
-mulby60(x::T)        where T = (x *            60)
-mulby86400(x::T)     where T = (x *        86_400)
+mulby60(x::T) where T = (x * 60)
 
-mulby1ten(x::T)      where T = (x *            10)
-mulby1hundred(x::T)  where T = (x *           100)
-mulby1thousand(x::T) where T = (x *         1_000)
-mulby1million(x::T)  where T = (x *     1_000_000)
-mulby1billion(x::T)  where T = (x * (1_000_000_000 % Int128))
+mulby86400(x::T)   where T = (x *              86_400)
+mulby86400e3(x::T) where T = (x *          86_400_000)
+mulby86400e6(x::T) where T = (x *     (86_400_000_000 % Int128))
+mulby86400e9(x::T) where T = (x * (86_400_000_000_000 % Int128))
 
-mulby60thousand(x::T) where T = (x *         60_000)
-mulby60million(x::T)  where T = (x *     60_000_000)
-mulby60billion(x::T)  where T = (x * (60_000_000_000 % Int128))
+mulby10(x::T)   where T = (x *             10)
+mulby100(x::T)  where T = (x *            100)
+mulby1e3(x::T)  where T = (x *          1_000)
+mulby1e6(x::T)  where T = (x *      1_000_000)
+mulby1e9(x::T)  where T = (x * (1_000_000_000 % Int128))
+
+mulby60e3(x::T) where T = (x *          60_000)
+mulby60e6(x::T) where T = (x *      60_000_000)
+mulby60e9(x::T) where T = (x * (60_000_000_000 % Int128))
 
 
 # nanos per micro, micros per milli, millis per second

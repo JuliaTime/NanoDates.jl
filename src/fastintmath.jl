@@ -19,6 +19,8 @@ mulby60billion(x::T)  where T = (x * (60_000_000_000 % Int128))
 #
 is_x_lt_2pow28(x::UInt64) = iszero(x & 0x1fff_ffff_f000_0000)
 is_x_lt_2pow28(x::UInt32) = iszero(x & 0xf000_0000)
+is_x_lt_2pow28(x::Int64)  = is_x_lt_2pow28(x % UInt64)
+is_x_lt_2pow28(x::Int32)  = is_x_lt_2pow28(x % UInt32)
 
 is_x_gte_2pow28(x::UInt32) = iszero(x & 0x8000_0000)
 issafe_fld_1000(x::Int64) = !signbit(x) && iszero(x & 0x0000000010000000)

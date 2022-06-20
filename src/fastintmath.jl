@@ -116,12 +116,7 @@ fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
 
 
 @inline mulby_1000(x::T) where {T<:Signed} = (x * T(1_000))
-@inline mulby_100(x)
-    x5  = x  << 5
-    x3  = x5 >> 2
-    x10 = x5 << 5
-    x10 - x5 + x3
-end
+@inline mulby_100(x::T) where {T<:Signed} = (x * T(100))
 
 
 

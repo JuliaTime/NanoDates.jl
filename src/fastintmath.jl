@@ -1,7 +1,40 @@
 
-for K in (10, 60, 100, 1000, 3600, 10000, 86400, 1000000)
-    @inline mulby_$K(x) = $K * x
-end
+mulby60(x::T)        where T = (x *            60)
+mulby86400(x::T)     where T = (x *        86_400)
+
+mulby1ten(x::T)      where T = (x *            10)
+mulby1hundred(x::T)  where T = (x *           100)
+mulby1thousand(x::T) where T = (x *         1_000)
+mulby1million(x::T)  where T = (x *     1_000_000)
+mulby1billion(x::T)  where T = (x * (1_000_000_000 % Int128))
+
+mulby60thousand(x::T) where T = (x *         60_000)
+mulby60million(x::T)  where T = (x *     60_000_000)
+mulby60billion(x::T)  where T = (x * (60_000_000_000 % Int128))
+
+
+# nanos per micro, micros per milli, millis per second
+#
+# safe for 0 < x < 268435456  (2^28)
+#
+is_x_lt_2pow28(x::UInt64) = iszero(x & 0x1fff_ffff_f000_0000)
+is_x_lt_2pow28(x::UInt32) = iszero(x & 0xf000_0000)
+
+is_x_gte_2pow28(x::UInt32) = iszero(x & 0x8000_0000)
+issafe_fld_1000(x::Int64) = !signbit(x) && iszero(x & 0x0000000010000000)
+
+unsafe_fld_1000(x::T) where {T} =
+    ((x >> 3) * 34_359_739) >> 32
+
+fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
+    if (x < 434_934_000) # 2^28 = 268_435_456
+    # if x & ~0xffffffff == 0
+        unsafe_fld_1000(x)
+    else
+        fld(x, 1_000)
+    end
+
+
 
 @inline mulby_1000(x::T) where {T<:Signed} = (x * T(1_000))
 @inline mulby_100(x)

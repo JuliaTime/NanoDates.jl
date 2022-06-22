@@ -1,13 +1,83 @@
 Base.iszero(x::CompoundPeriod) = isempty(x)
 
+
+const DatePeriod0 = Period[Year(0), Month(0), Day(0)]
+const TimePeriod0 = Period[Hour(0), Minute(0), Second(0), Millisecond(0),
+    Microsecond(0), Nanosecond(0)]
+const DateTimePeriod0 = Period[Year(0), Month(0), Day(0),
+    Hour(0), Minute(0), Second(0), Millisecond(0)]
+const NanoDatePeriod0 = Period[Year(0), Month(0), Day(0),
+    Hour(0), Minute(0), Second(0), Millisecond(0),
+    Microsecond(0), Nanosecond(0)]
+
+const YMD = (Year, Month, Day)
+const HMS = (Hour, Minute, Second)
+const MμN = (Millisecond, Microsecond, Nanosecond)
+
+const HMSs = (HMS..., Millisecond)
+const HMSss = (HMS..., Millisecond, Microsecond)
+const HMSsss = (HMS..., MμN...)
+
+const YMDHMS = (YMD..., HMS...)
+const YMDHMSs = (YMD..., HMSs...)
+const YMDHMSss = (YMD..., HMSss...)
+const YMDHMSsss = (YMD..., HMSsss...)
+
+ymd(x::Date) = yearmonthday(x)
+ymd(x::DateTime) = ymd(fld(value(x), 86_400_000_000_000))
+
+function hms(x::Time)
+    secs = fld(value(x), NanosecondsPerSecond)
+    mins, secs = fldmod(secs, SecondsPerMinute)
+    hrs, mins = fldmod(mins, MinutesPerHour)
+    map((period, count)->period(count), HMS, (hrs, mins, secs))
+end
+
+hms(x::DateTime) = hms(Time(x))
+
+ymdhms(x::DateTime) = (ymd(x)..., hms(x)...,)
+ymdhms(x::Date) = ymdhms(DateTime(x))
+
+ymdhmss(x::DateTime) = (ymd(x)..., hmss(x)...,)
+ymdhmss(x::Date) = ymdhmss(DateTime(x))
+
+
+periods(x::Date) =
+    map((period, count)->period(count), YMD, ymd(x))
+
+periods(x::DateTime) =
+    map((period, count)->period(count), YMDHMS, yearmonthday(x))
+
+periods(x::NanoDate) =
+    map((period, count)->period(count), YMDHMSsss, ymdhmss(x))
+
+function Base.convert(::Type{Vector{Dates.Period}}, x::Date)
+    y,m,d = yearmonthday(x)
+    result = similar(DatePeriod0)
+    result .= (Year(y), Month(m), Day(d))
+    result
+end
+
+
+
+const DateTime_periods =
+    Dates.Period[Year(2000), Month(1), Day(1),
+     Hour(0), Minute(0), Second(0), Millisecond(0)]
+const DateTime_compound = 
+    CompoundPeriod(DateTime_periods)
+
 # Dates defines CompoundPeriod(t::Time)
 Dates.CompoundPeriod(d::Date) =
     Year(d) + Month(d) + Day(d)
 
-Dates.CompoundPeriod(dtm::DateTime) =
-    Year(dtm) + Month(dtm) + Day(dtm) +
-    Hour(dtm) + Minute(dtm) + Second(dtm) +
-    Millisecond(dtm)
+function cps(dt::DateTime)
+    ymd = trunc(dt, Hour)
+    hmss = cnurt(dt, Hour)
+    result = Period[Year(ymd), Month(ymd), Day(ymd),
+                    Hour(hmss), Minute(hmss), Second(hmss), Millisecond(hmss)]
+    result
+end
+
 
 Dates.CompoundPeriod(nd::NanoDate) =
     Year(nd) + Month(nd) + Day(nd) +

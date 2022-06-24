@@ -14,25 +14,10 @@ function Dates.validargs(::Type{NanoDate}, year::Int64=year(today()),
                                            month::Int64=one(Int64), day::Int64=one(Int64),
                                            hour::Int64=0, minute::Int64=0, second::Int64=0,
                                            millisecond::Int64=0, microsecond::Int64=0,
-                                           nanosecond::Int64=0, ampm=nothing)
-
-    Dates.validargs(Dates.Date, year, month, day)
-
-    if !isnothing(ampm)
-        Dates.validargs(Dates.Date, year, month, day) 
-    else
-        Dates.validargs(Dates.Time, hour, minute, second, 
-                                    millisecond, microsecond, nanosecond)
-    end
-    
-    validargs 
-end
-
-function Dates.validargs(::Type{NanoDate}, year, month, day,
-                                           hour, minute, second,
-                                           millisecond, microsecond, nanosecond, ampm)
+                                           nanosecond::Int64=0)
 
     Dates.validargs(Dates.Date, year, month, day)
     Dates.validargs(Dates.Time, hour, minute, second, 
-                                millisecond, microsecond, nanosecond, ampm) 
+                                millisecond, microsecond, nanosecond)
 end
+

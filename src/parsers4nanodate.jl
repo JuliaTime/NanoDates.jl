@@ -14,7 +14,7 @@ import Parsers: tryparse, tryparsenext, tryparsenext_base10,
     Options, Result
 
 const ISONanoDateFormat = Format("yyyy-mm-dd\\THH:MM:SS.sss")
-Parsers.default_format(::NanoDate) = ISONanoDateFormat
+Dates.default_format(::NanoDate) = ISONanoDateFormat
 
 Dates.validargs(::Type{NanoDate}, xs...) = true
 

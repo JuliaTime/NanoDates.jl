@@ -34,17 +34,6 @@ fldby60e6(x::T) where T = fld(x,      60_000_000)
 fldby60e9(x::T) where T = fld(x,  60_000_000_000)
 
 
-fldby10(x::T)   where T = fld(x,             10)
-fldby100(x::T)  where T = fld(x,            100)
-fldby1e3(x::T)  where T = fld(x,          1_000)
-fldby1e6(x::T)  where T = fld(x,      1_000_000)
-fldby1e9(x::T)  where T = fld(x,  1_000_000_000)
-
-fldby60e3(x::T) where T = fld(x,          60_000)
-fldby60e6(x::T) where T = fld(x,      60_000_000)
-fldby60e9(x::T) where T = fld(x,  60_000_000_000)
-
-
 modby60(x::T) where T = mod(x, 60)
 
 modby86400(x::T)   where T = mod(x,              86_400)

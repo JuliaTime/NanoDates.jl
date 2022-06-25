@@ -21,7 +21,7 @@ function Dates.validargs(::Type{NanoDate},
            y::Year, m::Month, d::Day, 
            h::Hour, mi::Minute, s::Second,
            ms::Millisecond, us::Microsecond, ns::Nanosecond, 
-           ampm:Dates.AMPM)
+           ampm::Dates.AMPM)
     extents = map(value, (y,m,d,h,mi,s,ms,us,ns))
     validargs(NanoDate, extents..., ampm)
 end

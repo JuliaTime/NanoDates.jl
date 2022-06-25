@@ -20,7 +20,7 @@ function Dates.validargs(::Type{NanoDate}, y::T, m::T, d::T, h::T, mi::T, s::T, 
     0 < m < 13 || return argerror("Month: $m out of range (1:12)")
     0 < d < daysinmonth(y, m) + 1 || return argerror("Day: $d out of range (1:$(daysinmonth(y, m)))")
 
-    if ampm == TWENTYFOURHOUR # 24-hour clock
+    if ampm == Dates.TWENTYFOURHOUR # 24-hour clock
         -1 < h < 24 || return argerror("Hour: $h out of range (0:23)")
     else
         0 < h < 13 || return argerror("Hour: $h out of range (1:12)")

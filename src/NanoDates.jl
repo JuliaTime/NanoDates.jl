@@ -39,7 +39,7 @@ include("fastintmath.jl")
 include("compound.jl")
 include("compoundperiod.jl")
 include("strings.jl")
-include("parsers4nanodates.jl")
+include("parsers4nanodate.jl")
 include("timestamp.jl")
 include("io.jl")
 

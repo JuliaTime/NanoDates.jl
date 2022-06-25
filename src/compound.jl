@@ -152,8 +152,10 @@ function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
     result
 end
 
+#=
 NanoDate(yr::Year, utc::Bool=false) =
     NanoDate(DateTime(yr, utc))
+=#
 
 NanoDate(mn::Month, utc::Bool=false) =
     NanoDate(DateTime(mn, utc))

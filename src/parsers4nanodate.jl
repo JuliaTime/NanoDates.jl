@@ -16,8 +16,13 @@ import Parsers: tryparse, tryparsenext, tryparsenext_base10,
 const ISONanoDateFormat = Format("yyyy-mm-dd\\THH:MM:SS.sss")
 Dates.default_format(::Type{NanoDate}) = ISONanoDateFormat
 
-function Dates.validargs(::Type{NanoDate}, y,m,d,h,mi,s,ms,us,ns,ampm)
-    extents = map(x->ifelse(isa(x, Period), value(x), x), ( y,m,d,h,mi,s,ms,us,ns))
+
+function Dates.validargs(::Type{NanoDate}, 
+           y::Year, m::Month, d::Day, 
+           h::Hour, mi::Minute, s::Second,
+           ms::Millisecond, us::Microsecond, ns::Nanosecond, 
+           ampm:Dates.AMPM)
+    extents = map(value, (y,m,d,h,mi,s,ms,us,ns))
     validargs(NanoDate, extents..., ampm)
 end
 

@@ -7,14 +7,32 @@ export ISONanoDateFormat
 
 # importing what is not exported from Dates
 #   that is used in this source file
-import Dates: DatePart, Delim
+import Dates: DatePart, Delim, validargs
 
 import Parsers: tryparse, tryparsenext, tryparsenext_base10,
-    Format, default_format, charactercode, xparse,
+    Format, default_format, charactercode,
     Options, Result
 
 const ISONanoDateFormat = Format("yyyy-mm-dd\\THH:MM:SS.sss")
 Dates.default_format(::Type{NanoDate}) = ISONanoDateTimeFormat
+
+function Dates.validargs(::Type{NanoDate}, y::Int128, m::Int128, d::Int128, h::Int128, mi::Int128, s::Int128, ms::Int128, us::Int128, ns::Int128, ampm::AMPM=TWENTYFOURHOUR)
+    0 < m < 13 || return argerror("Month: $m out of range (1:12)")
+    0 < d < daysinmonth(y, m) + 1 || return argerror("Day: $d out of range (1:$(daysinmonth(y, m)))")
+    
+    if ampm == TWENTYFOURHOUR # 24-hour clock
+        -1 < h < 24 || return argerror("Hour: $h out of range (0:23)")
+    else
+        0 < h < 13 || return argerror("Hour: $h out of range (1:12)")
+    end
+    -1 < mi < 60 || return argerror("Minute: $mi out of range (0:59)")
+    -1 < s < 60 || return argerror("Second: $s out of range (0:59)")
+    -1 < ms < 1000 || return argerror("Millisecond: $ms out of range (0:999)")
+    -1 < us < 1000 || return argerror("Microsecond: $us out of range (0:999)")
+    -1 < ns < 1000 || return argerror("Nanosecond: $ns out of range (0:999)")
+    return argerror()
+end
+
 
 Base.getindex(collection::IdDict{Type, Any}, ::Type{NanoDate}) =
    (Year, Month, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond)

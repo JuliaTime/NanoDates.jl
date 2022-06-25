@@ -123,6 +123,7 @@ function tryparsetokens(tokens, pos, len, b, code, locale)
 end
 
     valid = Dates.validargs(T, year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, ampm)
+#=    
     elseif T.name.name === :ZonedDateTime
         valid = Dates.validargs(T, year, month, day, hour, minute, second, millisecond, tz)
     else
@@ -169,7 +170,7 @@ end
     end
     return x, code, pos
 end
-
+=#
 
 #=
 Parsers.xparse(::Type{NanoDate}, source::Union{AbstractVector{UInt8},IO}, pos, len, options::Parsers.Options=Parsers.XOPTIONS, ::Type{S}=NanoDate) where {S} = true

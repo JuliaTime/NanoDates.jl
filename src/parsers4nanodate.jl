@@ -16,7 +16,7 @@ import Parsers: tryparse, tryparsenext, tryparsenext_base10,
 const ISONanoDateFormat = Format("yyyy-mm-dd\\THH:MM:SS.sss")
 Dates.default_format(::Type{NanoDate}) = ISONanoDateTimeFormat
 
-function Dates.validargs(::Type{NanoDate}, y::Int128, m::Int128, d::Int128, h::Int128, mi::Int128, s::Int128, ms::Int128, us::Int128, ns::Int128, ampm::AMPM=Dates.TWENTYFOURHOUR)
+function Dates.validargs(::Type{NanoDate}, y::Int128, m::Int128, d::Int128, h::Int128, mi::Int128, s::Int128, ms::Int128, us::Int128, ns::Int128, ampm::Dates.AMPM=Dates.TWENTYFOURHOUR)
     0 < m < 13 || return argerror("Month: $m out of range (1:12)")
     0 < d < daysinmonth(y, m) + 1 || return argerror("Day: $d out of range (1:$(daysinmonth(y, m)))")
     

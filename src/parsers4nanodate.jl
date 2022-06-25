@@ -26,7 +26,7 @@ const CONVERSION_WITH_TRANSLATIONS =
             Time => TimePeriods,
             Date => DatePeriods )
 
-
+#=
 @inline function tryparsenext(d::Dates.DatePart{'s'}, source, pos, len, b, code)
     ms0, newpos, b, code = tryparsenext_base10(source, pos, len, b, code, maxdigits(d))
     invalid(code) && return ms0, newpos, b, code
@@ -41,7 +41,8 @@ const CONVERSION_WITH_TRANSLATIONS =
     end
     return ms, newpos, b, code
 end
-
+=#
+#=
 # fallback that would call custom DatePart overloads that are expecting a string
 function tryparsenext(tok, source, pos, len, b, code)::Tuple{Any, Int, UInt8, ReturnCode}
     strlen = min(len - pos + 1, 64)
@@ -62,6 +63,7 @@ function tryparsenext(tok, source, pos, len, b, code)::Tuple{Any, Int, UInt8, Re
     return val, pos, b, code
 end
 
+#=
 @inline function typeparser(::Type{T}, source, pos, len, b, code, options) where {T <: Dates.TimeType}
     fmt = options.dateformat
     df = fmt === nothing ? default_format(T) : fmt

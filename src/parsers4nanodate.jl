@@ -16,10 +16,10 @@ import Parsers: tryparse, tryparsenext, tryparsenext_base10,
 const ISONanoDateFormat = Format("yyyy-mm-dd\\THH:MM:SS.sss")
 Dates.default_format(::Type{NanoDate}) = ISONanoDateTimeFormat
 
-function Dates.validargs(::Type{NanoDate}, y::Int128, m::Int128, d::Int128, h::Int128, mi::Int128, s::Int128, ms::Int128, us::Int128, ns::Int128, ampm::Dates.AMPM=Dates.TWENTYFOURHOUR)
+function Dates.validargs(::Type{NanoDate}, y::T, m::T, d::T, h::T, mi::T, s::T, ms::T, us::T, ns::T, ampm::Dates.AMPM=Dates.TWENTYFOURHOUR) where {T<:Union{Int64, Int128}}
     0 < m < 13 || return argerror("Month: $m out of range (1:12)")
     0 < d < daysinmonth(y, m) + 1 || return argerror("Day: $d out of range (1:$(daysinmonth(y, m)))")
-    
+
     if ampm == TWENTYFOURHOUR # 24-hour clock
         -1 < h < 24 || return argerror("Hour: $h out of range (0:23)")
     else
@@ -34,8 +34,8 @@ function Dates.validargs(::Type{NanoDate}, y::Int128, m::Int128, d::Int128, h::I
 end
 
 
-Base.getindex(collection::IdDict{Type, Any}, ::Type{NanoDate}) =
-   (Year, Month, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond)
+Base.getindex(collection::IdDict{Type,Any}, ::Type{NanoDate}) =
+    (Year, Month, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond)
 
 #=
 Parsers.xparse(::Type{NanoDate}, source::Union{AbstractVector{UInt8},IO}, pos, len, options::Parsers.Options=Parsers.XOPTIONS, ::Type{S}=NanoDate) where {S} = true

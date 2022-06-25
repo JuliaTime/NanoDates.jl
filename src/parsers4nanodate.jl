@@ -7,10 +7,10 @@ export ISONanoDateFormat
 
 # importing what is not exported from Dates
 #   that is used in this source file
-import Dates: DatePart, Delim, Format, 
-              default_format, charactercode
+import Dates: DatePart, Delim
 
-import Parsers: tryparse, tryparsenext,  tryparsenext_base10
+import Parsers: tryparse, tryparsenext,  tryparsenext_base10,
+                Format, default_format, charactercode
 
 const ISONanoDateFormat = Format("yyyy-mm-dd\\THH:MM:SS.sss")
 Dates.default_format(::Type{NanoDate}) = ISONanoDateTimeFormat

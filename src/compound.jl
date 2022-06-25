@@ -59,7 +59,6 @@ function Base.convert(::Type{Vector{Dates.Period}}, x::Date)
 end
 
 
-
 const DateTime_periods =
     Dates.Period[Year(2000), Month(1), Day(1),
      Hour(0), Minute(0), Second(0), Millisecond(0)]
@@ -84,8 +83,10 @@ Dates.CompoundPeriod(nd::NanoDate) =
     Hour(nd) + Minute(nd) + Second(nd) +
     Millisecond(nd) + Microsecond(nd) + Nanosecond(nd)
 
+#=
 Dates.Date(yr::Year, utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()))
+=#
 
 Dates.Date(mn::Month, utc::Bool=false) =
     Date(year(utc ? now(UTC) : now()), value(mn))
@@ -106,9 +107,11 @@ function Dates.Date(cperiod::CompoundPeriod, utc::Bool=false)
     result
 end
 
+#=
 for P in (:Hour, :Minute, :Second, :Millisecond, :Microsecond, :Nanosecond)
     @eval Dates.Date(p::$P, utc::Bool=false) = utc ? today(UTC) : today()
 end
+=#
 
 Dates.DateTime(yr::Year, utc::Bool=false) =
     DateTime(Date(yr, utc))
@@ -149,19 +152,19 @@ function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
     result
 end
 
-NanoDate(yr::Year; utc::Bool=false) =
+NanoDate(yr::Year, utc::Bool=false) =
     NanoDate(DateTime(yr, utc))
 
-NanoDate(mn::Month; utc::Bool=false) =
+NanoDate(mn::Month, utc::Bool=false) =
     NanoDate(DateTime(mn, utc))
 
-NanoDate(dy::Day; utc::Bool=false) =
+NanoDate(dy::Day, utc::Bool=false) =
     NanoDate(DateTime(dy, utc))
 
 for (P,Q) in ((:Hour, :Day), (:Minute, :Hour), 
               (:Second, :Minute), (:Millisecond, :Second),
               (:Microsecond, :Millisecond), (:Nanosecond, :Microosecond))
-  @eval function NanoDate(p::$P; utc::Bool=false)
+  @eval function NanoDate(p::$P, utc::Bool=false)
             thenanodate = trunc(NanoDate(utc ? now(UTC) : now()), $Q)
             cperiod = canonical(p)
             thenanodate + cperiod

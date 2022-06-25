@@ -17,7 +17,7 @@ const ISONanoDateFormat = Format("yyyy-mm-dd\\THH:MM:SS.sss")
 Dates.default_format(::Type{NanoDate}) = ISONanoDateFormat
 
 function Dates.validargs(::Type{NanoDate}, y,m,d,h,mi,s,ms,us,ns,ampm)
-    extents = value.(( y,m,d,h,mi,s,ms,us,ns))
+    extents = map(x->ifelse(isa(x, Period), value(x), x), ( y,m,d,h,mi,s,ms,us,ns))
     validargs(NanoDate, extents..., ampm)
 end
 

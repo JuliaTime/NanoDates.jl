@@ -9,11 +9,19 @@ export ISONanoDateFormat
 #   that is used in this source file
 import Dates: DatePart, Delim
 
-import Parsers: tryparse, tryparsenext,  tryparsenext_base10,
-                Format, default_format, charactercode
+import Parsers: tryparse, tryparsenext, tryparsenext_base10,
+    Format, default_format, charactercode, xparse,
+    Options, Result
 
 const ISONanoDateFormat = Format("yyyy-mm-dd\\THH:MM:SS.sss")
 Dates.default_format(::Type{NanoDate}) = ISONanoDateTimeFormat
+
+Base.getindex(collection::IdDict{Type, Any}, ::Type{NanoDate}) =
+   (Year, Month, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond)
+
+#=
+Parsers.xparse(::Type{NanoDate}, source::Union{AbstractVector{UInt8},IO}, pos, len, options::Parsers.Options=Parsers.XOPTIONS, ::Type{S}=NanoDate) where {S} = true
+
 
 const DatePeriods = (Year, Month, Day)
 const TimePeriods = (Hour, Minute, Second, Millisecond, Microsecond, Nanosecond)
@@ -21,11 +29,11 @@ const DateTimePeriods = (DatePeriods..., TimePeriods[1:end-2]...)
 const NanoDatePeriods = (DatePeriods..., TimePeriods...)
 
 const CONVERSION_WITH_TRANSLATIONS =
-     IdDict(NanoDate => NanoDatePeriods, 
-            DateTime => DateTimePeriods,
-            Time => TimePeriods,
-            Date => DatePeriods )
-
+    IdDict(NanoDate => NanoDatePeriods,
+        DateTime => DateTimePeriods,
+        Time => TimePeriods,
+        Date => DatePeriods)
+=#
 #=
 @inline function tryparsenext(d::Dates.DatePart{'s'}, source, pos, len, b, code)
     ms0, newpos, b, code = tryparsenext_base10(source, pos, len, b, code, maxdigits(d))

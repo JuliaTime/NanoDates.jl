@@ -108,21 +108,6 @@ safe_mulby_1000(x::Int64) = x <= 9_223_372_036_854_775 ? mulby_100(x) :
                                                          ArgumentError("$(x) is too large")
 safe_mulby_1000(x::Int32) = x <= 2_147_483 ? mulby_100(x) : ArgumentError("$(x) is too large")
 
-# nanoseconds per microsecond
-# microseconds per millisecond
-# milliseconds per second
-# safe for 0 < x < 268435456  (2^28)
-unsafe_fld_1000(x::T) where {T} =
-    ((x >> 3) * 34_359_739) >> 32
-
-fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
-    if (x < 434_934_000) # 2^28 = 268_435_456
-    # if x & ~0xffffffff == 0
-        unsafe_fld_1000(x)
-    else
-        fld(x, 1_000)
-    end
-
 function fldmod_1000(x::T) where {T<:Union{Int64,UInt64}}
     if abs(x) <= 9_780_955_816
         quotient =  if (x < 434_934_000)          # in 2^28 .. 2^29
@@ -178,6 +163,7 @@ function fldmod_1_000_000(x::T) where {T<:Union{Int64,UInt64}}
     quotient, remainder
 end
 
+#=
 # 86_400 (SecondsPerDay)
 function mulby86400(x)
     y = x
@@ -232,6 +218,7 @@ function mulby_1000000000(x)
     z = (z << 2) + z
     z << 9
 end
+=#
 
 #=
 

@@ -20,254 +20,12 @@ const TimePeriods = (Hour, Minute, Second, Millisecond, Microsecond, Nanosecond)
 const DateTimePeriods = (DatePeriods..., TimePeriods[1:end-2]...)
 const NanoDatePeriods = (DatePeriods..., TimePeriods...)
 
-const Conversion_Translations =
+const CONVERSION_WITH_TRANSLATIONS =
      IdDict(NanoDate => NanoDatePeriods, 
             DateTime => DateTimePeriods,
             Time => TimePeriods,
             Date => DatePeriods )
 
-function Format(f::AbstractString, locale::Dates.DateLocale=Dates.ENGLISH)
-    tokens = Dates.AbstractDateToken[]
-    prev = ()
-    prev_offset = 1
-
-    letters = String(collect(keys(Dates.CONVERSION_SPECIFIERS)))
-    for m in eachmatch(Regex("(?<!\\\\)([\\Q$letters\\E])\\1*"), f)
-        tran = replace(f[prev_offset:prevind(f, m.offset)], r"\\(.)" => s"\1")
-
-        if !isempty(prev)
-            letter, width = prev
-            typ = Dates.CONVERSION_SPECIFIERS[letter]
-
-            push!(tokens, Dates.DatePart{letter}(width, isempty(tran)))
-        end
-
-        if !isempty(tran)
-            push!(tokens, length(tran) == 1 ? Delim(first(tran)) : Delim(tran))
-        end
-
-        letter = f[m.offset]
-        width = length(m.match)
-
-        prev = (letter, width)
-        prev_offset = m.offset + width
-    end
-
-    tran = replace(f[prev_offset:lastindex(f)], r"\\(.)" => s"\1")
-
-    if !isempty(prev)
-        letter, width = prev
-        typ = Dates.CONVERSION_SPECIFIERS[letter]
-
-        push!(tokens, Dates.DatePart{letter}(width, false))
-    end
-
-    if !isempty(tran)
-        push!(tokens, length(tran) == 1 ? Delim(first(tran)) : Delim(tran))
-    end
-
-    return Format(tokens, locale)
-end
-
-function Format(f::AbstractString, locale::AbstractString)
-    Format(f, Dates.LOCALES[locale])
-end
-
-function Format(df::Dates.DateFormat{S, T}) where {S, T}
-    N = fieldcount(T)
-    dftokens = df.tokens
-    tokens = Vector{Dates.AbstractDateToken}(undef, fieldcount(T))
-    Base.@nexprs 15 i -> begin
-        if i <= N
-            @inbounds tok = dftokens[i]
-            @inbounds tokens[i] = tok isa Dates.Delim ? Delim(tok.d) : dftokens[i]
-        end
-    end
-    if N > 15
-        for i = 16:N
-            @inbounds tok = dftokens[i]
-            @inbounds tokens[i] = tok isa Dates.Delim ? Delim(tok.d) : dftokens[i]
-        end
-    end
-    return Format(tokens, df.locale)
-end
-
-function Base.show(io::IO, df::Format)
-    print(io, "Parsers.dateformat\"")
-    for t in df.tokens
-        _show_content(io, t)
-    end
-    print(io, '"')
-end
-Base.Broadcast.broadcastable(x::Format) = Ref(x)
-
-function _show_content(io::IO, d::Dates.DatePart{c}) where c
-    for i = 1:d.width
-        print(io, c)
-    end
-end
-
-function _show_content(io::IO, d::Delim{<:AbstractChar})
-    if d.d in keys(Dates.CONVERSION_SPECIFIERS)
-        for i = 1:1
-            print(io, '\\', d.d)
-        end
-    else
-        for i = 1:1
-            print(io, d.d)
-        end
-    end
-end
-
-function _show_content(io::IO, d::Delim)
-    for c in d.d
-        if c in keys(Dates.CONVERSION_SPECIFIERS)
-            print(io, '\\')
-        end
-        print(io, c)
-    end
-end
-
-function Base.show(io::IO, d::Delim)
-    print(io, "Delim(")
-    _show_content(io, d)
-    print(io, ")")
-end
-
-macro dateformat_str(str)
-    Format(str)
-end
-
-
-maxdigits(d::Dates.DatePart) = d.fixed ? d.width : typemax(Int64)
-
-for c in "yYmdHIMS"
-    @eval begin
-        @inline function tryparsenext(d::Dates.DatePart{$c}, source, pos, len, b, code)
-            return tryparsenext_base10(source, pos, len, b, code, maxdigits(d))
-        end
-    end
-end
-
-@inline function tryparsenext_base10(source, pos, len, b, code, maxdigits)
-    x::Int64 = 0
-    b -= UInt8('0')
-    if b > 0x09
-        # character isn't a digit, INVALID value
-        code |= INVALID
-        b += UInt8('0')
-        @goto done
-    end
-    ndigits = 0
-    @inbounds while true
-        x = Int64(10) * x + Int64(b)
-        ndigits += 1
-        pos += 1
-        incr!(source)
-        if eof(source, pos, len)
-            code |= EOF
-            @goto done
-        end
-        b = peekbyte(source, pos) - UInt8('0')
-        if b > 0x09 || ndigits == maxdigits
-            b += UInt8('0')
-            @goto done
-        end
-    end
-    @label done
-    return x, pos, b, code
-end
-
-ascii_lc(c::UInt8) = c in UInt8('A'):UInt8('Z') ? c + 0x20 : c
-
-function tryparsenext(d::Dates.DatePart{'p'}, source, pos, len, b, code)
-    ap = ascii_lc(b)
-    pos += 1
-    incr!(source)
-    if !(ap == UInt8('a') || ap == UInt8('p')) || eof(source, pos, len)
-        code |= INVALID_TOKEN
-    else
-        b = peekbyte(source, pos)
-        if ascii_lc(b) != UInt8('m')
-            code |= INVALID_TOKEN
-        end
-        pos += 1
-        incr!(source)
-        if eof(source, pos, len)
-            code |= EOF
-        else
-            b = peekbyte(source, pos)
-        end
-    end
-    return ap == UInt8('a') ? Dates.AM : Dates.PM, pos, b, code
-end
-
-function nextchar(source, pos, len, b)
-    u = UInt32(b) << 24
-    if !Base.between(b, 0x80, 0xf7)
-        pos += 1
-        incr!(source)
-        return reinterpret(Char, u), pos
-    end
-    return nextchar_continued(source, pos, len, u)
-end
-
-function nextchar_continued(source, pos, len, u)
-    u < 0xc0000000 && (pos += 1; incr!(source); @goto ret)
-    # first continuation byte
-    pos += 1
-    incr!(source)
-    eof(source, pos, len) && @goto ret
-    b = peekbyte(source, pos)
-    b & 0xc0 == 0x80 || @goto ret
-    u |= UInt32(b) << 16
-    # second continuation byte
-    pos += 1
-    incr!(source)
-    (eof(source, pos, len)) | (u < 0xe0000000) && @goto ret
-    b = peekbyte(source, pos)
-    b & 0xc0 == 0x80 || @goto ret
-    u |= UInt32(b) << 8
-    # third continuation byte
-    pos += 1
-    incr!(source)
-    (eof(source, pos, len)) | (u < 0xf0000000) && @goto ret
-    b = peekbyte(source, pos)
-    b & 0xc0 == 0x80 || @goto ret
-    u |= UInt32(b); pos += 1; incr!(source)
-@label ret
-    return reinterpret(Char, u), pos
-end
-
-for (tok, fn) in zip("uUeE", Any[Dates.monthabbr_to_value, Dates.monthname_to_value, Dates.dayabbr_to_value, Dates.dayname_to_value])
-    @eval function tryparsenext(d::Dates.DatePart{$tok}, source, pos, len, b, code, locale)
-        startpos = pos
-        while true
-            c, pos = nextchar(source, pos, len, b)
-            if !isletter(c) || eof(source, pos, len)
-                pos -= 1
-                break
-            end
-            b = peekbyte(source, pos)
-        end
-        val = 0
-        if startpos == pos
-            code |= INVALID_TOKEN
-        else
-            if source isa AbstractVector{UInt8}
-                word = unsafe_string(pointer(source, startpos), pos - startpos)
-            else # source isa IO
-                fastseek!(source, startpos - 1)
-                word = String(read(source, pos - startpos))
-            end
-            val = $fn(word, locale)
-            if val == 0
-                code |= INVALID_TOKEN
-            end
-        end
-        return Int64(val), pos, b, code
-    end
-end
 
 @inline function tryparsenext(d::Dates.DatePart{'s'}, source, pos, len, b, code)
     ms0, newpos, b, code = tryparsenext_base10(source, pos, len, b, code, maxdigits(d))
@@ -282,46 +40,6 @@ end
         ms = ms0 * Int64(10) ^ (3 - len)
     end
     return ms, newpos, b, code
-end
-
-@inline function tryparsenext(d::Delim{<:AbstractChar}, source, pos, len, b, code)
-    u = bswap(reinterpret(UInt32, d.d))
-    while true
-        if b != (u & 0x000000ff)
-            code |= INVALID_TOKEN
-            break
-        end
-        u >>= 8
-        pos += 1
-        incr!(source)
-        if eof(source, pos, len)
-            code |= EOF | (u == UInt32(0) ? SUCCESS : INVALID_TOKEN)
-            break
-        end
-        b = peekbyte(source, pos)
-        u == UInt32(0) && break
-    end
-    return pos, b, code
-end
-
-function tryparsenext(d::Delim{String}, source, pos, len, b, code)
-    bytes = codeunits(d.d)
-    tlen = length(bytes)
-    for dpos = 1:tlen
-        @inbounds c = bytes[dpos]
-        if b != c
-            code |= INVALID_TOKEN
-            break
-        end
-        pos += 1
-        incr!(source)
-        if eof(source, pos, len)
-            code |= EOF | (dpos == tlen ? SUCCESS : INVALID_TOKEN)
-            break
-        end
-        b = peekbyte(source, pos)
-    end
-    return pos, b, code
 end
 
 # fallback that would call custom DatePart overloads that are expecting a string
@@ -434,7 +152,7 @@ end
         end
         extras[Year] = year; extras[Month] = month; extras[Day] = day;
         extras[Hour] = hour; extras[Minute] = minute; extras[Second] = second; extras[Millisecond] = millisecond;
-        types = Dates.CONVERSION_TRANSLATIONS[T]
+        types = Dates.CONVERSION_WITH_TRANSLATIONS[T]
         vals = Vector{Any}(undef, length(types))
         for (i, type) in enumerate(types)
             vals[i] = get(extras, type) do
@@ -478,5 +196,6 @@ end
     end
     return x, code, pos
 end
+=#
 
-
+# THAT Would Be Awesome

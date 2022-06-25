@@ -38,7 +38,7 @@ Base.getindex(collection::IdDict{Type,Any}, ::Type{NanoDate}) =
     (Year, Month, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond)
 
     
-@inline function typeparser(::Type{NanoDate}, source, pos, len, b, code, options)
+@inline  function typeparser(::Type{NanoDate}, source, pos, len, b, code, options)
     fmt = options.dateformat
     df = fmt === nothing ? default_format(T) : fmt
     tokens = df.tokens
@@ -50,6 +50,8 @@ Base.getindex(collection::IdDict{Type,Any}, ::Type{NanoDate}) =
     extras = nothing
 
     pos, len, b, code = tryparsetokens(tokens, pos, len, b, code, locale, extras)
+    pos, len, b, code
+end
 
 function tryparsetokens(tokens, pos, len, b, code, locale)
     for tok in tokens

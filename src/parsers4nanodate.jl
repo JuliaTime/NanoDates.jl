@@ -122,7 +122,7 @@ function tryparsetokens(tokens, pos, len, b, code, locale)
     pos, len, b, code
 end
 
-    valid = Dates.validargs(NanoDate, year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, ampm)
+    valid = Dates.validargs(NanoDate, year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, Dates.ampm.TWENTYFOURHOUR)
 #=    
     elseif T.name.name === :ZonedDateTime
         valid = Dates.validargs(T, year, month, day, hour, minute, second, millisecond, tz)

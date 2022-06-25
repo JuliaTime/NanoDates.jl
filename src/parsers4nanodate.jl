@@ -62,7 +62,7 @@ function tryparsenext(tok, source, pos, len, b, code)::Tuple{Any, Int, UInt8, Re
     end
     return val, pos, b, code
 end
-
+=#
 #=
 @inline function typeparser(::Type{T}, source, pos, len, b, code, options) where {T <: Dates.TimeType}
     fmt = options.dateformat

@@ -22,6 +22,7 @@ function Dates.validargs(::Type{NanoDate},
            ::Type{Hour}, mi::Type{Minute}, ::Type{Second},
            ::Type{Millisecond}, ::Type{Microsecond}, ::Type{Nanosecond})
     true
+    
 end
 
 const YEAR = typeof(Year)
@@ -46,13 +47,20 @@ const TMICROSECOND = typeof(microsecond)
 const TNANOSECOND = typeof(nanosecond)
 
 function Dates.validargs(::Type{NanoDate}, 
-           ::Type{TYEAR}, ::Type{TMONTH}, ::Type{TDAY}, 
-           ::Type{THOUR}, mi::Type{TMINUTE}, ::Type{TSECOND},
-           ::Type{TMILLISECOND}, ::Type{TMICROSECOND}, ::Type{TNANOSECOND}, 
+           ::TYEAR, ::TMONTH, ::TDAY, 
+           ::THOUR, ::TMINUTE, ::TSECOND,
+           ::TMILLISECOND, ::TMICROSECOND, ::TNANOSECOND, 
            AMPM::Dates.AMPM)
     true
 end
 
+function Dates.validargs(::Type{NanoDate}, 
+           ::YEAR, ::MONTH, ::DAY, 
+           ::HOUR, ::MINUTE, ::SECOND,
+           ::MILLISECOND, ::MICROSECOND, ::NANOSECOND, 
+           AMPM::Dates.AMPM)
+    true
+end
 
 function Dates.validargs(::Type{NanoDate}, 
            ::Type{YEAR}, ::Type{MONTH}, ::Type{DAY}, 

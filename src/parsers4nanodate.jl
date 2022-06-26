@@ -27,7 +27,7 @@ function Dates.validargs(::Type{NanoDate},
            ::Type{Year}, ::Type{Month}, ::Type{Day}, 
            ::Type{Hour}, mi::Type{Minute}, ::Type{Second},
            ::Type{Millisecond}, ::Type{Microsecond}, ::Type{Nanosecond}, 
-           ::Dates.AMPM)
+           AMPM::Dates.AMPM)
     true
 end
 

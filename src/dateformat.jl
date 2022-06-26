@@ -1,24 +1,64 @@
 # returns the specifier part as a string
 Base.String(df::DateFormat) = string(df)[12:end-1]
 
-function nanodateformat(nd::NanoDate, df::DateFormat)
+omit(needle::Nothing, haystack::Nothing) = nothing
+omit(needle, haystack::Nothing) = nothing
+omit(needle::Nothing, haystack) = haystack
+
+omit(needle::T1, haystack::T2) where {T1<:AbstractRange{<:Signed},T2<:AbstractRange{Signed}} =
+    omit(collect(needle), collect(haystack))
+omit(needle::T1, haystack::T2) where {T1,T2<:AbstractRange{<:Signed}} = omit(needle, collect(haystack))
+omit(needle::T1, haystack::T2) where {T1<:AbstractRange{<:Signed},T2} = omit(collect(needle), haystack)
+
+omit(needle::T1, haystack::T2) where {T1<:Union{NTuple{N1,<:Signed},Vector{<:Signed}},
+                                      T2<:Union{NTuple{N2,<:Signed},Vector{<:Signed}}} =
+    setdiff(haystack, needle)
+
+function omit(needle::T1, haystack::AbstractString) where {T1<:Union{AbstractChar,AbstractString}}
+    allidxs = 1:length(haystack)
+    idxs = findall(needle, haystack)
+    isempty(idxs):haystack:join(haystack[omit(idxs, allidxs)])
+end
+
+function omit(needles::T1, haystack::AbstractString) where {T1<:Union{AbstractVector{Int},NTuple{N,Int}}} where {N,T}
+    allidxs = 1:length(haystack)
+    isempty(needles) ? haystack : join(haystack[omit(needles, allidxs)])
+end
+
+function findeach(needle, haystack)
+    idxs = findall(needle, haystack)
+    n = length(idxs)
+    n, idxs
+end
+
+function nanodateformat(nd::NanoDate, df::DateFormat; subsecsep::Union{Char,AbstractString}='.')
     dfstr = String(df)
-    if !occursin('.', dfstr)
-        datetime = DateTime(nd)
-        datetime -= Millisecond(datetime)
-        NanoDate(DateTime(datetime, df))
-    else
-        datetime_string, subsecs_string = split(dfstr, '.')
-        datetime = DateTime(nd)
-        datetime -= Millisecond(datetime)
-        dtm = DateTime(datetime, DateFormat(datetime_string))
-        tm = Time(nd - datetime, DateFormat(subsecs_string))
-        NanoDate(dtm, tm)
+    scount, sindices = findeach('s', dfstr)
+    idxsubsecsep = subsecsep == "" ? nothing : findlast(subsecsep, dfstr)
+    if !isnothing(idxsubsecsep)
+        push!(sindices, idxsubsecsep)
     end
+
+    dfstr_without_subsecs = isempty(sindices) ? dfstr : strip(omit(sindices, dfstr))
+    df_without_subsecs = isempty(sindices) ? df : Dates.DateFormat(dfstr_without_subsecs)
+    dtm = DateTime(nd)
+    dtm_without_subsecs = dtm - Millisecond(dtm)
+    result = Dates.format(dtm_without_subsecs, df_without_subsecs)
+
+    nanoseconds = (value(Millisecond(dtm)) * 1_000_000) + value(nanosecs(nd))
+    micros, nanos = fldmod(nanoseconds, 1_000)
+    millis, micros = fldmod(micros, 1_000)
+
+    millisec = scount < 1 ? "" : lpad(millis, 3, '0')
+    microsec = scount < 2 ? "" : lpad(micros, 3, '0')
+    nanosec = scount < 3 ? "" : lpad(nanos, 3, '0')
+
+    subsec = millisec * microsec * nanosec
+
+    result * subsecsep * subsec
 end
 
 #=
-
 # regular expressions for matching dates, times, dates-with-times
 
 """

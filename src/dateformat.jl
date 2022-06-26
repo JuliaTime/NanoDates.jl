@@ -5,14 +5,14 @@ omit(needle::Nothing, haystack::Nothing) = nothing
 omit(needle, haystack::Nothing) = nothing
 omit(needle::Nothing, haystack) = haystack
 
-omit(needle::T1, haystack::T2) where {S1<:Signed, S2<:Signed, T1<:AbstractRange{S1},T2<:AbstractRange{S2}} =
+omit(needle::T1, haystack::T2) where {S1<:Signed,S2<:Signed,T1<:AbstractRange{S1},T2<:AbstractRange{S2}} =
     omit(collect(needle), collect(haystack))
 omit(needle::T1, haystack::T2) where {T1,S<:Signed,T2<:AbstractRange{S}} = omit(needle, collect(haystack))
 omit(needle::T1, haystack::T2) where {T2,S<:Signed,T1<:AbstractRange{S}} = omit(collect(needle), haystack)
 
-omit(needle::T1, haystack::T2) where {N1,N2,S1<:Signed, S2<:Signed, 
-                                      T1<:Union{NTuple{N1,S1},Vector{S1}},
-                                      T2<:Union{NTuple{N2,S2},Vector{S2}}} =
+omit(needle::T1, haystack::T2) where {N1,N2,S1<:Signed,S2<:Signed,
+    T1<:Union{NTuple{N1,S1},Vector{S1}},
+    T2<:Union{NTuple{N2,S2},Vector{S2}}} =
     setdiff(haystack, needle)
 
 function omit(needle::T1, haystack::AbstractString) where {T1<:Union{AbstractChar,AbstractString}}
@@ -58,6 +58,77 @@ function nanodateformat(nd::NanoDate, df::DateFormat; subsecsep::Union{Char,Abst
 
     result * subsecsep * subsec
 end
+
+# >> given a string with templatized fields for date periods and time periods
+# >> extract each field's covering indices and use them to produce a formatted timestamp
+
+SubSecond(nd::NanoDate) = (mllisecond(nd) + Int128(1000) * (microsecond(nd) * Int128(1000) + nanosecond(nd)))
+TzZ(nd::NanoDate) = nothing
+Tzz(nd::NanoDate) = nothing
+Tzpm(nd::NanoDate) = nothing
+Tzmp(nd::NanoDate) = nothing
+TzZ(str::AbstractString) = str * 'Z'
+Tzz(str::AbstractString) = str * 'Z'
+Tzpm(str::AbstractString) = str * "pm"
+Tzmp(str::AbstractString) = str * "mp"
+
+absorb(x) = string(x)
+absorb(x,y) = string(x)
+absorb(x,y,z) = string(x)
+
+char2period = IdDict(zip(
+    ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
+    (Year, Year, Month, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond, SubSecond, TzZ, Tzz, Tzpm, Tzmp)
+));
+
+char2strlen = IdDict(zip(
+    ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
+    (4, 4, 2, 2, 2, 2, 2, 3, 3, 3, 9, 1, 1, 5, 4)
+));
+
+char2padfn = IdDict(zip(
+    ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
+    (absorb, absorb, lpad, lpad, lpad, rpad, rpad, rpad, rpad, rpad, rpad, absorb, absorb, rpad, rpad)
+));
+
+
+function findfield(str::String, chr::Char)
+    field_firstidx = findfirst(chr, str)
+    typ = char2period[chr]
+    (period=typ, offset=field_firstidx)
+end
+
+function findfields(str::String)
+    fieldchars = filter(isletter, unique(first.(split(str, ""))))
+    fieldinfo = [findfield(str, ch) for ch in fieldchars]
+    sort!(fieldinfo, lt=(x, y) -> (x.offset < y.offset))
+end
+
+function findandexpand(str::String)
+    chrs = Tuple(first.(split(str, "")))
+    letters = map(isletter, chrs)
+    nonletters = map(!, letters)
+
+    map(ch -> isletter(ch) ? char2padfn[ch](value(char2period[ch](nd)),char2strlen[ch],'0') : ch, chrs)
+    (2022, ' ', 6, ' ', 18, ' ', 12, ' ', 15, ' ', 30, ' ', 123, 123, 123, 789, '-', 456)
+    #=
+        julia > map(ch -> isletter(ch) ? char2period[ch] : ch, chrs)
+        (Year, ' ', Month, ' ', Day, ' ', Hour, ' ', Minute, ' ', Second, ' ', Millisecond, Millisecond, Millisecond, Nanosecond, '-', Microsecond)
+
+        julia > map(ch -> isletter(ch) ? char2period[ch](nd) : ch, chrs)
+        (Year(2022), ' ', Month(6), ' ', Day(18), ' ', Hour(12), ' ', Minute(15), ' ', Second(30), ' ', Millisecond(123), Millisecond(123), Millisecond(123), Nanosecond(789), '-', Microsecond(456))
+
+        julia > map(ch -> isletter(ch) ? value(char2period[ch](nd)) : ch, chrs)
+        (2022, ' ', 6, ' ', 18, ' ', 12, ' ', 15, ' ', 30, ' ', 123, 123, 123, 789, '-', 456)
+        fieldchars = unique(str[letters])
+
+        fieldinfo = [findfield(str, ch) for ch in fieldchars]
+        sort!(fieldinfo, lt=(x, y) -> (x.offset < y.offset))
+    =#
+end
+    
+
+
 
 #=
 # regular expressions for matching dates, times, dates-with-times

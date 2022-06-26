@@ -30,7 +30,7 @@ const HOUR = typeof(Hour)
 const MINUTE = typeof(Minute)
 const SECOND = typeof(Second)
 const MILLISECOND = typeof(Millisecond)
-const MICROSECOND = typeof(Microecond)
+const MICROSECOND = typeof(Microsecond)
 const NANOSECOND = typeof(Nanosecond)
 const HALFDAY = Dates.AMPM
 

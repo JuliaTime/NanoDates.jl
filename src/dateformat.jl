@@ -5,13 +5,14 @@ omit(needle::Nothing, haystack::Nothing) = nothing
 omit(needle, haystack::Nothing) = nothing
 omit(needle::Nothing, haystack) = haystack
 
-omit(needle::T1, haystack::T2) where {T1<:AbstractRange{<:Signed},T2<:AbstractRange{Signed}} =
+omit(needle::T1, haystack::T2) where {S1<:Signed, S2<:Signed, T1<:AbstractRange{S1},T2<:AbstractRange{S2}} =
     omit(collect(needle), collect(haystack))
-omit(needle::T1, haystack::T2) where {T1,T2<:AbstractRange{<:Signed}} = omit(needle, collect(haystack))
-omit(needle::T1, haystack::T2) where {T1<:AbstractRange{<:Signed},T2} = omit(collect(needle), haystack)
+omit(needle::T1, haystack::T2) where {T1,S<:Signed,T2<:AbstractRange{S}} = omit(needle, collect(haystack))
+omit(needle::T1, haystack::T2) where {T2,S<:Signed,T1<:AbstractRange{S}} = omit(collect(needle), haystack)
 
-omit(needle::T1, haystack::T2) where {T1<:Union{NTuple{N1,<:Signed},Vector{<:Signed}},
-                                      T2<:Union{NTuple{N2,<:Signed},Vector{<:Signed}}} =
+omit(needle::T1, haystack::T2) where {N1,N2,S1<:Signed, S2<:Signed, 
+                                      T1<:Union{NTuple{N1,S1},Vector{S1}},
+                                      T2<:Union{NTuple{N2,S2},Vector{S2}}} =
     setdiff(haystack, needle)
 
 function omit(needle::T1, haystack::AbstractString) where {T1<:Union{AbstractChar,AbstractString}}

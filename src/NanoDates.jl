@@ -24,7 +24,6 @@ using Dates: AbstractDateTime, CompoundPeriod,
 export AbstractDateTime, CompoundPeriod, 
     quarter, value, days, format
 
-using ReadableRegex
 using Parsers
 # using InlineStrings ambiguity
 
@@ -40,7 +39,6 @@ include("fastintmath.jl")
 include("compound.jl")
 include("compoundperiod.jl")
 include("strings.jl")
-include("nanoregex.jl")
 include("dateformat.jl")
 include("parsers4nanodate.jl")
 include("timestamp.jl")

@@ -8,6 +8,7 @@ export ISONanoDateFormat
 # importing what is not exported from Dates
 #   that is used in this source file
 import Dates: DatePart, Delim, validargs, argerror
+using Dates: validargs
 
 import Parsers: tryparse, tryparsenext, tryparsenext_base10,
     Format, default_format, charactercode,
@@ -41,7 +42,7 @@ const THOUR = typeof(hour)
 const TMINUTE = typeof(minute)
 const TSECOND = typeof(second)
 const TMILLISECOND = typeof(millisecond)
-const TMICROSECOND = typeof(microecond)
+const TMICROSECOND = typeof(microsecond)
 const TNANOSECOND = typeof(nanosecond)
 
 function Dates.validargs(::Type{NanoDate}, 

@@ -19,7 +19,8 @@ export NanoDate,
 using Dates
 using Dates: AbstractDateTime, CompoundPeriod,
              quarter, format, value, days,
-             toms, tons, UTD, UTM
+             toms, tons, UTD, UTM,
+             default_format
 
 export AbstractDateTime, CompoundPeriod, 
     quarter, value, days, format

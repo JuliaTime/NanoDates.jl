@@ -63,6 +63,8 @@ end
 # >> extract each field's covering indices and use them to produce a formatted timestamp
 
 SubSecond(nd::NanoDate) = (mllisecond(nd) + Int128(1000) * (microsecond(nd) * Int128(1000) + nanosecond(nd)))
+subsecond(nd::NanoDate) = value(SubSecond(nd))
+
 TzZ(nd::NanoDate) = nothing
 Tzz(nd::NanoDate) = nothing
 Tzpm(nd::NanoDate) = nothing
@@ -81,6 +83,11 @@ char2period = IdDict(zip(
     (Year, Year, Month, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond, SubSecond, TzZ, Tzz, Tzpm, Tzmp)
 ));
 
+char2count = IdDict(zip(
+    ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
+    (year, year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, subsecond, TzZ, Tzz, Tzpm, Tzmp)
+));
+
 char2strlen = IdDict(zip(
     ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
     (4, 4, 2, 2, 2, 2, 2, 3, 3, 3, 9, 1, 1, 5, 4)
@@ -96,7 +103,7 @@ function findfield(str::String, chr::Char)
     field_firstidx = findfirst(chr, str)
     typ = char2period[chr]
     (period=typ, offset=field_firstidx)
-end
+end 
 
 function findfields(str::String)
     fieldchars = filter(isletter, unique(first.(split(str, ""))))
@@ -104,12 +111,26 @@ function findfields(str::String)
     sort!(fieldinfo, lt=(x, y) -> (x.offset < y.offset))
 end
 
-function findandexpand(str::String)
+@inline function ch2str(nd::NanoDate, ch::Char)
+    ch_pad = char2padfn[ch]
+    ch_strlen = char2strlen[ch]
+    nunits = char2count[ch](nd)
+    ch_pad(nd, nunits, '0')
+end
+
+#=
+  findnext(ch::AbstractChar, string::AbstractString, start::Integer)
+=#
+
+function findandexpand(nd, str::String)
     chrs = Tuple(first.(split(str, "")))
     letters = map(isletter, chrs)
     nonletters = map(!, letters)
-
-    map(ch -> isletter(ch) ? char2padfn[ch](value(char2period[ch](nd)),char2strlen[ch],'0') : ch, chrs)
+    
+     map(ch -> isletter(ch) ? ch2str(nd, ch) : ch, chrs)
+     
+     
+     char2padfn[ch](value(char2period[ch](nd)), char2strlen[ch], '0') : ch, chrs)
     (2022, ' ', 6, ' ', 18, ' ', 12, ' ', 15, ' ', 30, ' ', 123, 123, 123, 789, '-', 456)
     #=
         julia > map(ch -> isletter(ch) ? char2period[ch] : ch, chrs)

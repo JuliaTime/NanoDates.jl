@@ -1,6 +1,9 @@
 using Dates, NanoDates
 import Parsers as P
 
+using NanoDates: nanodateformat, findeach, omit, absorb, char2period, char2strlen, char2padfn, findfield, findfields, findandexpand
+
+
 nd = NanoDate(2022, 6, 18, 12, 15, 30, 123, 456, 789);
 ndstr = string(nd);
 ndstrlen = length(ndstr);
@@ -45,6 +48,7 @@ df_iso_milli = dateformat"yyyy-mm-ddTHH:MM:SS.s";
 df_iso_sec = dateformat"yyyy-mm-ddTHH:MM:SS";
 
 df_subsec = dateformat"sss";
+df_millimicro = dateformat"ss";
 df_dotsubsec = dateformat".sss";
 df_secsubsec = dateformat"SS.sss";
 

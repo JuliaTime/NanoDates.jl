@@ -7,22 +7,24 @@ export ISONanoDateFormat
 
 # importing what is not exported from Dates
 #   that is used in this source file
-import Dates: DatePart, Delim, validargs, argerror
-using Dates: validargs
+import Dates: DatePart, Delim, validargs, argerror, default_format
 
 import Parsers: tryparse, tryparsenext, tryparsenext_base10,
-    Format, default_format, charactercode,
+    Format, charactercode,
     Options, Result
 
-const ISONanoDateFormat = Format("yyyy-mm-dd\\THH:MM:SS.sss")
+const ISONanoDateFormat = Format("yyyy-mm-ddTHH:MM:SS.sss")
 Dates.default_format(::Type{NanoDate}) = ISONanoDateFormat
+Dates.default_format(nd::Type{NanoDate}) = ISONanoDateFormat
 
-function Dates.validargs(::Type{NanoDate}, 
-           ::Type{Year}, ::Type{Month}, ::Type{Day}, 
-           ::Type{Hour}, mi::Type{Minute}, ::Type{Second},
-           ::Type{Millisecond}, ::Type{Microsecond}, ::Type{Nanosecond})
+Dates.default_format(::Type{NanoDate}) = dateformat"y-m-dTHH:MM:SS.s"
+
+function Dates.validargs(::Type{NanoDate},
+    ::Type{Year}, ::Type{Month}, ::Type{Day},
+    ::Type{Hour}, mi::Type{Minute}, ::Type{Second},
+    ::Type{Millisecond}, ::Type{Microsecond}, ::Type{Nanosecond})
     true
-    
+
 end
 
 const YEAR = typeof(Year)
@@ -46,50 +48,50 @@ const TMILLISECOND = typeof(millisecond)
 const TMICROSECOND = typeof(microsecond)
 const TNANOSECOND = typeof(nanosecond)
 
-function Dates.validargs(::Type{NanoDate}, 
-           ::TYEAR, ::TMONTH, ::TDAY, 
-           ::THOUR, ::TMINUTE, ::TSECOND,
-           ::TMILLISECOND, ::TMICROSECOND, ::TNANOSECOND, 
-           AMPM::Dates.AMPM)
+function Dates.validargs(::Type{NanoDate},
+    ::TYEAR, ::TMONTH, ::TDAY,
+    ::THOUR, ::TMINUTE, ::TSECOND,
+    ::TMILLISECOND, ::TMICROSECOND, ::TNANOSECOND,
+    AMPM::Dates.AMPM)
     true
 end
 
-function Dates.validargs(::Type{NanoDate}, 
-           ::YEAR, ::MONTH, ::DAY, 
-           ::HOUR, ::MINUTE, ::SECOND,
-           ::MILLISECOND, ::MICROSECOND, ::NANOSECOND, 
-           AMPM::Dates.AMPM)
+function Dates.validargs(::Type{NanoDate},
+    ::YEAR, ::MONTH, ::DAY,
+    ::HOUR, ::MINUTE, ::SECOND,
+    ::MILLISECOND, ::MICROSECOND, ::NANOSECOND,
+    AMPM::Dates.AMPM)
     true
 end
 
-function Dates.validargs(::Type{NanoDate}, 
-           ::Type{YEAR}, ::Type{MONTH}, ::Type{DAY}, 
-           ::Type{HOUR}, mi::Type{MINUTE}, ::Type{SECOND},
-           ::Type{MILLISECOND}, ::Type{MICROSECOND}, ::Type{NANOSECOND}, 
-           AMPM::Dates.AMPM)
+function Dates.validargs(::Type{NanoDate},
+    ::Type{YEAR}, ::Type{MONTH}, ::Type{DAY},
+    ::Type{HOUR}, mi::Type{MINUTE}, ::Type{SECOND},
+    ::Type{MILLISECOND}, ::Type{MICROSECOND}, ::Type{NANOSECOND},
+    AMPM::Dates.AMPM)
     false
 end
 
-function Dates.validargs(::Type{NanoDate}, 
-           ::Type{Year}, ::Type{Month}, ::Type{Day}, 
-           ::Type{Hour}, mi::Type{Minute}, ::Type{Second},
-           ::Type{Millisecond}, ::Type{Microsecond}, ::Type{Nanosecond}, 
-           AMPM::Dates.AMPM)
+function Dates.validargs(::Type{NanoDate},
+    ::Type{Year}, ::Type{Month}, ::Type{Day},
+    ::Type{Hour}, mi::Type{Minute}, ::Type{Second},
+    ::Type{Millisecond}, ::Type{Microsecond}, ::Type{Nanosecond},
+    AMPM::Dates.AMPM)
     true
 end
 
-function Dates.validargs(::Type{NanoDate}, 
-           y::Year, m::Month, d::Day, 
-           h::Hour, mi::Minute, s::Second,
-           ms::Millisecond, us::Microsecond, ns::Nanosecond, 
-           ampm::Dates.AMPM)
-    extents = map(value, (y,m,d,h,mi,s,ms,us,ns))
+function Dates.validargs(::Type{NanoDate},
+    y::Year, m::Month, d::Day,
+    h::Hour, mi::Minute, s::Second,
+    ms::Millisecond, us::Microsecond, ns::Nanosecond,
+    ampm::Dates.AMPM)
+    extents = map(value, (y, m, d, h, mi, s, ms, us, ns))
     validargs(NanoDate, extents..., ampm)
 end
 
-function Dates.validargs(::Type{NanoDate}, y::T, m::T, d::T, 
-    h::T, mi::T, s::T, ms::T, us::T, ns::T, 
-    ampm::Dates.AMPM=Dates.TWENTYFOURHOUR) where {T<:Union{Int64, Int128}}
+function Dates.validargs(::Type{NanoDate}, y::T, m::T, d::T,
+    h::T, mi::T, s::T, ms::T, us::T, ns::T,
+    ampm::Dates.AMPM=Dates.TWENTYFOURHOUR) where {T<:Union{Int64,Int128}}
     0 < m < 13 || return Dates.argerror("Month: $m out of range (1:12)")
     0 < d < daysinmonth(y, m) + 1 || return Dates.argerror("Day: $d out of range (1:$(daysinmonth(y, m)))")
     if ampm == Dates.TWENTYFOURHOUR # 24-hour clock
@@ -109,10 +111,10 @@ end
 Base.getindex(collection::IdDict{Type,Any}, ::Type{NanoDate}) =
     (Year, Month, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond)
 
-    
-@inline  function typeparser(::Type{NanoDate}, source, pos, len, b, code, options)
+
+@inline function typeparser(::Type{NanoDate}, source, pos, len, b, code, options)
     fmt = options.dateformat
-    df = fmt === nothing ? default_format(T) : fmt
+    df = fmt === nothing ? Dates.default_format(T) : fmt
     tokens = df.tokens
     locale::Dates.DateLocale = df.locale
     year = month = day = Int64(1)
@@ -182,7 +184,7 @@ function tryparsetokens(tokens, pos, len, b, code, locale)
             extraval, pos, b, code = tryparsenext(tok, source, pos, len, b, code)::Tuple{Any,Int,UInt8,ReturnCode}
             extras[Dates.CONVERSION_SPECIFIERS[charactercode(tok)]] = extraval
         end
-    
+
         if invalid(code)
             if invalidtoken(code)
                 code &= ~INVALID_TOKEN
@@ -195,7 +197,7 @@ function tryparsetokens(tokens, pos, len, b, code, locale)
 end
 
 
-    valid = Dates.validargs(NanoDate, year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, Dates.TWENTYFOURHOUR)
+valid = Dates.validargs(NanoDate, year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, Dates.TWENTYFOURHOUR)
 
 #=    
     elseif T.name.name === :ZonedDateTime
@@ -301,7 +303,7 @@ end
 #=
 @inline function typeparser(::Type{T}, source, pos, len, b, code, options) where {T <: Dates.TimeType}
     fmt = options.dateformat
-    df = fmt === nothing ? default_format(T) : fmt
+    df = fmt === nothing ? Dates.default_format(T) : fmt
     tokens = df.tokens
     locale::Dates.DateLocale = df.locale
     year = month = day = Int64(1)

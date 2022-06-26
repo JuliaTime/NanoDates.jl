@@ -45,7 +45,7 @@ end
 
 @inline function typeparser(::Type{T}, source, pos, len, b, code, options) where {T<:NanoDate}
     fmt = options.dateformat
-    df = fmt === nothing ? default_format(T) : fmt
+    df = fmt === nothing ? Dates.default_format(T) : fmt
     tokens = df.tokens
     locale::Dates.DateLocale = df.locale
     year = month = day = Int64(1)
@@ -126,7 +126,7 @@ nd = NanoDate(2022, 4, 27,  12, 21, 0,  123, 456, 789); ndstr=string(nd);
 @inline function typeparser(::Type{NanoDate}, source, pos, len, b, code, options)
     T = NanoDate
     fmt = options.dateformat
-    df = fmt === nothing ? default_format(T) : fmt
+    df = fmt === nothing ? Dates.default_format(T) : fmt
     tokens = df.tokens
     locale::Dates.DateLocale = df.locale
     year = month = day = Int64(1)

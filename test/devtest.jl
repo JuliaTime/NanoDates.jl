@@ -1,5 +1,5 @@
 using Dates, NanoDates
-import Parsers as p
+import Parsers as P
 
 nd = NanoDate(2022, 6, 18,  12, 15, 30,  123, 456, 789);
 ndstr = string(nd); ndstrlen = length(ndstr);
@@ -21,20 +21,11 @@ tryxparse(::Type{NanoDate}, str::String, pos::Int64,
           strlen::Int64, po::P.Options) =
     P.xparse(NanoDate, ndstr, pos, strlen, po1s)
 
-println(("po1s", po1s))
-println(("po2s", po2s))
-println(("po3s", po3s))
 
-println(("po1n", po1n))
-println(("po2n", po2n))
-println(("po3n", po3n))
+tryparsed(ndstr::AbstractString) = tryparse(NanoDate, ndstr);
+println((tryparsed(ndstr), ndstr))
 
-tryparsed = tryparse(NanoDate, ndstr);
-println(tryparsed, ndstr)
-
-tryxparsed = xparse(NanoDate, ndstr)
-println(tryxparsed, ndstr)
-
-
+tryxparsed(ndstr::AbstractString) = xparse(NanoDate, ndstr);
+println((tryxparsed(ndstr), ndstr))
 
 

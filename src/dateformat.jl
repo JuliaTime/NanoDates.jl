@@ -4,26 +4,34 @@ Base.String(df::DateFormat) = string(df)[12:end-1]
 omit(needle::Nothing, haystack::Nothing) = nothing
 omit(needle, haystack::Nothing) = nothing
 omit(needle::Nothing, haystack) = haystack
+omit(needle::AbstractRange, haystack::Nothing) = nothing
+omit(needle::Nothing, haystack::AbstractRange) = nothing
 
 omit(needle::AbstractRange, hahystack::AbstractRange) =
     omit(collect(needle), collect(haystack))
-omit(needle::AbstractRange, hahystack::T)  where {T} =
+omit(needle::AbstractRange, haystack::T) where {T} =
     omit(collect(needle), haystack)
 mit(needle::T, hahystack::AbstractRange) where {T} =
     omit(needle, collect(haystack))
 
-omit(needle::T1, haystack::T2) where {N1,N2,S1<:Signed,S2<:Signed,
-    T1<:Union{NTuple{N1,S1},Vector{S1}},
-    T2<:Union{NTuple{N2,S2},Vector{S2}}} =
-    setdiff(haystack, needle)
+omit(needle::AbstractRange, haystack::AbstractString) =
+    omit(collect(needle), haystack)
 
-function omit(needle::T1, haystack::AbstractString) where {T1<:Union{AbstractChar,AbstractString}}
+omit(needle::Tuple, haystack::Tuple) = setdiff(haystack, needle)
+omit(needle::Vector, haystack::Vector) = setdiff(haystack, needle)
+pmit(needle::Tuple, haystack::Vector) = setdiff(haystack, [needle...])
+pmit(needle::Vector, haystack::Tuple) = setdiff([haystack...], needle)
+
+function omit(needle::AbstractString, haystack::AbstractString)
     allidxs = 1:length(haystack)
     idxs = findall(needle, haystack)
     isempty(idxs):haystack:join(haystack[omit(idxs, allidxs)])
 end
 
-function omit(needles::T1, haystack::AbstractString) where {T1<:Union{AbstractVector{Int},NTuple{N,Int}}} where {N,T}
+omit(needle::AbstractChar, haystack::AbstractString) = omit(string(needle), haystack)
+
+
+function omit(needles::Union{Vector,Tuple}, haystack::AbstractString)
     allidxs = 1:length(haystack)
     isempty(needles) ? haystack : join(haystack[omit(needles, allidxs)])
 end

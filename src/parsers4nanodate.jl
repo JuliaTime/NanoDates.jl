@@ -3,7 +3,7 @@
 # This specializes  JuliaData/Parsers.jl/src/dates.jl to work with NanoDates.
 
 
-const ISONanoDateFormat = Format("yyyy-mm-ddTHH:MM:SS.sss")
+const ISONanoDateFormat = dateformat"yyyy-mm-ddTHH:MM:SS.sss"
 
 Dates.default_format(::Type{NanoDate}) = ISONanoDateFormat
 

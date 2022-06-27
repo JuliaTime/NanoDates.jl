@@ -1,6 +1,6 @@
 module NanoDates
 
-export NanoDate,
+export NanoDate, ISONanoDateFormat, 
         nnow, ntoday, date_time,
         nanodate2rata, rata2nanodate,
         nanodate2unixnanos, nanodate2unixmicros, nanodate2unixmillis, nanodate2unixseconds,

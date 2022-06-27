@@ -154,7 +154,7 @@ function remap_subsecs(str::AbstractString)
             end
         end
     else
-        newchrs = @view(chrs, 1:strlen)
+        newchrs = @view(chrs[:])
     end
 
     newchrs

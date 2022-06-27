@@ -7,7 +7,7 @@ omit(needle::Nothing, haystack) = haystack
 
 omit(needle::AbstractRange, hahystack::AbstractRange) =
     omit(collect(needle), collect(haystack))
-omit(needle::AbstractRange, hahystack::T)  where {T}
+omit(needle::AbstractRange, hahystack::T)  where {T} =
     omit(collect(needle), haystack)
 mit(needle::T, hahystack::AbstractRange) =
     omit(needle, collect(haystack))

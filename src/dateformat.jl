@@ -118,21 +118,63 @@ end
     ch_pad(nd, nunits, '0')
 end
 
+function remap_subsecs(str::AbstractString)
+    strlen = length(str)
+    chrs = first.(split(str,""))
+
+    s1 = findfirst('s', str)
+    s2 = isnothing(s1) ? nothing : findnext('s', str, s1+1)
+    s3 = isnothing(s2) ? nothing : findnext('s', str, s2+1)
+    mxidx = s1
+    if !isnothing(s2)
+        chrs[s2] = 'c'
+        mxidx = s2
+        if isnothing(s3)
+            chrs[s3] = 'n'
+            mxidx = s3
+        end
+    end
+    excess = []
+    mxidx += 1
+    while mxidx <= strlen
+        sidx = findnext('s', str, mxidx)
+        if !isnothing(sidx)
+            push!(excess, sidx)
+        end
+        mxidx += 1
+    end
+
+    if !isempty(excess)
+        newchrs = Vector{Char}(uninit, length(chrs) - length(excess))
+        newidx = 1
+        for i in eachindex(chrs)
+            if !(i ∈ excess)
+                newchrs[newidx] = chrs[i]
+                newidx += 1
+            end
+        end
+    else
+        newchrs = @view(chrs, 1:strlen)
+    end
+
+    newchrs
+end
+
 #=
   findnext(ch::AbstractChar, string::AbstractString, start::Integer)
 =#
 
-function findandexpand(nd, str::String)
-    chrs = Tuple(first.(split(str, "")))
-    letters = map(isletter, chrs)
-    nonletters = map(!, letters)
-    
-     map(ch -> isletter(ch) ? ch2str(nd, ch) : ch, chrs)
+function findandexpand(nd::NanoDate, str::AbstractString)
+    newstr = remapsubsecs(str)
+    chrs = Tuple(first.(split(newstr, "")))
+    strs = map(ch -> isletter(ch) ? ch2str(nd, ch) : string(ch), chrs)
+    join(strs)
+end
+   
      
-     
+#=     
      char2padfn[ch](value(char2period[ch](nd)), char2strlen[ch], '0') : ch, chrs)
     (2022, ' ', 6, ' ', 18, ' ', 12, ' ', 15, ' ', 30, ' ', 123, 123, 123, 789, '-', 456)
-    #=
         julia > map(ch -> isletter(ch) ? char2period[ch] : ch, chrs)
         (Year, ' ', Month, ' ', Day, ' ', Hour, ' ', Minute, ' ', Second, ' ', Millisecond, Millisecond, Millisecond, Nanosecond, '-', Microsecond)
 
@@ -146,7 +188,6 @@ function findandexpand(nd, str::String)
         fieldinfo = [findfield(str, ch) for ch in fieldchars]
         sort!(fieldinfo, lt=(x, y) -> (x.offset < y.offset))
     =#
-end
     
 
 

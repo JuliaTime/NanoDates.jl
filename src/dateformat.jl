@@ -5,10 +5,12 @@ omit(needle::Nothing, haystack::Nothing) = nothing
 omit(needle, haystack::Nothing) = nothing
 omit(needle::Nothing, haystack) = haystack
 
-omit(needle::T1, haystack::T2) where {S1<:Signed,S2<:Signed,T1<:AbstractRange{S1},T2<:AbstractRange{S2}} =
+omit(needle::AbstractRange, hahystack::AbstractRange) =
     omit(collect(needle), collect(haystack))
-omit(needle::T1, haystack::T2) where {T1,S<:Signed,T2<:AbstractRange{S}} = omit(needle, collect(haystack))
-omit(needle::T1, haystack::T2) where {T2,S<:Signed,T1<:AbstractRange{S}} = omit(collect(needle), haystack)
+omit(needle::AbstractRange, hahystack::T)  where {T}
+    omit(collect(needle), haystack)
+mit(needle::T, hahystack::AbstractRange) =
+    omit(needle, collect(haystack))
 
 omit(needle::T1, haystack::T2) where {N1,N2,S1<:Signed,S2<:Signed,
     T1<:Union{NTuple{N1,S1},Vector{S1}},
@@ -75,8 +77,8 @@ Tzpm(str::AbstractString) = str * "pm"
 Tzmp(str::AbstractString) = str * "mp"
 
 absorb(x) = string(x)
-absorb(x,y) = string(x)
-absorb(x,y,z) = string(x)
+absorb(x, y) = string(x)
+absorb(x, y, z) = string(x)
 
 char2period = IdDict(zip(
     ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
@@ -103,7 +105,7 @@ function findfield(str::String, chr::Char)
     field_firstidx = findfirst(chr, str)
     typ = char2period[chr]
     (period=typ, offset=field_firstidx)
-end 
+end
 
 function findfields(str::String)
     fieldchars = filter(isletter, unique(first.(split(str, ""))))
@@ -120,11 +122,11 @@ end
 
 function remap_subsecs(str::AbstractString)
     strlen = length(str)
-    chrs = first.(split(str,""))
+    chrs = first.(split(str, ""))
 
     s1 = findfirst('s', str)
-    s2 = isnothing(s1) ? nothing : findnext('s', str, s1+1)
-    s3 = isnothing(s2) ? nothing : findnext('s', str, s2+1)
+    s2 = isnothing(s1) ? nothing : findnext('s', str, s1 + 1)
+    s3 = isnothing(s2) ? nothing : findnext('s', str, s2 + 1)
     mxidx = s1
     if !isnothing(s2)
         chrs[s2] = 'c'

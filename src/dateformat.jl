@@ -9,7 +9,7 @@ omit(needle::AbstractRange, hahystack::AbstractRange) =
     omit(collect(needle), collect(haystack))
 omit(needle::AbstractRange, hahystack::T)  where {T} =
     omit(collect(needle), haystack)
-mit(needle::T, hahystack::AbstractRange) =
+mit(needle::T, hahystack::AbstractRange) where {T} =
     omit(needle, collect(haystack))
 
 omit(needle::T1, haystack::T2) where {N1,N2,S1<:Signed,S2<:Signed,

@@ -16,31 +16,25 @@ LOCAL0::NanoDate = NanoDate(today())
 increment::UInt16 = 0x0000
 lastns::UInt64 = UInt64(0)
 
-function utcinit(; calltime::Int=0)
+function utcinit()
     global UTC0, increment, lastns
     increment = 0x0000
     lastns    = zero(UInt64)
 
 	dtm,  ns = now(UTC), time_ns()
 	ndtm = NanoDate(dtm)
-	ns128 = ns % Int128
-	nano128 = Nanosecond(ns128 - calltime)
-	nd0 = ndtm - nano128
-	UTC0 = nd0
+	UTC0 = ndtm - Nanosecond(ns)
 	nothing
 end
 
-function localinit(; calltime::Int=0)
+function localinit()
     global LOCAL0, increment, lastns
     increment = 0x0000
     lastns = zero(UInt64)
 
 	dtm, ns = now(), time_ns()
 	ndtm = NanoDate(dtm)
-	ns128 = ns % Int128
-	nano128 = Nanosecond(ns128 - calltime)
-	nd0 = ndtm - nano128
-	LOCAL0 = nd0
+	LOCAL0 = ndtm - Nanosecond(ns)
 	nothing
 end
 
@@ -48,7 +42,6 @@ function ndnow(::Type{UTC}; sequential::Bool=true)
     global UTC0, increment, lastns
 	ns = time_ns()
 
-	ns128 = ns % Int128
 	if sequential
 	    if ns === lastns
 	       increment += 1

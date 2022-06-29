@@ -1,83 +1,83 @@
+
+"""
+  using BenchmarkTools
+  calltime = round(Int, 1e9 * @belapsed ndnow(; sequential=false))
+  calltime = floor(Int, 1e9 * @belapsed ndnow(; sequential=true))
+"""
 module Timekeep
 
 export utcinit, localinit, ndnow
 
 using Dates, NanoDates
 
-utc0::NanoDate = NanoDate(today())
-local0::NanoDate = NanoDate(today())
+UTC0::NanoDate = NanoDate(today())
+LOCAL0::NanoDate = NanoDate(today())
 
 increment::UInt16 = 0x0000
-lowbits::UInt16 = 0x0000
+lastns::UInt64 = UInt64(0)
 
-function utcinit()
-    global utc0, increment, lowbits
+function utcinit(; calltime::Int=0)
+    global UTC0, increment, lastns
     increment = 0x0000
-    lowdigits = 0x0000
+    lastns    = zero(UInt64)
 
 	dtm,  ns = now(UTC), time_ns()
 	ndtm = NanoDate(dtm)
 	ns128 = ns % Int128
-	nano128 = Nanosecond(ns128)
+	nano128 = Nanosecond(ns128 - calltime)
 	nd0 = ndtm - nano128
-	utc0 = nd0
+	UTC0 = nd0
 	nothing
 end
 
-function localinit()
-    global local0, increment, lowbits
+function localinit(; calltime::Int=0)
+    global LOCAL0, increment, lastns
     increment = 0x0000
-    lowbits = 0x0000
+    lastns = zero(UInt64)
 
-	dtm,  ns = now(), time_ns()
+	dtm, ns = now(), time_ns()
 	ndtm = NanoDate(dtm)
 	ns128 = ns % Int128
-	nano128 = Nanosecond(ns128)
+	nano128 = Nanosecond(ns128 - calltime)
 	nd0 = ndtm - nano128
-	local0 = nd0
+	LOCAL0 = nd0
 	nothing
 end
 
 function ndnow(::Type{UTC}; sequential::Bool=true)
-    global utc0, increment, lowbits
+    global UTC0, increment, lastns
 	ns = time_ns()
 
 	ns128 = ns % Int128
-	if timestamp
-		nslowbits = ns & 0x000000000000000f
-	    if lowbits == nslowbits
+	if sequential
+	    if ns === lastns
 	       increment += 1
 	    else
-	       lowbits = nslowbits
+	       lastns = ns
 	       increment = 0
 	    end
 	end
 
-	nano128 = Nanosecond(ns128 + increment)
-	utc0 + nano128
+	UTC0 + Nanosecond(ns + increment)
 end
 
 function ndnow(; sequential::Bool=true)
-    global local0, increment, lowbits
+    global LOCAL0, increment, lastns
 	ns = time_ns()
 
-	ns128 = ns % Int128
-	if timestamp
-		nslowbits = ns & 0x0000000000000007
-	    if lowbits == nslowbits
+	if sequential
+	    if lastns === ns
 	       increment += 1
 	    else
-	       lowbits = nslowbits
+	       lastns = ns
 	       increment = 0
 	    end
 	end
 
-	nano128 = Nanosecond(ns128 + increment)
-	local0 + nano128
+	LOCAL0 + Nanosecond(ns + increment)
 end
 
 end
-
 
 val(x::CompoundPeriod) = isempty(x) ? 0 : canonicalize(x)
 val(x) = isempty(x) ? 0 : value(x)

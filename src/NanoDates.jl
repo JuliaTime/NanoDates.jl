@@ -47,7 +47,8 @@ include("io.jl")
 @inline nanos_elapsed() = time_ns() - NanosAtStart
 
 function __init__()
-    global NanosAtStart = time_ns() 
+    global NanosAtStart = time_ns()
+    reset_timekeeping() 
 end
 
 end  # NanoDates

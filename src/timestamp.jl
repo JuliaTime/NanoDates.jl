@@ -4,11 +4,6 @@
   calltime = round(Int, 1e9 * @belapsed ndnow(; sequential=false))
   calltime = floor(Int, 1e9 * @belapsed ndnow(; sequential=true))
 """
-module Timekeep
-
-export utcinit, localinit, ndnow
-
-using Dates, NanoDates
 
 UTC0::NanoDate = NanoDate(today())
 LOCAL0::NanoDate = NanoDate(today())
@@ -16,61 +11,45 @@ LOCAL0::NanoDate = NanoDate(today())
 increment::UInt16 = 0x0000
 lastns::UInt64 = UInt64(0)
 
-function utcinit()
-    global UTC0, increment, lastns
+function reset_timekeeping()
+    global UTC0, LOCAL0, increment, lastns
     increment = 0x0000
     lastns    = zero(UInt64)
 
-	dtm,  ns = now(UTC), time_ns()
-	ndtm = NanoDate(dtm)
-	UTC0 = ndtm - Nanosecond(ns)
+	utctime, localtime, ns = now(UTC), now(), time_ns()
+	utcnd, localnd = NanoDate(utctime), NanoDate(localtime)
+	UTC0 = utcnd - Nanosecond(ns)
+    LOCAL0 = localnd - Nanosecond(ns)
 	nothing
 end
 
-function localinit()
-    global LOCAL0, increment, lastns
-    increment = 0x0000
-    lastns = zero(UInt64)
+function ndnow_ns(sequential::Bool=true)
+    global increment, lastns
 
-	dtm, ns = now(), time_ns()
-	ndtm = NanoDate(dtm)
-	LOCAL0 = ndtm - Nanosecond(ns)
-	nothing
-end
-
-function ndnow(::Type{UTC}; sequential::Bool=true)
-    global UTC0, increment, lastns
-	ns = time_ns()
-
+    ns = time_ns()
 	if sequential
 	    if ns === lastns
 	       increment += 1
+           ns = ns + increment
 	    else
 	       lastns = ns
 	       increment = 0
 	    end
 	end
 
-	UTC0 + Nanosecond(ns + increment)
+    Nanosecond(ns)
 end
 
 function ndnow(; sequential::Bool=true)
-    global LOCAL0, increment, lastns
-	ns = time_ns()
-
-	if sequential
-	    if lastns === ns
-	       increment += 1
-	    else
-	       lastns = ns
-	       increment = 0
-	    end
-	end
-
-	LOCAL0 + Nanosecond(ns + increment)
+    global LOCAL0
+	LOCAL0 + ndnow_ns(sequential)
 end
 
+function ndnow(::Type{UTC}; sequential::Bool=true)
+    global UTC0
+	UTC0 + ndnow_ns(sequential)
 end
+
 
 val(x::CompoundPeriod) = isempty(x) ? 0 : canonicalize(x)
 val(x) = isempty(x) ? 0 : value(x)

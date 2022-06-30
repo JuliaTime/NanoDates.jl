@@ -1,3 +1,32 @@
+utc_delta_str, utc_delta_str_nosep, utc_delta_hours_minutes = utc_delta()
+
+const LOCAL_TZ_DELTA_STR = utc_delta_str 
+const LOCAL_TZ_DELTA_STR_NOSEP = utc_delta_str_nosep
+const LOCAL_TZ_DELTA = utc_delta_hours_minutes
+
+function utc_delta()
+    utctime, localtime = now(UTC), now()
+    utcdelta = canonicalize(localtime - utctime).periods
+    dys = day(utcdelta)
+    hrs = hour(utcdelta) + 24*dys
+    mins = minute(utcdelta)
+    mins = div(mins + copysign(7, mins), 15) * 15 # nearest 15 mins
+    if hrs < 0 || (hrs == 0 && mins < 0)
+        delta_sign = "-"
+        hrs = abs(hrs)
+        mins = abs(mins)
+    else
+        delta_sign = "+"
+    end
+
+    hrs_str = (hrs < 10) ? string(0, hrs) : string(hrs)
+    mins_str = (mins < 10) ? string(0, mins) : string(mins)
+    delta_str = string(delta_sign, hrs_str, ":", mins_str)
+    delta_str_nosep = string(delta_sign, hrs_str, mins_str)
+    delta_str, delta_str_nosep, Hour(hrs) + Minute(mins)
+end
+
+
 
 """
   using BenchmarkTools
@@ -50,77 +79,8 @@ function ndnow(::Type{UTC}; sequential::Bool=true)
 	UTC0 + ndnow_ns(sequential)
 end
 
-
 val(x::CompoundPeriod) = isempty(x) ? 0 : canonicalize(x)
 val(x) = isempty(x) ? 0 : value(x)
-
-function utc_delta()
-    utctime, localtime = now(UTC), now()
-    if minute(utctime)
-    delta_time = canonicalize(localtime - utctime)
-    delta_hours = Hour(day(delta_time)*24 + hour(delta_time))
-    delta_minutes = minute(delta_time)
-    i = 6
-    while (minute(utctime)  != minute(localtime)) && i > 0
-        utctime, localtime = now(UTC), now()
-        i -= 1
-    end
-    delta_time = canonicalize((Hour(localtime) + Minute(localtime)) - (Hour(utctime) + Minute(utctime)))
-    delta_hours = Hour(delta_time)
-    delta_minutes = Minute(delta_time)
-    delta_hour_value = value(delta_hours)
-    delta_minute_value = value(delta_minutes)
-    delta_sign = '+'
-    if value(delta_hours) < 0
-        delta_sign = '-'
-    end
-    delta_hour_str = string(abs(value(delta_hours)))
-    if abs(delta_hour_value) < 10
-       delta_hour_str = "0" * delta_hour_str
-    end
-    delta_minute_str = string(abs(value(delta_minutes)))
-    if length(delta_minute_str) < 2
-        delta_minute_str = "0" * delta_minute_str
-    end
-    delta_time_str = delta_sign * delta_hour_str * ":" * delta_minute_str
-    delta_time_nosep_str = delta_sign * delta_hour_str * delta_minute_str
-    delta_time_str, delta_time_nosep_str, (delta_hours, delta_minutes)
-end
-
-function utc_delta()
-    utctime, localtime = now(UTC), now()
-    i = 6
-    while (minute(utctime)  != minute(localtime)) && i > 0
-        utctime, localtime = now(UTC), now()
-        i -= 1
-    end
-    delta_time = canonicalize((Hour(localtime) + Minute(localtime)) - (Hour(utctime) + Minute(utctime)))
-    delta_hours = Hour(delta_time)
-    delta_hour_value = value(delta_hours)
-    delta_minutes = Minute(delta_time)
-    delta_minute_value = value(delta_minutes)
-    delta_sign = '+'
-    if value(delta_hours) < 0
-        delta_sign = '-'
-    end
-    delta_hour_str = string(abs(value(delta_hours)))
-    if abs(delta_hour_value) < 10
-       delta_hour_str = "0" * delta_hour_str
-    end
-    delta_minute_str = string(abs(value(delta_minutes)))
-    if length(delta_minute_str) < 2
-        delta_minute_str = "0" * delta_minute_str
-    end
-    delta_time_str = delta_sign * delta_hour_str * ":" * delta_minute_str
-    delta_time_nosep_str = delta_sign * delta_hour_str * delta_minute_str
-    delta_time_str, delta_time_nosep_str, (delta_hours, delta_minutes)
-end
-
-utc_delta_str, utc_delta_hours_minutes = utc_delta()
-const LOCAL_TZ_DELTA = utc_delta_str 
-const LOCAL_TZ_DELTA_HOURS = utc_delta_hours_minutes[1]
-const LOCAL_TZ_DELTA_MINUTES = utc_delta_hours_minutes[2]
-
 function timestamp(nd::NanoDate; sep="", utc=true, localtime=false, postfix=true)
     if localtime == true
         utc = false
@@ -136,10 +96,10 @@ function timestamp(nd::NanoDate; sep="", utc=true, localtime=false, postfix=true
         suffix = "Z"
     elseif localtime
         if postfix
-          suffix = LOCAL_TZ_DELTA
+          suffix = LOCAL_TZ_DELTA_STR
         else
           suffix = ""
-          nd = nd + (LOCAL_TZ_DELTA_HOURS + LOCAL_TZ_DELTA_MINUTES)
+          nd = nd + LOCAL_TZ_DELTA
         end
     else
         suffix = ""

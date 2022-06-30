@@ -1,7 +1,7 @@
 module NanoDates
 
 export NanoDate, ISONanoDateFormat, 
-        nnow, ntoday, date_time,
+        ndnow, nnow, ntoday, date_time,
         nanodate2rata, rata2nanodate,
         nanodate2unixnanos, nanodate2unixmicros, nanodate2unixmillis, nanodate2unixseconds,
         unixnanos2nanodate, unixmicros2nanodate, unixmillis2nanodate, unixseconds2nanodate,
@@ -14,7 +14,7 @@ export NanoDate, ISONanoDateFormat,
         SingleSpace, Underscore,
         SmallWhiteCircle, SmallWhiteStar,
         canonical,
-        timestamp
+        timestamp, reset_timekeeping
 
 using Dates
 using Dates: AbstractDateTime, CompoundPeriod,

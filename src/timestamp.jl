@@ -1,9 +1,3 @@
-utc_delta_str, utc_delta_str_nosep, utc_delta_hours_minutes = utc_delta()
-
-const LOCAL_TZ_DELTA_STR = utc_delta_str 
-const LOCAL_TZ_DELTA_STR_NOSEP = utc_delta_str_nosep
-const LOCAL_TZ_DELTA = utc_delta_hours_minutes
-
 function utc_delta()
     utctime, localtime = now(UTC), now()
     utcdelta = canonicalize(localtime - utctime).periods
@@ -25,6 +19,13 @@ function utc_delta()
     delta_str_nosep = string(delta_sign, hrs_str, mins_str)
     delta_str, delta_str_nosep, Hour(hrs) + Minute(mins)
 end
+
+utc_delta_str, utc_delta_str_nosep, utc_delta_hours_minutes = utc_delta()
+
+const LOCAL_TZ_DELTA_STR = utc_delta_str 
+const LOCAL_TZ_DELTA_STR_NOSEP = utc_delta_str_nosep
+const LOCAL_TZ_DELTA = utc_delta_hours_minutes
+
 
 
 

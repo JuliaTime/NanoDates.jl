@@ -35,11 +35,11 @@ const LOCAL_TZ_DELTA = utc_delta_hours_minutes
   calltime = floor(Int, 1e9 * @belapsed ndnow(; sequential=true))
 """
 
-UTC0::NanoDate = NanoDate(today())
-LOCAL0::NanoDate = NanoDate(today())
+UTC0 = NanoDate(today())
+LOCAL0 = NanoDate(today())
 
-increment::UInt16 = 0x0000
-lastns::UInt64 = UInt64(0)
+increment = 0x0000
+lastns = UInt64(0)
 
 function reset_timekeeping()
     global UTC0, LOCAL0, increment, lastns

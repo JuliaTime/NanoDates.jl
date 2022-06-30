@@ -26,9 +26,6 @@ const LOCAL_TZ_DELTA_STR = utc_delta_str
 const LOCAL_TZ_DELTA_STR_NOSEP = utc_delta_str_nosep
 const LOCAL_TZ_DELTA = utc_delta_hours_minutes
 
-
-
-
 """
   using BenchmarkTools
   calltime = round(Int, 1e9 * @belapsed ndnow(; sequential=false))

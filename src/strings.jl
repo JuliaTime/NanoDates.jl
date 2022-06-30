@@ -46,7 +46,7 @@ function nanodate_string(nd)
 end
 
 function nanodate_string(nd::NanoDate, sep::CharString)
-    dtm = nd.datetime 
+    dtm = nd.datetime
     str = string(nd.datetime)
     datepart, timepart = split(str, CapitalT)
     nanos = value(nd.nanosecs)
@@ -69,9 +69,9 @@ function nanodate_string(nd::NanoDate, sep::CharString)
 end
 
 Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT;
-             sep::CharString=EmptyChar) =
+    sep::CharString=EmptyChar) =
     sep === EmptyChar ? nanodate_format(nd, df) :
-                        nanodate_format(nd, df, sep)
+    nanodate_format(nd, df, sep)
 
 function nanodate_format(nd, df)
     datetime = nd.datetime
@@ -147,7 +147,7 @@ function timefromstring(s::String)
     end
 end
 
-internal_string(df::DateFormat) = string(typeof(df).parameters[1]) 
+internal_string(df::DateFormat) = string(typeof(df).parameters[1])
 
 function internal_strings(str::AbstractString)
     if occursin('.', str)
@@ -159,29 +159,191 @@ function internal_strings(str::AbstractString)
     (secsplus, subsecs)
 end
 
+function internal_zone(subsecs::AbstractString)
+    if isempty(subsecs)
+        ("", Hour(0))
+    elseif endswith(subsecs, 'Z')
+        (subsecs[1:end-1], Hour(0))
+    elseif '+' ∈ subsecs || '-' ∈ subsecs
+        plus = findlast('+', subsecs)
+        minus = findlast('-', subsecs)
+        sgn = isnothing(plus) ? -1 : +1
+        idx = sgn < 0 ? minus : plus
+        digits = subsecs[1:idx-1]
+        offset = subsecs[idx+1:end]
+        colon = findlast(':', offset)
+        if isnothing(colon)
+            n = length(offset)
+            hr = n > 0 ? offset[1:min(2, n)] : "0"
+            mn = n > 2 ? offset[3:end] : "0"
+        else
+            hr, mn = split(offset, ':')
+            if isempty(hr)
+                hr = "0"
+            end
+            if isempty(mn)
+                mn = "0"
+            end
+        end
+        hr = Hour(copysign(parse(Int, hr), sgn))
+        mn = Minute(copysign(parse(Int, mn), sgn))
+        (digits, hr + mn)
+    else
+        (subsecs, Hour(0))
+    end
+end
+
 internal_strings(df::DateFormat) = internal_strings(internal_string(df))
 
 function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat)
     str_secsplus, str_subsecs = string.(internal_strings(str))
     if !isempty(str_subsecs)
-        str_subsecs = filter(ch->isletter(ch), str_subsecs)
+        str_subsecs = filter(ch -> isletter(ch), str_subsecs)
+        str_subsecs, zoneoffset = internal_zone(str_subsecs)
+    else
+        zoneoffset = Hour(0)
     end
     df_secsplus, df_subsecs = string.(internal_strings(df))
     secsplus = DateTime(str_secsplus, df_secsplus)
+    if !isempty(zoneoffset)
+        secsplus += zoneoffset
+    end
     if isempty(str_subsecs)
         subsecs = 0
     else
         n = length(str_subsecs)
-        dv,rm = divrem(n, 3)
+        dv, rm = divrem(n, 3)
         zeroslen = 3 - (rm == 0 ? 3 : rm)
-        str_subsecs = (str_subsecs * "00000000")[1:9]
-        subsecs = parse(Int, rpad(parse(Int,str_subsecs), zeroslen, "0"))
+        str_subsecs = (str_subsecs*"00000000")[1:9]
+        subsecs = parse(Int, rpad(parse(Int, str_subsecs), zeroslen, "0"))
     end
     subsec = Nanosecond(subsecs)
     NanoDate(secsplus, subsec)
 end
 
 NanoDate(str::String, df=dateformat"yyyy-mm-ddTHH:MM:SS.sss") = parse(NanoDate, str, df)
+
+
+function fieldspan(str, chr, n=length(str))
+    firstidx = 0
+    lastidx  = 0
+    idx = findfirst(chr, str)
+    if !isnothing(idx)
+        firstidx = idx
+        lastidx = firstidx
+        while lastidx < n
+            if str[lastidx + 1] == chr
+                lastidx += 1
+            else
+                break
+            end
+        end
+    end
+    firstidx:lastidx
+end
+
+const ZeroRange 0:0
+
+Base.@kwdef struct FieldsSpan
+    year::UnitRange{Int} = ZeroRange
+    month::UnitRange{Int} = ZeroRange
+    day::UnitRange{Int} = ZeroRange
+    hour::UnitRange{Int} = ZeroRange
+    minute::UnitRange{Int} = ZeroRange
+    second::UnitRange{Int} = ZeroRange
+    subsec::UnitRange{Int} = ZeroRange
+    offset_z::UnitRange{Int} = ZeroRange
+    offset_sign::UnitRange{Int} = ZeroRange
+    offset_hour::UnitRange{Int} = ZeroRange
+    offset_minute::UnitRange{Int} = ZeroRange
+end
+
+function fieldspans(df::DateFormat)
+    str = String(df)
+    n = length(str)
+    yr = fieldspan(str, 'y', n)
+    mn = fieldspan(str, 'm', n)
+    dy = fieldspan(str, 'd', n)
+    hr = fieldspan(str, 'H', n)
+    mi = fieldspan(str, 'M', n)
+    sc = fieldspan(str, 'S', n)
+    ss = fieldspan(str, 's', n)
+    oz = fieldspan(str, 'Z', n)
+    # check for +/-hhmm, +/-hh:mm
+    sidx = findlast('+', str)
+    if isnothing(sidx)
+        sidx = findlast('-', str)
+        if !isnothing(sidx)
+            hidx = findlast('h', str)
+            if isnothing(hidx) || (hidx < sidx)
+                sidx = nothing
+            end
+        end
+    end
+    if isnothing(sidx)
+        os = ZeroRange
+        oh = ZeroRange
+        om = ZeroRange
+    else
+        os = sidx:sidx
+        str2 = @view(str[sidx+1:end])
+        firstidx = findfirst('h', str2)
+        if !isnothing(firstidx)
+            lastidx = findlast('h', str2)
+            oh = (sidx+firstidx):(sidx+lastidx)
+        else
+            oh = ZeroRange
+        end
+        firstidx = findfirst('m', str2)
+        if !isnothing(firstidx)
+            lastidx = findlast('m', str2)
+            om = (sidx+firstidx):(sidx+lastidx)
+        else
+            om = ZeroRange
+        end
+    end
+
+    FieldsSpan(yr, mn, dy, hr, mi, sc, ss, oz, os, oh, om)
+end
+
+@inline strspan(str::AbstractString, span::UnitRange{Int}) = str[span]
+@inline strperiod(str::AbstractString, span::UnitRange{Int}, period::Type{<:Period}) =
+    iszero(first(span)) ? period(0) : period(strspan(str, span))
+
+function fieldsbyspan(spans::FieldsSpan, str::AbstractString)
+    yr = strperiod(str, spans.year, Year)
+    mn = strperiod(str, spans.month, Month)
+    dy = strperiod(str, spans.day, Day)
+    hr = strperiod(str, spans.hour, Hour)
+    mi = strperiod(str, spans.minute, Minute)
+    sc = strperiod(str, spans.second, Second)
+    ss = Dates.value(strperiod(str, spans.subsec, Nanosecond))
+    ms,us,ns = tosubsecs(ss)
+    oz = !iszero(first(spans.offset_z))
+    os = iszero(first(spans.offset_sign)) ? 0 : str[spans.offset_sign] === '+' ? +1 : -1
+    oh = strperiod(str, spans.offset_hour, Hour)
+    om = strperiod(str, spans.offset_minute, Minute)
+    if os < 1
+        oh = -oh
+        om = -om
+    end
+    (yr, mn, dy, hr, mi, sc, ms, us, ns, oh, om)
+end
+
+function tosubsecs(ss)
+    millis = micros = nanos = 0
+    if !iszero(ss)
+        if ss < 1000
+            millis = ss
+        elseif ss < 1_000_000
+            millis, micros = fldmod(ss, 1_000)
+        else
+            micros, nanos = fldmod(ss, 1_000)
+            millis, micros = fldmod(micros, 1_000)
+        end
+    end
+    Millisecond(millis), Microsecond(micros), Nanosecond(nanos)
+end
 
 #=
 ref: https://github.com/Kotlin/kotlinx-datetime/issues/139

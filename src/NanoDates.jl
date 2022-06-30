@@ -1,7 +1,7 @@
 module NanoDates
 
 export NanoDate, ISONanoDateFormat, 
-        ndnow, nnow, ntoday, date_time,
+        ndnow, ndtoday, date_time,
         nanodate2rata, rata2nanodate,
         nanodate2unixnanos, nanodate2unixmicros, nanodate2unixmillis, nanodate2unixseconds,
         unixnanos2nanodate, unixmicros2nanodate, unixmillis2nanodate, unixseconds2nanodate,

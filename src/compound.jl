@@ -1,4 +1,4 @@
-Base.iszero(x::CompoundPeriod) = isempty(x)
+Base.iszero(x::Dates.CompoundPeriod) = isempty(x)
 
 
 const DatePeriod0 = Period[Year(0), Month(0), Day(0)]
@@ -23,6 +23,7 @@ const YMDHMSs = (YMD..., HMSs...)
 const YMDHMSss = (YMD..., HMSss...)
 const YMDHMSsss = (YMD..., HMSsss...)
 
+#=
 ymd(x::Date) = yearmonthday(x)
 ymd(x::DateTime) = ymd(fld(value(x), 86_400_000_000_000))
 
@@ -68,10 +69,10 @@ const DateTime_compound =
 # Dates defines CompoundPeriod(t::Time)
 Dates.CompoundPeriod(d::Date) =
     Year(d) + Month(d) + Day(d)
-
+=#
 function cps(dt::DateTime)
-    ymd = trunc(dt, Hour)
-    hmss = cnurt(dt, Hour)
+    ymd = trunc(dt, Day)
+    hmss = cnurt(dt, Day)
     result = Period[Year(ymd), Month(ymd), Day(ymd),
                     Hour(hmss), Minute(hmss), Second(hmss), Millisecond(hmss)]
     result

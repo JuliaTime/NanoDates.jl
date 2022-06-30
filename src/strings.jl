@@ -163,9 +163,12 @@ internal_strings(df::DateFormat) = internal_strings(internal_string(df))
 
 function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat)
     str_secsplus, str_subsecs = string.(internal_strings(str))
+    if !isempty(str_subsecs)
+        str_subsecs = filter(ch->isletter(ch), str_subsecs)
+    end
     df_secsplus, df_subsecs = string.(internal_strings(df))
     secsplus = DateTime(str_secsplus, df_secsplus)
-    if isempty(str_subsecs) 
+    if isempty(str_subsecs)
         subsecs = 0
     else
         n = length(str_subsecs)

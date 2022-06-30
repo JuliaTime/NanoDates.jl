@@ -44,10 +44,11 @@ include("parsers4nanodate.jl")
 include("timestamp.jl")
 include("io.jl")
 
-@inline nanos_elapsed() = time_ns() - NanosAtStart
+const NanosAtStart = time_ns()
+
+@inline nanos_elapsed() = reinterpret(Int64, time_ns() - NanosAtStart)
 
 function __init__()
-    global NanosAtStart = time_ns()
     reset_timekeeping() 
 end
 

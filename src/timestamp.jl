@@ -79,9 +79,8 @@ function ndnow(::Type{UTC}; sequential::Bool=true)
 	UTC0 + ndnow_ns(sequential)
 end
 
-val(x::CompoundPeriod) = isempty(x) ? 0 : canonicalize(x)
-val(x) = isempty(x) ? 0 : value(x)
-function timestamp(nd::NanoDate; sep="", utc=true, localtime=false, postfix=true)
+
+function timestamp(nd::NanoDate; utc=true, localtime=false, postfix=true, sep="" )
     if localtime == true
         utc = false
     elseif utc == true

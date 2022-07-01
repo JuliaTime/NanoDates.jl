@@ -201,11 +201,11 @@ function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat)
         str_subsecs = filter(ch -> isletter(ch), str_subsecs)
         str_subsecs, zoneoffset = internal_zone(str_subsecs)
     else
-        zoneoffset = Hour(0)
+        zoneoffset = Hour(0))
     end
     df_secsplus, df_subsecs = string.(internal_strings(df))
     secsplus = DateTime(str_secsplus, df_secsplus)
-    if !isempty(zoneoffset)
+    if !iszero(zoneoffset)
         secsplus += zoneoffset
     end
     if isempty(str_subsecs)

@@ -26,57 +26,7 @@ const LOCAL_TZ_DELTA_STR = utc_delta_str
 const LOCAL_TZ_DELTA_STR_NOSEP = utc_delta_str_nosep
 const LOCAL_TZ_DELTA = utc_delta_hours_minutes
 
-"""
-  using BenchmarkTools
-  calltime = round(Int, 1e9 * @belapsed ndnow(; sequential=false))
-  calltime = floor(Int, 1e9 * @belapsed ndnow(; sequential=true))
-"""
-
-UTC0 = NanoDate(today())
-LOCAL0 = NanoDate(today())
-
-increment = 0x0000
-lastns = UInt64(0)
-
-function reset_timekeeping()
-    global UTC0, LOCAL0, increment, lastns
-    increment = 0x0000
-    lastns    = zero(UInt64)
-
-	utctime, localtime, ns = now(UTC), now(), time_ns()
-	utcnd, localnd = NanoDate(utctime), NanoDate(localtime)
-	UTC0 = utcnd - Nanosecond(ns)
-    LOCAL0 = localnd - Nanosecond(ns)
-	nothing
-end
-
-function ndnow_ns(sequential::Bool=true)
-    global increment, lastns
-
-    ns = time_ns()
-	if sequential
-	    if ns === lastns
-	       increment += 1
-           ns = ns + increment
-	    else
-	       lastns = ns
-	       increment = 0
-	    end
-	end
-
-    Nanosecond(ns)
-end
-
-function ndnow(; sequential::Bool=true)
-    global LOCAL0
-	LOCAL0 + ndnow_ns(sequential)
-end
-
-function ndnow(::Type{UTC}; sequential::Bool=true)
-    global UTC0
-	UTC0 + ndnow_ns(sequential)
-end
-
+# Timestamp
 
 function timestamp(nd::NanoDate; utc=true, localtime=false, postfix=true, sep="" )
     if localtime == true
@@ -104,6 +54,86 @@ function timestamp(nd::NanoDate; utc=true, localtime=false, postfix=true, sep=""
 
     tstamp = string(nd; sep) * suffix
     tstamp
+end
+
+
+"""
+  using BenchmarkTools
+  calltime = round(Int, 1e9 * @belapsed ndnow(; sequential=false))
+  calltime = floor(Int, 1e9 * @belapsed ndnow(; sequential=true))
+"""
+
+UTC0 = NanoDate(today())
+LOCAL0 = NanoDate(today())
+
+increment = 0x0000
+lastns = UInt64(0)
+
+function reset_timekeeping()
+    global UTC0, LOCAL0, increment, lastns
+    increment = 0x0000
+    lastns    = zero(UInt64)
+
+	utctime, localtime, ns = now(UTC), now(), time_ns()
+	utcnd, localnd = NanoDate(utctime), NanoDate(localtime)
+	UTC0 = utcnd - Nanosecond(ns)
+    LOCAL0 = localnd - Nanosecond(ns)
+	nothing
+end
+
+function ndnow(; sequential::Bool=true)
+    global LOCAL0
+	LOCAL0 + ndnow_ns(sequential)
+end
+
+function ndnow(::Type{UTC}; sequential::Bool=true)
+    global UTC0
+	UTC0 + ndnow_ns(sequential)
+end
+
+function ndnow_ns(sequential::Bool=true)
+    global increment, lastns
+
+    ns = time_ns()
+	if sequential
+	    if ns === lastns
+	       increment += 1
+           ns = ns + increment
+	    else
+	       lastns = ns
+	       increment = 0
+	    end
+	end
+
+    Nanosecond(ns)
+end
+
+function ndnow_strict()
+    global LOCAL0
+	LOCAL0 + ndnow_ns_strict()
+end
+
+function ndnow_strict(::Type{UTC})
+    global UTC0
+	UTC0 + ndnow_ns_strict()
+end
+
+function ndnow_ns_strict()
+    global increment, lastns
+
+    ns = time_ns()
+
+    if ns > lastns                  # this branch >98%
+        lastns = ns
+        increment = 0x0000
+    elseif ns === lastns            # this branch  <2%
+        increment += 0x0001
+        ns += increment
+    else                            # almost never
+        reset_timekeeping()
+    end
+
+    Nanosecond(ns)
 end
 
 

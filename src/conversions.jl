@@ -45,7 +45,6 @@ function nanodate2unixseconds(nd::NanoDate)
     div(millis, 1_000)
 end
 
-
 function unixnanos2nanodate(nanosecs)
     micros, nanos = fldmod_1000(nanosecs)
     millimicros, micros = fldmod_1000(micros)
@@ -65,7 +64,6 @@ end
 function unixseconds2nanodate(seconds)
     unixnanos2nanodate(Int128(seconds) * 1_000_000_000)
 end
-
 
 julian2nanodate(x) = NanoDate(julian2datetime(x))
 

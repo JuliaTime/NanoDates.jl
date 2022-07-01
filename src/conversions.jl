@@ -36,7 +36,7 @@ function nanodate2unixmicros(nd::NanoDate)
 end
 
 function nanodate2unixmillis(nd::NanoDate)
-    micros  = nanodate2unixmicros(nd)
+    micros  = nanodate2unixnanos(nd)
     div(micros, 1_000_000)
 end
 

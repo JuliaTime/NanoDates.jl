@@ -344,6 +344,107 @@ function tosubsecs(ss)
     Millisecond(millis), Microsecond(micros), Nanosecond(nanos)
 end
 
+function separate_offset(df::DateFormat)
+    str = String(df)
+    if endswith(str, 'Z')
+        (str[1:end-1], str[end:end])
+    elseif str[end-4:end] == "hh:mm"
+        (str[1:end-6], str[end-5:end])
+    elseif str[end-3:end] == "hhmm"
+        (str[1:end-5], str[end-4:end])
+    else
+        (str, "")
+    end
+end
+
+@inline ffirst_date(str) =
+    minimum(filter(!isnothing, (findfirst('y', str), findfirst('m', str), findfirst('d', str))))
+
+@inline flast_date(str) =
+    maximum(filter(!isnothing, (findlast('y', str), findlast('m', str), findlast('d', str))))
+
+@inline ffirst_hms(str) =
+    minimum(filter(!isnothing, (findfirst('H', str), findfirst('M', str), findfirst('S', str))))
+
+@inline flast_hms(str) =
+    maximum(filter(!isnothing, (findlast('H', str), findlast('M', str), findlast('S', str))))
+
+function separate_date(dfstr::AbstractString)
+    if !('y' ∈ dfstr || 'm' ∈ dfstr || 'd' ∈ dfstr)
+        ("", dfstr)
+    else
+        n = length(dfstr)
+        firstidx = ffirst_date(dfstr)
+        lastidx  = flast_date(dfstr)
+        if firstidx === 1
+            if lastidx === n
+                (dfstr, "")
+            else
+                (dfstr[firstidx:lastidx], dfstr[lastidx+1:end])
+            end
+        elseif lastidx === n
+            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1])
+        else
+            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1]*' '*dfstr[lastidx+1:end])
+        end
+    end
+end
+
+function separate_subsecs(dfstr::AbstractString)
+    if dfstr === "."
+        return ("", "")
+    end
+    dotidx = findfirst('.', dfstr)
+    if !isnothing(dotidx)
+        if endswith(dfstr, '.')
+            dfstr = dfstr[1:end-1]
+        elseif startswith(dfstr, '.')
+            dfstr = dfstr[2:end]
+        else
+            dfstr = dfstr[1:dotidx-1] * dfstr[dotidx+1:end]
+        end
+    end
+    firstidx = findfirst('s', dfstr)
+    if isnothing(firstidx)
+        ("", dfstr)
+    else
+        lastidx = findlast('s', dfstr)
+        n = length(dfstr)
+        if firstidx === 1
+            if lastidx === n
+                (dfstr, "")
+            else
+                (dfstr[firstidx:lastidx], dfstr[lastidx+1:end])
+            end
+        elseif lastidx === n
+            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1])
+        else
+            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1]*' '*dfstr[lastidx+1:end])
+        end
+    end
+end
+
+function separate_hms(dfstr::AbstractString)
+    if !('H' ∈ dfstr || 'M' ∈ dfstr || 'S' ∈ dfstr)
+        ("", dfstr)
+    else
+        n = length(dfstr)
+        firstidx = ffirst_hms(dfstr)
+        lastidx  = flast_hms(dfstr)
+        if firstidx === 1
+            if lastidx === n
+                (dfstr, "")
+            else
+                (dfstr[firstidx:lastidx], dfstr[lastidx+1:end])
+            end
+        elseif lastidx === n
+            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1])
+        else
+            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1]*' '*dfstr[lastidx+1:end])
+        end
+    end
+end
+
 #=
 ref: https://github.com/Kotlin/kotlinx-datetime/issues/139
 

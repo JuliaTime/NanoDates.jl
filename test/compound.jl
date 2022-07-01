@@ -38,6 +38,7 @@ end
 
 end
 
+#=
 @testset "Date" begin
    
     tda = today()
@@ -73,6 +74,7 @@ end
     @test DateTime(Month(2) + Microsecond(999)) ==
         firstdayofyear(tda) + Month(2-1)
 end
+=#
 
 @testset "NanoDate(Period)" begin
     tda = NanoDate(now())
@@ -83,6 +85,7 @@ end
 
 end
 
+#=
 @testset "NanoDate(CompoundPeriod)" begin
     nd = NanoDate(2022, 6, 18,  12, 15, 30,  123, 456, 789);
     cnd = CompoundPeriod(nd)
@@ -95,3 +98,4 @@ end
 
     @test NanoDate(CompoundPeriod(nd)) == nd
 end
+=#

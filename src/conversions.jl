@@ -48,7 +48,7 @@ end
 function unixnanos2nanodate(nanosecs)
     micros, nanos = fldmod_1000(nanosecs)
     millimicros, micros = fldmod_1000(micros)
-    millis = fld_1000000(nanosecs) + millimicros
+    millis = fld(nanosecs, 1000_000) + millimicros
     nanos = (micros * 1_000) + nanos
     NanoDate(DateTime(Dates.UTM(millis)), Nanosecond(nanos))
 end

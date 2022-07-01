@@ -223,7 +223,6 @@ end
 
 NanoDate(str::String, df=dateformat"yyyy-mm-ddTHH:MM:SS.sss") = parse(NanoDate, str, df)
 
-
 function fieldspan(str, chr, n=length(str))
     firstidx = 0
     lastidx  = 0
@@ -242,7 +241,7 @@ function fieldspan(str, chr, n=length(str))
     firstidx:lastidx
 end
 
-const ZeroRange 0:0
+const ZeroRange = 0:0
 
 Base.@kwdef struct FieldsSpan
     year::UnitRange{Int} = ZeroRange

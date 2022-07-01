@@ -49,3 +49,6 @@ end
     include("strings.jl")
 end
 
+@testset "timestamp" begin
+    include("timestamp.jl")
+end

@@ -108,7 +108,7 @@ safe_mulby_1000(x::Int64) = x <= 9_223_372_036_854_775 ? mulby_100(x) :
                                                          ArgumentError("$(x) is too large")
 safe_mulby_1000(x::Int32) = x <= 2_147_483 ? mulby_100(x) : ArgumentError("$(x) is too large")
 
-function fldmod_1000(x::T) where {T<:Union{Int64,UInt64}}
+function fldmod_1000(x::T) where {T<:Union{Int64,UInt64,Int128}}
     if abs(x) <= 9_780_955_816
         quotient =  if (x < 434_934_000)          # in 2^28 .. 2^29
                         unsafe_fld_1000(x)

@@ -220,6 +220,7 @@ end
 
 function NanoDate(str::AbstractString)
     secsplus, subsecs, zoneoffset = parts(NanoDate, str)
+    subsecs = rpad(subsecs, 9-length(subsecs), '0')
     nd = NanoDate(DateTime(secsplus), Nanosecond(subsecs))
     if !isempty(zoneoffset) && zoneoffset[1] !== 'Z'
         sgn = zoneoffset[1] == '+' ? +1 : -1

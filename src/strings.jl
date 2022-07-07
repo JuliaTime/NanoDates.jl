@@ -196,29 +196,37 @@ end
 internal_strings(df::DateFormat) = internal_strings(internal_string(df))
 
 function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat)
+
+function parts(::Type{NanoDate}, str::AbstractString)
     str_secsplus, str_subsecs = string.(internal_strings(str))
+    str_zoneoffset = ""
     if !isempty(str_subsecs)
-        str_subsecs = filter(ch -> isletter(ch), str_subsecs)
-        str_subsecs, zoneoffset = internal_zone(str_subsecs)
-    else
-        zoneoffset = Hour(0)
+        if endswith(str_subsecs, "Z")
+            str_subsecs = str_subsecs[1:end-1]
+            str_zoneoffset = "Z"
+        elseif occursin('+', str_subsecs)
+            idx = findfirst('+', str_subsecs)
+            str_zoneoffset = str_subsecs[idx:end]
+            str_subsecs = str_subsecs[1:idx-1]
+        elseif occursin('-', str_subsecs)
+            idx = findfirst('-', str_subsecs)
+            str_zoneoffset = str_subsecs[idx:end]
+            str_subsecs = str_subsecs[1:idx-1]
+        end
     end
-    df_secsplus, df_subsecs = string.(internal_strings(df))
-    secsplus = DateTime(str_secsplus, df_secsplus)
-    if !iszero(zoneoffset)
-        secsplus += zoneoffset
+    str_secsplus, str_subsecs, str_zoneoffset
+end
+
+function NanoDate(str::AbstractString)
+    secsplus, subsecs, zoneoffset = parts(NanoDate, str)
+    nd = NanoDate(DateTime(secsplus), Nanosecond(subsecs))
+    if !isempty(zoneoffset) && zoneoffset[1] !== 'Z'
+        sgn = zoneoffset[1] == '+' ? +1 : -1
+        hr = Hour(copysign(parse(Int, zoneoffset[2:3]), sgn))
+        mn = Minute(copysign(parse(Int, zoneoffset[end-1:end]), sgn))
+        nd = nd + (hr + mn)
     end
-    if isempty(str_subsecs)
-        subsecs = 0
-    else
-        n = length(str_subsecs)
-        dv, rm = divrem(n, 3)
-        zeroslen = 3 - (rm == 0 ? 3 : rm)
-        str_subsecs = (str_subsecs*"00000000")[1:9]
-        subsecs = parse(Int, rpad(parse(Int, str_subsecs), zeroslen, "0"))
-    end
-    subsec = Nanosecond(subsecs)
-    NanoDate(secsplus, subsec)
+    nd
 end
 
 NanoDate(str::String, df=dateformat"yyyy-mm-ddTHH:MM:SS.sss") = parse(NanoDate, str, df)

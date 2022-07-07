@@ -230,7 +230,7 @@ function NanoDate(str::AbstractString)
     nd
 end
 
-NanoDate(str::String, df=dateformat"yyyy-mm-ddTHH:MM:SS.sss") = parse(NanoDate, str, df)
+NanoDate(str::String, df::DateFormat) = parse(NanoDate, str, df)
 
 function fieldspan(str, chr, n=length(str))
     firstidx = 0

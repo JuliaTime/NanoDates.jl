@@ -7,21 +7,23 @@ const ISONanoDateFormat = dateformat"yyyy-mm-ddTHH:MM:SS.sss"
 
 Dates.default_format(::Type{NanoDate}) = ISONanoDateFormat
 
-function Dates.validargs(::Type{NanoDate}, y::T, m::T, d::T,
-    h::T, mi::T, s::T, ms::T, us::T, ns::T,
+function Dates.validargs(::Type{NanoDate};
+    year::T=year(today(UTC)), month::T=1, day::T=1,
+    hour::T=0, minute::T=0, second::T=0,
+    millisecond::T=0, microsecond::T=0, nanosecond::T=0,
     ampm::Dates.AMPM=Dates.TWENTYFOURHOUR) where {T<:Union{Int64,Int128}}
-    0 < m < 13 || return Dates.argerror("Month: $m out of range (1:12)")
-    0 < d < daysinmonth(y, m) + 1 || return Dates.argerror("Day: $d out of range (1:$(daysinmonth(y, m)))")
-    if ampm == Dates.TWENTYFOURHOUR # 24-hour clock
-        -1 < h < 24 || return Dates.argerror("Hour: $h out of range (0:23)")
-    else
-        0 < h < 13 || return Dates.argerror("Hour: $h out of range (1:12)")
-    end
-    -1 < mi < 60 || return Dates.argerror("Minute: $mi out of range (0:59)")
-    -1 < s < 60 || return Dates.argerror("Second: $s out of range (0:59)")
-    -1 < ms < 1000 || return Dates.argerror("Millisecond: $ms out of range (0:999)")
-    -1 < us < 1000 || return Dates.argerror("Microsecond: $us out of range (0:999)")
-    -1 < ns < 1000 || return Dates.argerror("Nanosecond: $ns out of range (0:999)")
+
+    validornot(0, month, 13, Month)
+    validornot(0, day, 1 + daysinmonth(year, month), Day)
+    ampm === Dates.TWENTYFOURHOUR ? validornot(-1, hour, 24, Hour) : validornot(0, hour, 13, Hour)
+    validornot(-1, minute, 60, Minute)
+    validornot(-1, second, 60, Second)
+    validornot(-1, millisecond, 1000, Millisecond)
+    validornot(-1, microsecond, 1000, Microsecond)
+    validornot(-1, nanosecond, 1000, Nanosecond)
     return Dates.argerror()
 end
 
+@inline validornot(below, value, above, period::Type{P}) where {P<:Period} =
+    (below < value < above) ||
+    throw(Dates.argerror("$(period): $value is outside of ($(below+1):$(above-1))"))

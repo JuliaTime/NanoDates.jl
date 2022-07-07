@@ -1,27 +1,28 @@
 module NanoDates
 
-export NanoDate, ISONanoDateFormat, 
-        ndtoday, ndnow, ndnow_strict, date_time,
-        nanodate2rata, rata2nanodate,
-        nanodate2unixnanos, nanodate2unixmicros, nanodate2unixmillis, nanodate2unixseconds,
-        unixnanos2nanodate, unixmicros2nanodate, unixmillis2nanodate, unixseconds2nanodate,
-        firsthourofday, firstminuteofhour, firstsecondofminute, firstmillisecondofsecond,
-        firstmicrosecondofmillisecond, firstnanosecondofmicrosecond,
-        lasthourofday, lastminuteofhour, lastsecondofminute, lastmillisecondofsecond,
-        lastmicrosecondofmillisecond, lastnanosecondofmicrosecond,
-        format, parse,
-        CapitalT, SmallCapitalT,
-        SingleSpace, Underscore,
-        SmallWhiteCircle, SmallWhiteStar,
-        canonical,
-        timestamp, reset_timekeeping
+export NanoDate, ISONanoDateFormat,
+    ndnow, ndnow_strict, ndtoday,
+    date_time,
+    nanodate2rata, rata2nanodate,
+    nanodate2unixnanos, nanodate2unixmicros, nanodate2unixmillis, nanodate2unixseconds,
+    unixnanos2nanodate, unixmicros2nanodate, unixmillis2nanodate, unixseconds2nanodate,
+    firsthourofday, firstminuteofhour, firstsecondofminute, firstmillisecondofsecond,
+    firstmicrosecondofmillisecond, firstnanosecondofmicrosecond,
+    lasthourofday, lastminuteofhour, lastsecondofminute, lastmillisecondofsecond,
+    lastmicrosecondofmillisecond, lastnanosecondofmicrosecond,
+    format, parse,
+    canonical,
+    timestamp, reset_timekeeping,
+    CapitalT, SmallCapitalT,
+    SingleSpace, Underscore,
+    SmallWhiteCircle, SmallWhiteStar
 
 using Dates
 using Dates: AbstractDateTime, CompoundPeriod,
-             quarter, format, value, days,
-             toms, tons, UTD, UTM
+    quarter, format, value, days,
+    toms, tons, UTD, UTM
 
-export AbstractDateTime, CompoundPeriod, 
+export AbstractDateTime, CompoundPeriod,
     quarter, value, days, format
 
 using Parsers
@@ -49,7 +50,7 @@ const NanosAtStart = time_ns()
 @inline nanos_elapsed() = reinterpret(Int64, time_ns() - NanosAtStart)
 
 function __init__()
-    reset_timekeeping() 
+    reset_timekeeping()
 end
 
 end  # NanoDates

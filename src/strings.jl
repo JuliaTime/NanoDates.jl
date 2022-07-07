@@ -196,6 +196,7 @@ end
 internal_strings(df::DateFormat) = internal_strings(internal_string(df))
 
 function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat)
+end
 
 function parts(::Type{NanoDate}, str::AbstractString)
     str_secsplus, str_subsecs = string.(internal_strings(str))

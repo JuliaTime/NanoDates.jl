@@ -195,8 +195,7 @@ end
 
 internal_strings(df::DateFormat) = internal_strings(internal_string(df))
 
-function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat)
-end
+function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat) end
 
 function parts(::Type{NanoDate}, str::AbstractString)
     str_secsplus, str_subsecs = string.(internal_strings(str))
@@ -233,15 +232,171 @@ end
 
 NanoDate(str::String, df::DateFormat) = parse(NanoDate, str, df)
 
+function separate_offset(df::DateFormat)
+    str = String(df)
+    if endswith(str, 'Z')
+        (str[1:end-1], str[end:end])
+    elseif str[end-4:end] == "hh:mm"
+        (str[1:end-6], str[end-5:end])
+    elseif str[end-3:end] == "hhmm"
+        (str[1:end-5], str[end-4:end])
+    else
+        (str, "")
+    end
+end
+
+
+hasoffset(str) = anyoccur(('Z', '+', '±'), str)
+
+
+const NTPeriods9 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss, :us, :ns),NTuple{9,UnitRange{Int64}}}
+const NTPeriods7 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss),NTuple{7,UnitRange{Int64}}}
+
+function tooffset(str::AbstractString)
+    hr = 0
+    mn = 0
+    if !isempty(str)
+        if str != "Z"
+            sgn = str[1] == '+' ? 1 : -1
+            hr = Meta.parse(str[2:3])
+            mn = Meta.parse(str[end-1:end])
+        end
+    end
+    copysign(hr, sgn), copysign(mn, sgn)
+end
+
+tosubsecs(ss::AbstractString) = tosubsecs(Meta.parse(rpad(ss, 9, '0')))
+
+function tosubsecs(ss::Integer)
+    millis = micros = nanos = 0
+    if !iszero(ss)
+        if ss < 1000
+            millis = ss
+        elseif ss < 1_000_000
+            millis, micros = fldmod(ss, 1_000)
+        else
+            micros, nanos = fldmod(ss, 1_000)
+            millis, micros = fldmod(micros, 1_000)
+        end
+    end
+    millis, micros, nanos
+end
+
+
+getparts(df::DateFormat, str::AbstractString) = 
+    getparts(indexperiods(df), str)
+
+function getperiods(indices, str::AbstractString)
+    periods = map(x -> getperiod(x, str), NTPeriods(indices))
+    periods
+end
+
+function getparts(indices, str::AbstractString)
+    parts = map(x -> getpart(x, str), indices)
+    parts
+end
+
+@inline function getperiod(r::UnitRange, str)
+    iszero(r.start) && return 0
+    Meta.parse(str[r])
+end
+
+@inline function getpart(r::UnitRange, str)
+    iszero(r.start) && return "0"
+    str[r]
+end
+
+
+
+function indexperiods(df::DateFormat)
+    str = String(df)
+    yr = indexfirstlast('y', str)
+    mn = indexfirstnext('m', str)
+    dy = indexfirstlast('d', str)
+    hr = indexfirstnext('H', str)
+    mi = indexfirstnext('M', str)
+    sc = indexfirstnext('S', str)
+    ss = indexfirstlast('s', str)
+    offset = UnitRange(find_offset(str)...)
+    (; yr, mn, dy, hr, mi, sc, ss, offset)
+end
+
+find_offset(str) = (findfirst(('Z', '+', '±'), str), findlast(('Z', 'm'), str))
+
+function indexfirstlast(needle, haystack)
+    indices = findfirstlast(needle, haystack)
+    UnitRange(indices...)
+end
+
+function indexfirstnext(needle, haystack)
+    idx1 = findfirst(needle, haystack)
+    if needle == haystack[idx1+1]
+        idx2 = idx1 + 1
+    else
+        idx2 = idx1
+    end
+    UnitRange(idx1, idx2)
+end
+
+findfirstlast(needles, haystack) =
+    (findfirst(needles, haystack), findlast(needles, haystack))
+
+function Base.findfirst(needles::Tuple, haystack)
+    indices = filter(!isnothing, findfirst.(needles, haystack))
+    if !isempty(indices)
+        minimum(indices)
+    else
+        nothing
+    end
+end
+
+function Base.findlast(needles::Tuple, haystack)
+    indices = filter(!isnothing, findlast.(needles, haystack))
+    if !isempty(indices)
+        maximum(indices)
+    else
+        nothing
+    end
+end
+
+anyoccur(targets::NTuple{N,T}, str::AbstractString) where {N,T<:Union{AbstractChar,AbstractString}} =
+    any(occursin.(targets, str))
+
+alloccur(targets::NTuple{N,T}, str::AbstractString) where {N,T<:Union{AbstractChar,AbstractString}} =
+    all(occursin.(targets, str))
+
+hasymd(str) = alloccur(('y', 'm', 'd'), str)
+hashms(str) = alloccur(('H', 'M', 'S'), str)
+hashmss(str) = alloccur(('H', 'M', 'S', 's'), str)
+
+#=
+ref: https://github.com/Kotlin/kotlinx-datetime/issues/139
+
+fun Instant.Companion.parseWithBasicOffset(string: String): Instant {
+    var lastDigit = string.length
+    while (lastDigit > 0 && string[lastDigit - 1].isDigit()) { --lastDigit }
+    val digits = string.length - lastDigit // how many digits are there at the end of the string
+    if (digits <= 2)
+        return parse(string) // no issue in any case
+    var newString = string.substring(0, lastDigit + 2)
+    lastDigit += 2
+    while (lastDigit < string.length) {
+        newString += ":" + string.substring(lastDigit, lastDigit + 2)
+        lastDigit += 2
+    }
+    return parse(newString)
+}
+=#
+#=
 function fieldspan(str, chr, n=length(str))
     firstidx = 0
-    lastidx  = 0
+    lastidx = 0
     idx = findfirst(chr, str)
     if !isnothing(idx)
         firstidx = idx
         lastidx = firstidx
         while lastidx < n
-            if str[lastidx + 1] == chr
+            if str[lastidx+1] == chr
                 lastidx += 1
             else
                 break
@@ -327,7 +482,7 @@ function fieldsbyspan(spans::FieldsSpan, str::AbstractString)
     mi = strperiod(str, spans.minute, Minute)
     sc = strperiod(str, spans.second, Second)
     ss = Dates.value(strperiod(str, spans.subsec, Nanosecond))
-    ms,us,ns = tosubsecs(ss)
+    ms, us, ns = tosubsecs(ss)
     oz = !iszero(first(spans.offset_z))
     os = iszero(first(spans.offset_sign)) ? 0 : str[spans.offset_sign] === '+' ? +1 : -1
     oh = strperiod(str, spans.offset_hour, Hour)
@@ -338,139 +493,4 @@ function fieldsbyspan(spans::FieldsSpan, str::AbstractString)
     end
     (yr, mn, dy, hr, mi, sc, ms, us, ns, oh, om)
 end
-
-function tosubsecs(ss)
-    millis = micros = nanos = 0
-    if !iszero(ss)
-        if ss < 1000
-            millis = ss
-        elseif ss < 1_000_000
-            millis, micros = fldmod(ss, 1_000)
-        else
-            micros, nanos = fldmod(ss, 1_000)
-            millis, micros = fldmod(micros, 1_000)
-        end
-    end
-    Millisecond(millis), Microsecond(micros), Nanosecond(nanos)
-end
-
-function separate_offset(df::DateFormat)
-    str = String(df)
-    if endswith(str, 'Z')
-        (str[1:end-1], str[end:end])
-    elseif str[end-4:end] == "hh:mm"
-        (str[1:end-6], str[end-5:end])
-    elseif str[end-3:end] == "hhmm"
-        (str[1:end-5], str[end-4:end])
-    else
-        (str, "")
-    end
-end
-
-@inline ffirst_date(str) =
-    minimum(filter(!isnothing, (findfirst('y', str), findfirst('m', str), findfirst('d', str))))
-
-@inline flast_date(str) =
-    maximum(filter(!isnothing, (findlast('y', str), findlast('m', str), findlast('d', str))))
-
-@inline ffirst_hms(str) =
-    minimum(filter(!isnothing, (findfirst('H', str), findfirst('M', str), findfirst('S', str))))
-
-@inline flast_hms(str) =
-    maximum(filter(!isnothing, (findlast('H', str), findlast('M', str), findlast('S', str))))
-
-function separate_date(dfstr::AbstractString)
-    if !('y' ∈ dfstr || 'm' ∈ dfstr || 'd' ∈ dfstr)
-        ("", dfstr)
-    else
-        n = length(dfstr)
-        firstidx = ffirst_date(dfstr)
-        lastidx  = flast_date(dfstr)
-        if firstidx === 1
-            if lastidx === n
-                (dfstr, "")
-            else
-                (dfstr[firstidx:lastidx], dfstr[lastidx+1:end])
-            end
-        elseif lastidx === n
-            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1])
-        else
-            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1]*' '*dfstr[lastidx+1:end])
-        end
-    end
-end
-
-function separate_subsecs(dfstr::AbstractString)
-    if dfstr === "."
-        return ("", "")
-    end
-    dotidx = findfirst('.', dfstr)
-    if !isnothing(dotidx)
-        if endswith(dfstr, '.')
-            dfstr = dfstr[1:end-1]
-        elseif startswith(dfstr, '.')
-            dfstr = dfstr[2:end]
-        else
-            dfstr = dfstr[1:dotidx-1] * dfstr[dotidx+1:end]
-        end
-    end
-    firstidx = findfirst('s', dfstr)
-    if isnothing(firstidx)
-        ("", dfstr)
-    else
-        lastidx = findlast('s', dfstr)
-        n = length(dfstr)
-        if firstidx === 1
-            if lastidx === n
-                (dfstr, "")
-            else
-                (dfstr[firstidx:lastidx], dfstr[lastidx+1:end])
-            end
-        elseif lastidx === n
-            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1])
-        else
-            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1]*' '*dfstr[lastidx+1:end])
-        end
-    end
-end
-
-function separate_hms(dfstr::AbstractString)
-    if !('H' ∈ dfstr || 'M' ∈ dfstr || 'S' ∈ dfstr)
-        ("", dfstr)
-    else
-        n = length(dfstr)
-        firstidx = ffirst_hms(dfstr)
-        lastidx  = flast_hms(dfstr)
-        if firstidx === 1
-            if lastidx === n
-                (dfstr, "")
-            else
-                (dfstr[firstidx:lastidx], dfstr[lastidx+1:end])
-            end
-        elseif lastidx === n
-            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1])
-        else
-            (dfstr[firstidx:lastidx], dfstr[1:firstidx-1]*' '*dfstr[lastidx+1:end])
-        end
-    end
-end
-
-#=
-ref: https://github.com/Kotlin/kotlinx-datetime/issues/139
-
-fun Instant.Companion.parseWithBasicOffset(string: String): Instant {
-    var lastDigit = string.length
-    while (lastDigit > 0 && string[lastDigit - 1].isDigit()) { --lastDigit }
-    val digits = string.length - lastDigit // how many digits are there at the end of the string
-    if (digits <= 2)
-        return parse(string) // no issue in any case
-    var newString = string.substring(0, lastDigit + 2)
-    lastDigit += 2
-    while (lastDigit < string.length) {
-        newString += ":" + string.substring(lastDigit, lastDigit + 2)
-        lastDigit += 2
-    }
-    return parse(newString)
-}
 =#
-    

@@ -71,6 +71,7 @@ Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharString=Empty
     sep === EmptyChar ? nanodate_format(nd, df) : nanodate_format(nd, df, sep)
 
 function nanodate_format(nd, df)
+    nooffset(df)
     datetime = nd.datetime
     str = Dates.format(datetime, df)
     value(nd.nanosecs) == 0 && return str
@@ -97,6 +98,7 @@ function nanodate_format(nd, df)
 end
 
 function nanodate_format(nd, df, sep)
+    nooffset(df)
     datetime = nd.datetime
     str = Dates.format(datetime, df)
     value(nd.nanosecs) == 0 && return str
@@ -121,6 +123,14 @@ function nanodate_format(nd, df, sep)
     str = str * sep * lpad(ns, 3, '0')
     str
 end
+
+nooffset(df::DateFormat) = nooffset(String(df))
+function nooffset(str::AbstractString)
+    if occursin(str, '+')
+        throw(ArgumentError("utc offsets are not supported in format(), use timestamp()"))
+    end
+end
+
 
 separate_offset(df::DateFormat) = separate_offset(String(df))
 

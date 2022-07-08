@@ -248,6 +248,7 @@ end
 
 
 
+Base.UnitRange(start::Nothing, stop::Nothing) = 0:0
 
 const NTPeriods9 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss, :us, :ns),NTuple{9,UnitRange{Int64}}}
 const NTPeriods7 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss),NTuple{7,UnitRange{Int64}}}
@@ -284,7 +285,7 @@ end
 function getnanodate(df::DateFormat, str::AbstractString)
     parts = getparts(df, str)
     subsecs = tosubsecs(parts.ss)
-    offset  = tooffset(parts.offset)
+    offset = tooffset(parts.offset)
     (parts, subsecs, offset)
 end
 

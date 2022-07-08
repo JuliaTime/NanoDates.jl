@@ -206,7 +206,7 @@ end
 getparts(df::DateFormat, str::AbstractString) =
     getparts(indexperiods(df), str)
 
-getparts(indices::NamedTuple{T,NTuple{N,UnitRange{I}}}, str::AbstractString) where {N,I,T} =
+getparts(indices::NamedTuple{T,NTuple{N,<:UnitRange}}, str::AbstractString) where {N,T} =
     map(x -> getpart(x, str), indices)
 
 @inline function getpart(r::UnitRange, str)

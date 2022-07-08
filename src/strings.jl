@@ -1,6 +1,5 @@
-#=
-    struct wrapped character constants for NanoDate formats
-=#
+
+# TODO: handle ±hh:mm +hh:mm, -hhmm offsets in dateformat
 
 
 # '⦰' is the reversed empty set 0x29b0
@@ -123,6 +122,21 @@ function nanodate_format(nd, df, sep)
     str
 end
 
+separate_offset(df::DateFormat) = separate_offset(String(df))
+
+function separate_offset(str::AbstractString)
+    if isempty(str) || isdigit(str[end])
+        ("", "")
+    elseif endswith(str, 'Z')
+        ("", "Z")
+    elseif str[end-4:end] == "hh:mm"
+        (str[end-5], "hh:mm")
+    elseif str[end-3:end] == "hhmm"
+        (str[end-4], "hhmm")
+    else
+        throw(ArgumentError("offset in $(str) not recognized"))
+    end
+end
 
 
 Base.UnitRange(start::Nothing, stop::Nothing) = 0:0
@@ -190,17 +204,6 @@ getparts(indices::NamedTuple{T,NTuple{N,UnitRange{I}}}, str::AbstractString) whe
     str[r]
 end
 
-getperiods(df::DateFormat, str::AbstractString) =
-    getperiods(indexperiods(df), str)
-
-getperiods(indices::NamedTuple{T,NTuple{N,UnitRange{I}}}, str::AbstractString) where {N,I,T} =
-    map(x -> getperiod(x, str), NTPeriods(indices))
-
-@inline function getperiod(r::UnitRange, str)
-    iszero(r.start) && return 0
-    Meta.parse(str[r])
-end
-
 function indexperiods(df::DateFormat)
     str = strip(String(df))
     yr = indexfirstlast('y', str)
@@ -266,6 +269,19 @@ function Base.findlast(needles::Tuple, haystack)
     end
 end
 
+
+#=
+getperiods(df::DateFormat, str::AbstractString) =
+    getperiods(indexperiods(df), str)
+
+getperiods(indices::NamedTuple{T,NTuple{N,UnitRange{I}}}, str::AbstractString) where {N,I,T} =
+    map(x -> getperiod(x, str), NTPeriods(indices))
+
+@inline function getperiod(r::UnitRange, str)
+    iszero(r.start) && return 0
+    Meta.parse(str[r])
+end
+=#
 #=
 anyoccur(targets::NTuple{N,T}, str::AbstractString) where {N,T<:Union{AbstractChar,AbstractString}} =
     any(occursin.(targets, str))
@@ -514,17 +530,6 @@ end
 
 NanoDate(str::String, df::DateFormat) = parse(NanoDate, str, df)
 
-function separate_offset(df::DateFormat)
-    str = String(df)
-    if endswith(str, 'Z')
-        (str[1:end-1], str[end:end])
-    elseif str[end-4:end] == "hh:mm"
-        (str[1:end-6], str[end-5:end])
-    elseif str[end-3:end] == "hhmm"
-        (str[1:end-5], str[end-4:end])
-    else
-        (str, "")
-    end
-end
+
 
 =#

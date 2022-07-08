@@ -160,7 +160,11 @@ function tosubsecs(ss::Integer)
 end
 
 function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localtime=false)
-    parts = getparts(df, str)
+    indices = indexperiods(df)
+    if maximum(last.(Tuple(indices))) > length(str)
+        throw(ArgmentError("$(str) does not match the dateformat"))
+    end
+    parts = getparts(indices, str)
     subsecs = tosubsecs(parts.ss)
     offsets = tooffset(parts.offset)
     periods = (ntuple(i -> parse(Int, parts[i]), Val(6))..., subsecs...)

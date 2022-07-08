@@ -246,7 +246,7 @@ function separate_offset(df::DateFormat)
 end
 
 
-hasoffset(str) = anyoccur(('Z', '+', '±'), str)
+
 
 
 const NTPeriods9 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss, :us, :ns),NTuple{9,UnitRange{Int64}}}
@@ -282,34 +282,35 @@ function tosubsecs(ss::Integer)
     millis, micros, nanos
 end
 
+function getperiods(df::Date)
 
-getparts(df::DateFormat, str::AbstractString) = 
+getparts(df::DateFormat, str::AbstractString) =
     getparts(indexperiods(df), str)
 
-function getperiods(indices, str::AbstractString)
-    periods = map(x -> getperiod(x, str), NTPeriods(indices))
-    periods
-end
-
-function getparts(indices, str::AbstractString)
-    parts = map(x -> getpart(x, str), indices)
-    parts
-end
-
-@inline function getperiod(r::UnitRange, str)
-    iszero(r.start) && return 0
-    Meta.parse(str[r])
-end
+getparts(indices::NamedTuple{T,NTuple{N,UnitRange{I}}}, str::AbstractString) where {N,I,T} =
+    map(x -> getpart(x, str), indices)
 
 @inline function getpart(r::UnitRange, str)
     iszero(r.start) && return "0"
     str[r]
 end
 
+getperiods(df::DateFormat, str::AbstractString) =
+    getperiods(indexperiods(df), str)
+
+getperiods(indices::NamedTuple{T,NTuple{N,UnitRange{I}}}, str::AbstractString) where {N,I,T} =
+    map(x -> getperiod(x, str), NTPeriods(indices))
+
+@inline function getperiod(r::UnitRange, str)
+    iszero(r.start) && return 0
+    Meta.parse(str[r])
+end
+
+
 
 
 function indexperiods(df::DateFormat)
-    str = String(df)
+    str = strip(String(df))
     yr = indexfirstlast('y', str)
     mn = indexfirstnext('m', str)
     dy = indexfirstlast('d', str)
@@ -317,9 +318,28 @@ function indexperiods(df::DateFormat)
     mi = indexfirstnext('M', str)
     sc = indexfirstnext('S', str)
     ss = indexfirstlast('s', str)
-    offset = UnitRange(find_offset(str)...)
+    offset = indexoffset(str)
     (; yr, mn, dy, hr, mi, sc, ss, offset)
 end
+
+function indexoffset(str::AbstractString)
+    n = length(str)
+    if endswith(str, 'Z')
+        offset = n:n
+    elseif occursin('+', str) || occursin('±', str)
+        found = findlast('+', str)
+        if isnothing(found)
+            found = findlast('-', str)
+        end
+        offset = found:n
+    else
+        offset = 0:0
+    end
+    offset
+end
+
+
+hasoffset(str) = anyoccur(('Z', '+', '±'), str)
 
 find_offset(str) = (findfirst(('Z', '+', '±'), str), findlast(('Z', 'm'), str))
 

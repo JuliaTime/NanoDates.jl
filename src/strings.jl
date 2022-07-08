@@ -255,6 +255,7 @@ const NTPeriods7 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss),NTuple{7,UnitR
 function tooffset(str::AbstractString)
     hr = 0
     mn = 0
+    sgn = 1
     if !isempty(str)
         if str != "Z"
             sgn = str[1] == '+' ? 1 : -1
@@ -282,7 +283,7 @@ function tosubsecs(ss::Integer)
     millis, micros, nanos
 end
 
-function getnanodate(df::DateFormat, str::AbstractString)
+function getnanodateg(df::DateFormat, str::AbstractString)
     parts = getparts(df, str)
     subsecs = tosubsecs(parts.ss)
     offset  = tooffset(parts.offset)

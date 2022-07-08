@@ -282,11 +282,16 @@ function tosubsecs(ss::Integer)
     millis, micros, nanos
 end
 
-function getnanodate(df::DateFormat, str::AbstractString)
+function getnanodate(df::DateFormat, str::AbstractString; offset=false)
     parts = getparts(df, str)
     subsecs = tosubsecs(parts.ss)
-    offset = tooffset(parts.offset)
-    (parts, subsecs, offset)
+    offsets = tooffset(parts.offset)
+    periods = (ntuple(i->parse(Int, parts[i]), Val(6))..., subsecs...)
+    result = NanoDate(periods...)
+    if offset
+        result -= (Hour(offsets[1])+Minute(offsets[2]))
+    end
+    result
 end
 
 getparts(df::DateFormat, str::AbstractString) =

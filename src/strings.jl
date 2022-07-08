@@ -282,7 +282,12 @@ function tosubsecs(ss::Integer)
     millis, micros, nanos
 end
 
-function getperiods(df::Date)
+function getnanodate(df::DateFormat, str::AbstractString)
+    parts = getparts(df, str)
+    subsecs = tosubsecs(parts.ss)
+    offset  = tooffset(parts.offset)
+    (parts, subsecs, offset)
+end
 
 getparts(df::DateFormat, str::AbstractString) =
     getparts(indexperiods(df), str)
@@ -305,9 +310,6 @@ getperiods(indices::NamedTuple{T,NTuple{N,UnitRange{I}}}, str::AbstractString) w
     iszero(r.start) && return 0
     Meta.parse(str[r])
 end
-
-
-
 
 function indexperiods(df::DateFormat)
     str = strip(String(df))

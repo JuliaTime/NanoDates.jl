@@ -256,12 +256,10 @@ function tooffset(str::AbstractString)
     hr = 0
     mn = 0
     sgn = 1
-    if !isempty(str)
-        if str != "Z"
-            sgn = str[1] == '+' ? 1 : -1
-            hr = Meta.parse(str[2:3])
-            mn = Meta.parse(str[end-1:end])
-        end
+    if !isempty(str) && length(str) > 3
+        sgn = str[1] == '+' ? 1 : -1
+        hr = Meta.parse(str[2:3])
+        mn = Meta.parse(str[end-1:end])
     end
     copysign(hr, sgn), copysign(mn, sgn)
 end
@@ -283,7 +281,7 @@ function tosubsecs(ss::Integer)
     millis, micros, nanos
 end
 
-function getnanodateg(df::DateFormat, str::AbstractString)
+function getnanodate(df::DateFormat, str::AbstractString)
     parts = getparts(df, str)
     subsecs = tosubsecs(parts.ss)
     offset  = tooffset(parts.offset)

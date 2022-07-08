@@ -63,11 +63,11 @@ end
   calltime = floor(Int, 1e9 * @belapsed ndnow(; sequential=true))
 """
 
-UTC0::NanoDate = NanoDate(now(UTC))
-LOCAL0::NanoDate = NanoDate(now())
+UTC0 = NanoDate(now(UTC))
+LOCAL0 = NanoDate(now())
 
-NSkeep::UInt64 = zero(UInt64)
-NSincr::UInt16 = zero(UInt16)
+NSkeep = zero(UInt64)
+NSincr = zero(UInt16)
 
 function reset_timekeeping()
     global UTC0, Nskeep, NSincr

@@ -68,10 +68,8 @@ function nanodate_string(nd::NanoDate, sep::CharString)
     str * padded
 end
 
-Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT;
-    sep::CharString=EmptyChar) =
-    sep === EmptyChar ? nanodate_format(nd, df) :
-    nanodate_format(nd, df, sep)
+Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharString=EmptyChar) =
+    sep === EmptyChar ? nanodate_format(nd, df) : nanodate_format(nd, df, sep)
 
 function nanodate_format(nd, df)
     datetime = nd.datetime
@@ -125,127 +123,6 @@ function nanodate_format(nd, df, sep)
     str
 end
 
-function Time(s::String)
-    n = length(s)
-    n <= 12 && return Dates.Time(s)
-    timefromstring(s)
-end
-
-function timefromstring(s::String)
-    dotidx = findlast(x -> x == '.', s)
-    if isnothing(dotidx) || length(s) - dotidx <= 3
-        return parse(Time, s)
-    else
-        secs, subsecs = split(s, '.')
-        secs *= "." * subsecs[1:3]
-        subsecs = subsecs[4:end]
-        tm = parse(Time, secs)
-        isubsecs = Meta.parse("1" * subsecs)
-        micros, nanos = divrem(isubsecs, 1_000)
-        micros = mod(micros, 1_000)
-        return tm + Microsecond(micros) + Nanosecond(nanos)
-    end
-end
-
-internal_string(df::DateFormat) = string(typeof(df).parameters[1])
-
-function internal_strings(str::AbstractString)
-    if occursin('.', str)
-        secsplus, subsecs = split(str, '.')
-    else
-        secsplus = str
-        subsecs = ""
-    end
-    (secsplus, subsecs)
-end
-
-function internal_zone(subsecs::AbstractString)
-    if isempty(subsecs)
-        ("", Hour(0))
-    elseif endswith(subsecs, 'Z')
-        (subsecs[1:end-1], Hour(0))
-    elseif '+' ∈ subsecs || '-' ∈ subsecs
-        plus = findlast('+', subsecs)
-        minus = findlast('-', subsecs)
-        sgn = isnothing(plus) ? -1 : +1
-        idx = sgn < 0 ? minus : plus
-        digits = subsecs[1:idx-1]
-        offset = subsecs[idx+1:end]
-        colon = findlast(':', offset)
-        if isnothing(colon)
-            n = length(offset)
-            hr = n > 0 ? offset[1:min(2, n)] : "0"
-            mn = n > 2 ? offset[3:end] : "0"
-        else
-            hr, mn = split(offset, ':')
-            if isempty(hr)
-                hr = "0"
-            end
-            if isempty(mn)
-                mn = "0"
-            end
-        end
-        hr = Hour(copysign(parse(Int, hr), sgn))
-        mn = Minute(copysign(parse(Int, mn), sgn))
-        (digits, hr + mn)
-    else
-        (subsecs, Hour(0))
-    end
-end
-
-internal_strings(df::DateFormat) = internal_strings(internal_string(df))
-
-function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat) end
-
-function parts(::Type{NanoDate}, str::AbstractString)
-    str_secsplus, str_subsecs = string.(internal_strings(str))
-    str_zoneoffset = ""
-    if !isempty(str_subsecs)
-        if endswith(str_subsecs, "Z")
-            str_subsecs = str_subsecs[1:end-1]
-            str_zoneoffset = "Z"
-        elseif occursin('+', str_subsecs)
-            idx = findfirst('+', str_subsecs)
-            str_zoneoffset = str_subsecs[idx:end]
-            str_subsecs = str_subsecs[1:idx-1]
-        elseif occursin('-', str_subsecs)
-            idx = findfirst('-', str_subsecs)
-            str_zoneoffset = str_subsecs[idx:end]
-            str_subsecs = str_subsecs[1:idx-1]
-        end
-    end
-    str_secsplus, str_subsecs, str_zoneoffset
-end
-
-function NanoDate(str::AbstractString)
-    secsplus, subsecs, zoneoffset = parts(NanoDate, str)
-    subsecs = rpad(subsecs, 9, '0')
-    nd = NanoDate(DateTime(secsplus), Nanosecond(subsecs))
-    if !isempty(zoneoffset) && zoneoffset[1] !== 'Z'
-        sgn = zoneoffset[1] == '+' ? +1 : -1
-        hr = Hour(copysign(parse(Int, zoneoffset[2:3]), sgn))
-        mn = Minute(copysign(parse(Int, zoneoffset[end-1:end]), sgn))
-        nd = nd + (hr + mn)
-    end
-    nd
-end
-
-NanoDate(str::String, df::DateFormat) = parse(NanoDate, str, df)
-
-function separate_offset(df::DateFormat)
-    str = String(df)
-    if endswith(str, 'Z')
-        (str[1:end-1], str[end:end])
-    elseif str[end-4:end] == "hh:mm"
-        (str[1:end-6], str[end-5:end])
-    elseif str[end-3:end] == "hhmm"
-        (str[1:end-5], str[end-4:end])
-    else
-        (str, "")
-    end
-end
-
-
 
 
 Base.UnitRange(start::Nothing, stop::Nothing) = 0:0
@@ -282,14 +159,14 @@ function tosubsecs(ss::Integer)
     millis, micros, nanos
 end
 
-function getnanodate(df::DateFormat, str::AbstractString; offset=false)
+function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localtime=false)
     parts = getparts(df, str)
     subsecs = tosubsecs(parts.ss)
     offsets = tooffset(parts.offset)
-    periods = (ntuple(i->parse(Int, parts[i]), Val(6))..., subsecs...)
+    periods = (ntuple(i -> parse(Int, parts[i]), Val(6))..., subsecs...)
     result = NanoDate(periods...)
-    if offset
-        result -= (Hour(offsets[1])+Minute(offsets[2]))
+    if localtime
+        result += (Hour(offsets[1]) + Minute(offsets[2]))
     end
     result
 end
@@ -345,11 +222,6 @@ function indexoffset(str::AbstractString)
     offset
 end
 
-
-hasoffset(str) = anyoccur(('Z', '+', '±'), str)
-
-find_offset(str) = (findfirst(('Z', '+', '±'), str), findlast(('Z', 'm'), str))
-
 function indexfirstlast(needle, haystack)
     indices = findfirstlast(needle, haystack)
     UnitRange(indices...)
@@ -386,6 +258,7 @@ function Base.findlast(needles::Tuple, haystack)
     end
 end
 
+#=
 anyoccur(targets::NTuple{N,T}, str::AbstractString) where {N,T<:Union{AbstractChar,AbstractString}} =
     any(occursin.(targets, str))
 
@@ -396,6 +269,10 @@ hasymd(str) = alloccur(('y', 'm', 'd'), str)
 hashms(str) = alloccur(('H', 'M', 'S'), str)
 hashmss(str) = alloccur(('H', 'M', 'S', 's'), str)
 
+hasoffset(str) = anyoccur(('Z', '+', '±'), str)
+
+find_offset(str) = (findfirst(('Z', '+', '±'), str), findlast(('Z', 'm'), str))
+=#
 #=
 ref: https://github.com/Kotlin/kotlinx-datetime/issues/139
 
@@ -520,4 +397,126 @@ function fieldsbyspan(spans::FieldsSpan, str::AbstractString)
     end
     (yr, mn, dy, hr, mi, sc, ms, us, ns, oh, om)
 end
+=#
+#=
+function Time(s::String)
+    n = length(s)
+    n <= 12 && return Dates.Time(s)
+    timefromstring(s)
+end
+
+function timefromstring(s::String)
+    dotidx = findlast(x -> x == '.', s)
+    if isnothing(dotidx) || length(s) - dotidx <= 3
+        return parse(Time, s)
+    else
+        secs, subsecs = split(s, '.')
+        secs *= "." * subsecs[1:3]
+        subsecs = subsecs[4:end]
+        tm = parse(Time, secs)
+        isubsecs = Meta.parse("1" * subsecs)
+        micros, nanos = divrem(isubsecs, 1_000)
+        micros = mod(micros, 1_000)
+        return tm + Microsecond(micros) + Nanosecond(nanos)
+    end
+end
+
+internal_string(df::DateFormat) = string(typeof(df).parameters[1])
+
+function internal_strings(str::AbstractString)
+    if occursin('.', str)
+        secsplus, subsecs = split(str, '.')
+    else
+        secsplus = str
+        subsecs = ""
+    end
+    (secsplus, subsecs)
+end
+
+function internal_zone(subsecs::AbstractString)
+    if isempty(subsecs)
+        ("", Hour(0))
+    elseif endswith(subsecs, 'Z')
+        (subsecs[1:end-1], Hour(0))
+    elseif '+' ∈ subsecs || '-' ∈ subsecs
+        plus = findlast('+', subsecs)
+        minus = findlast('-', subsecs)
+        sgn = isnothing(plus) ? -1 : +1
+        idx = sgn < 0 ? minus : plus
+        digits = subsecs[1:idx-1]
+        offset = subsecs[idx+1:end]
+        colon = findlast(':', offset)
+        if isnothing(colon)
+            n = length(offset)
+            hr = n > 0 ? offset[1:min(2, n)] : "0"
+            mn = n > 2 ? offset[3:end] : "0"
+        else
+            hr, mn = split(offset, ':')
+            if isempty(hr)
+                hr = "0"
+            end
+            if isempty(mn)
+                mn = "0"
+            end
+        end
+        hr = Hour(copysign(parse(Int, hr), sgn))
+        mn = Minute(copysign(parse(Int, mn), sgn))
+        (digits, hr + mn)
+    else
+        (subsecs, Hour(0))
+    end
+end
+
+internal_strings(df::DateFormat) = internal_strings(internal_string(df))
+
+function Base.parse(::Type{NanoDate}, str::AbstractString, df::DateFormat) end
+
+function parts(::Type{NanoDate}, str::AbstractString)
+    str_secsplus, str_subsecs = string.(internal_strings(str))
+    str_zoneoffset = ""
+    if !isempty(str_subsecs)
+        if endswith(str_subsecs, "Z")
+            str_subsecs = str_subsecs[1:end-1]
+            str_zoneoffset = "Z"
+        elseif occursin('+', str_subsecs)
+            idx = findfirst('+', str_subsecs)
+            str_zoneoffset = str_subsecs[idx:end]
+            str_subsecs = str_subsecs[1:idx-1]
+        elseif occursin('-', str_subsecs)
+            idx = findfirst('-', str_subsecs)
+            str_zoneoffset = str_subsecs[idx:end]
+            str_subsecs = str_subsecs[1:idx-1]
+        end
+    end
+    str_secsplus, str_subsecs, str_zoneoffset
+end
+
+function NanoDate(str::AbstractString)
+    secsplus, subsecs, zoneoffset = parts(NanoDate, str)
+    subsecs = rpad(subsecs, 9, '0')
+    nd = NanoDate(DateTime(secsplus), Nanosecond(subsecs))
+    if !isempty(zoneoffset) && zoneoffset[1] !== 'Z'
+        sgn = zoneoffset[1] == '+' ? +1 : -1
+        hr = Hour(copysign(parse(Int, zoneoffset[2:3]), sgn))
+        mn = Minute(copysign(parse(Int, zoneoffset[end-1:end]), sgn))
+        nd = nd + (hr + mn)
+    end
+    nd
+end
+
+NanoDate(str::String, df::DateFormat) = parse(NanoDate, str, df)
+
+function separate_offset(df::DateFormat)
+    str = String(df)
+    if endswith(str, 'Z')
+        (str[1:end-1], str[end:end])
+    elseif str[end-4:end] == "hh:mm"
+        (str[1:end-6], str[end-5:end])
+    elseif str[end-3:end] == "hhmm"
+        (str[1:end-5], str[end-4:end])
+    else
+        (str, "")
+    end
+end
+
 =#

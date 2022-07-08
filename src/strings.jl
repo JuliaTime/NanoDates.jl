@@ -162,7 +162,11 @@ end
 function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localtime=false)
     indices = indexperiods(df)
     if maximum(last.(Tuple(indices))) > length(str)
-        throw(ArgumentError("$(str) does not match the dateformat"))
+        if df !== ISONanoDateFormat
+            throw(ArgumentError("$(str) does not match dateformat"))
+        else
+            throw(ArgumentError("$(str) needs its own dateformat."))
+        end
     end
     parts = getparts(indices, str)
     subsecs = tosubsecs(parts.ss)

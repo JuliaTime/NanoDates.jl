@@ -126,7 +126,7 @@ end
 
 nooffset(df::DateFormat) = nooffset(String(df))
 function nooffset(str::AbstractString)
-    if occursin(str, '+')
+    if occursin('+', str)
         throw(ArgumentError("utc offsets are not supported in format(), use timestamp()"))
     end
 end

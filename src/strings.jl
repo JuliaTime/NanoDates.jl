@@ -205,7 +205,7 @@ end
 
 function simpleparse(indices, str::AbstractString)
     if occursin('.', str)
-        supersec, subsec = split('.', str)
+        supersec, subsec = split(str, '.')
         if !endswith(subsec, 'Z') && !occursin('+', subsec) && !occursin('-', subsec)
             subsecs = tosubsecs(Meta.parse(subsec))
             subseconds = Millisecond(subsecs[1]) + Microsecond(subsecs[2]) + Nanosecond(subsecs[3])

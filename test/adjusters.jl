@@ -8,8 +8,7 @@
    @test trunc(nd, Hour) == firstminuteofhour(nd)
    @test trunc(nd, Minute) == firstsecondofminute(nd)
    @test trunc(nd, Second) == firstmillisecondofsecond(nd)
-   @test trunc(nd, Millisecond) == firstmillisecondofsecond(nd)
-   @test trunc(nd, Microsecond) == firstmicrosecondofmillisecond(nd)
-   @test trunc(nd, Nanosecond) == firstnanosecondofmicrosecond(nd)
+   @test trunc(nd, Millisecond) == firstmicrosecondofmillisecond(nd)
+   @test trunc(nd, Microsecond) == firstnanosecondofmicrosecond(nd)
    
 end

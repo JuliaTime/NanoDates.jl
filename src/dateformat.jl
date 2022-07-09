@@ -1,6 +1,8 @@
 const ISONanoDateFormat = dateformat"yyyy-mm-ddTHH:MM:SS.sssssssss"
 Dates.default_format(::Type{NanoDate}) = ISONanoDateFormat
 
+NanoDate(nd::NanoDate, df::DateFormat) = format(nd, df)
+
 # returns the specifier part as a string
 Base.String(df::DateFormat) = string(df)[12:end-1]
 

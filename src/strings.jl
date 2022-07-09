@@ -207,6 +207,7 @@ function simpleparse(indices, str::AbstractString)
     if occursin('.', str)
         supersec, subsec = split(str, '.')
         if !endswith(subsec, 'Z') && !occursin('+', subsec) && !occursin('-', subsec)
+            subsec = rpad(subsec, 9, '0')
             subsecs = tosubsecs(Meta.parse(subsec))
             subseconds = Millisecond(subsecs[1]) + Microsecond(subsecs[2]) + Nanosecond(subsecs[3])
             return NanoDate(DateTime(supersec)) + subseconds

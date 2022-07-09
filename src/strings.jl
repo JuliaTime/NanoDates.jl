@@ -185,11 +185,23 @@ end
 
 function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localtime=false)
     indices = indexperiods(df)
-    if maximum(last.(Tuple(indices))) > length(str)
+    if maximum(last.(Tuple(indices))) != length(str)
         if df !== ISONanoDateFormat
             throw(ArgumentError("$(str) does not match dateformat"))
         else
-            throw(ArgumentError("$(str) needs its own dateformat."))
+            if occursin('.', str)
+                supersec, subsec = split('.', str)
+                if !endswith(subsec, 'Z') && !occursin('+', subsec) && !occursin('-', subsec)
+                    subsecs = tosubsecs(Meta.parse(subsec))
+                    subseconds = Millisecond(subsecs[1]) + Microsecond(subsecs[2]) + Nanosecond(subsecs[3])
+                    return NanoDate(DateTime(supersec)) + subseconds
+                else
+                    throw(ArgumentError("$(str) needs its own dateformat."))
+                end
+            elseif 
+            else    
+                throw(ArgumentError("$(str) needs its own dateformat."))
+            end
         end
     end
     parts = getparts(indices, str)

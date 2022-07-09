@@ -205,7 +205,11 @@ end
 
 function simpleparse(indices, str::AbstractString)
     if occursin('.', str)
-        supersec, subsec = split(str, '.')
+        supersec, subsec = strip.(split(str, '.'))
+        subsec = filter(isdigit, subsec)
+        if !occursin('T', supersec) && occursin(' ', supersec)
+           supersec = join(split(supersec,' '), 'T')
+        end
         if !endswith(subsec, 'Z') && !occursin('+', subsec) && !occursin('-', subsec)
             subsec = rpad(subsec, 9, '0')
             subsecs = tosubsecs(Meta.parse(subsec))

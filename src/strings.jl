@@ -214,7 +214,11 @@ function simpleparse(indices, str::AbstractString)
             throw(ArgumentError("$(str) needs its own dateformat."))
         end
     else
-        throw(ArgumentError("$(str) needs its own dateformat."))
+        try
+            return NanoDate(DateTime(str))
+        catch
+            throw(ArgumentError("$(str) needs its own dateformat."))
+        end
     end
 end
 

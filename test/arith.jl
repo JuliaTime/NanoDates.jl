@@ -1,25 +1,25 @@
 @testset "add periods" begin
-    @test nd + Year(1) == NanoDate(yr + 1, mn, dy, hr, mi, sc, ms, cs, ns)
-    @test nd + Month(1) == NanoDate(yr, mn + 1, dy, hr, mi, sc, ms, cs, ns)
-    @test nd + Day(1) == NanoDate(yr, mn, dy + 1, hr, mi, sc, ms, cs, ns)
-    @test nd + Hour(1) == NanoDate(yr, mn, dy, hr + 1, mi, sc, ms, cs, ns)
-    @test nd + Minute(1) == NanoDate(yr, mn, dy, hr, mi + 1, sc, ms, cs, ns)
-    @test nd + Second(1) == NanoDate(yr, mn, dy, hr, mi, sc + 1, ms, cs, ns)
-    @test nd + Millisecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms + 1, cs, ns)
+    @test nd + Year(1) == NanoDate(yr + 1, mn, dy, hr, mi, sc, ms, μs, ns)
+    @test nd + Month(1) == NanoDate(yr, mn + 1, dy, hr, mi, sc, ms, μs, ns)
+    @test nd + Day(1) == NanoDate(yr, mn, dy + 1, hr, mi, sc, ms, μs, ns)
+    @test nd + Hour(1) == NanoDate(yr, mn, dy, hr + 1, mi, sc, ms, μs, ns)
+    @test nd + Minute(1) == NanoDate(yr, mn, dy, hr, mi + 1, sc, ms, μs, ns)
+    @test nd + Second(1) == NanoDate(yr, mn, dy, hr, mi, sc + 1, ms, μs, ns)
+    @test nd + Millisecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms + 1, μs, ns)
     @test nd + Microsecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs + 1, ns)
-    @test nd + Nanosecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns + 1)
+    @test nd + Nanosecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms, μs, ns + 1)
 end
 
 @testset "subtract periods" begin
-    @test nd - Year(1) == NanoDate(yr - 1, mn, dy, hr, mi, sc, ms, cs, ns)
-    @test nd - Month(1) == NanoDate(yr, mn - 1, dy, hr, mi, sc, ms, cs, ns)
-    @test nd - Day(1) == NanoDate(yr, mn, dy - 1, hr, mi, sc, ms, cs, ns)
-    @test nd - Hour(1) == NanoDate(yr, mn, dy, hr - 1, mi, sc, ms, cs, ns)
-    @test nd - Minute(1) == NanoDate(yr, mn, dy, hr, mi - 1, sc, ms, cs, ns)
-    @test nd - Second(1) == NanoDate(yr, mn, dy, hr, mi, sc - 1, ms, cs, ns)
-    @test nd - Millisecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms - 1, cs, ns)
+    @test nd - Year(1) == NanoDate(yr - 1, mn, dy, hr, mi, sc, ms, μs, ns)
+    @test nd - Month(1) == NanoDate(yr, mn - 1, dy, hr, mi, sc, ms, μs, ns)
+    @test nd - Day(1) == NanoDate(yr, mn, dy - 1, hr, mi, sc, ms, μs, ns)
+    @test nd - Hour(1) == NanoDate(yr, mn, dy, hr - 1, mi, sc, ms, μs, ns)
+    @test nd - Minute(1) == NanoDate(yr, mn, dy, hr, mi - 1, sc, ms, μs, ns)
+    @test nd - Second(1) == NanoDate(yr, mn, dy, hr, mi, sc - 1, ms, μs, ns)
+    @test nd - Millisecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms - 1, μs, ns)
     @test nd - Microsecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs - 1, ns)
-    @test nd - Nanosecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns - 1)
+    @test nd - Nanosecond(1) == NanoDate(yr, mn, dy, hr, mi, sc, ms, μs, ns - 1)
 end
 
 @testset "trunc to period" begin
@@ -31,7 +31,7 @@ end
     @test trunc(nd, Second) == NanoDate(yr, mn, dy, hr, mi, sc)
     @test trunc(nd, Millisecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms)
     @test trunc(nd, Microsecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs)
-    @test trunc(nd, Nanosecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns)
+    @test trunc(nd, Nanosecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms, μs, ns)
 end
 
 @testset "floor to period" begin
@@ -43,7 +43,7 @@ end
     @test floor(nd, Second) == NanoDate(yr, mn, dy, hr, mi, sc)
     @test floor(nd, Millisecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms)
     @test floor(nd, Microsecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs)
-    @test floor(nd, Nanosecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns)
+    @test floor(nd, Nanosecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms, μs, ns)
 end
 
 @testset "ceil to period" begin
@@ -55,7 +55,7 @@ end
     @test ceil(nd, Second) == NanoDate(yr, mn, dy, hr, mi, sc + !iszero(ms))
     @test ceil(nd, Millisecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms + !iszero(cs))
     @test ceil(nd, Microsecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs + !iszero(ns))
-    @test ceil(nd, Nanosecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns)
+    @test ceil(nd, Nanosecond) == NanoDate(yr, mn, dy, hr, mi, sc, ms, μs, ns)
 end
 
 @testset "round down to period" begin
@@ -67,7 +67,7 @@ end
     @test round(nd, Second, RoundDown) == NanoDate(yr, mn, dy, hr, mi, sc)
     @test round(nd, Millisecond, RoundDown) == NanoDate(yr, mn, dy, hr, mi, sc, ms)
     @test round(nd, Microsecond, RoundDown) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs)
-    @test round(nd, Nanosecond, RoundDown) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns)
+    @test round(nd, Nanosecond, RoundDown) == NanoDate(yr, mn, dy, hr, mi, sc, ms, μs, ns)
 end
 
 @testset "round up to period" begin
@@ -79,7 +79,7 @@ end
     @test round(nd, Second, RoundUp) == NanoDate(yr, mn, dy, hr, mi, sc + !iszero(ms))
     @test round(nd, Millisecond, RoundUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms + !iszero(cs))
     @test round(nd, Microsecond, RoundUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs + !iszero(ns))
-    @test round(nd, Nanosecond, RoundUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns)
+    @test round(nd, Nanosecond, RoundUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, μs, ns)
 end
 
 @testset "round nearest (ties up) to period" begin
@@ -91,5 +91,5 @@ end
     @test round(nd, Second, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc + (ms >= 500))
     @test round(nd, Millisecond, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms + (cs >= 500))
     @test round(nd, Microsecond, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs + (ns >= 500))
-    @test round(nd, Nanosecond, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs, ns)
+    @test round(nd, Nanosecond, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, μs, ns)
 end

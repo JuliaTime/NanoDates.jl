@@ -1,34 +1,36 @@
 ## Convenient Work-Alikes
 
 Here are a few simple timesavers, DateTime work-alikes.
-`nnow()`, `nnow(UTC)` are similar to `now()`, `now(UTC)`,
-with support for specifying microseconds and nanoseconds.
+`ndnow(LOCAL)`, `ndnow(UTC)` are similar to `now()`, `now(UTC)`,
+with support for microseconds and nanoseconds.
 
 ```
-# nnow(), nnow(UTC) work like now(), now(UTC)
+# ndnow(LOCAL), ndnow(UTC) work like now(), now(UTC)
 
-now()                        # 1 millisecond resolution
+now(UTC)                     # 1 millisecond resolution
 # 2022-04-25T10:09:40.094
 
-nnow()                       # 100 nanosecond resolution (ymmv)
+ndnow(LOCAL)                 # 100 nanosecond resolution (ymmv)
 # 2022-04-25T10:09:40.094615300
+
+ndnow(LOCAL, Microsecond(123), Nanosecond(0))
+# 2022-04-25T10:09:40.094123
+
+ndnow(LOCAL, Microsecond(123), Nanosecond(456))
+# 2022-04-25T10:09:40.094123456
 ```
 These additional forms are available.
 ```
-nnow(Microsecond(cs)), nnow(UTC, Microsecond(ns)),
-nnow(Nanosecond(cs)),  nnow(UTC, Nanosecond(ns))
+ndnow(Microsecond(μs)), ndnow(UTC, Nanosecond(ns))
 
-nnow(Microsecond(cs), Nanosecond(ns)),
-nnow(UTC, Microsecond(cs), Nanosecond(ns))
+ndnow(Microsecond(μs), Nanosecond(ns)),
+ndnow(UTC, Microsecond(μs), Nanosecond(ns))
 ```
 
-`ntoday()` and `ntoday(UTC)` are provided.
+`ndtoday(LOCAL)` and `ndtoday(UTC)` are provided.
 They work like today(), adding UTC.
 ```
-today()
-# 2022-04-25
-
-ntoday(), ntoday(UTC)
+ndtoday(LOCAL), ndtoday(UTC)
 # 2022-04-25, 2022-04-26
 ```
 

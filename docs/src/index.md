@@ -7,7 +7,7 @@
 
 
 
-#### cooperates with Dates
+### cooperates with Dates
 
  - NanoDate works like a more precise DateTime
  - all Dates methods (afaik)
@@ -24,11 +24,10 @@
 
 ----
 
-- installs with  `using Pkg; Pkg.add("NanoDates")`
+- install with  `using Pkg; Pkg.add("NanoDates")`
 
 - ask questions
-  - on [Discourse](https://discourse.julialang.org/latest)
-  - on [Slack](https://app.slack.com/client/T68168MUP)
+  - on [Discourse](https://discourse.julialang.org/latest) -- add the tag `time`
   - on [Zulip](https://julialang.zulipchat.com/#narrow/stream/321834-dates-times-zones) -- using the stream `dates-times-zones`
   
 - report any issues [here](https://github.com/JeffreySarnoff/NanoDates.jl/issues)

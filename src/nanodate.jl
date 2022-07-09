@@ -85,7 +85,7 @@ NanoDate(dt::DateTime, cs::Microsecond) = NanoDate(dt, Nanosecond(value(cs) * 1_
 NanoDate(dt::DateTime, cs::Microsecond, ns::Nanosecond) =
     NanoDate(dt, nanosecs(cs, ns))
 
-NanoDate(dt::Date, cs::Microsecond, ns::Nanosecond) = NanoDate(DateTime(dt), cs, ns)
+NanoDate(dt::Date, cs::Microsecond, ns::Nanosecond) = NanoDate(DateTime(dt), μs, ns)
 NanoDate(dt::Date, cs::Microsecond) = NanoDate(DateTime(dt), cs)
 NanoDate(dt::Date, ns::Nanosecond) = NanoDate(DateTime(dt), ns)
 
@@ -112,9 +112,9 @@ nanosecs(cs::Microsecond) = Nanosecond(1_000 * value(cs))
 @inline nanosecs(cs::Microsecond, ns::Nanosecond) = nanosecs(value(cs), value(ns))
 
 NanoDate(dt::DateTime, x) = NanoDate(dt, nanosecs(x))
-NanoDate(dt::DateTime, cs, ns) = NanoDate(dt, nanosecs(cs, ns))
+NanoDate(dt::DateTime, μs, ns) = NanoDate(dt, nanosecs(cs, ns))
 NanoDate(d::Date, x) = NanoDate(d, nanosecs(x))
-NanoDate(d::Date, cs, ns) = NanoDate(d, nanosecs(cs, ns))
+NanoDate(d::Date, μs, ns) = NanoDate(d, nanosecs(cs, ns))
 
 NanoDate(dy::Day, ns::Nanosecond) = NanoDate(Date(UTD(dy)), ns)
 NanoDate(dy::Day, cs::Microsecond) = NanoDate(Date(UTD(dy)), nanosecs(cs))

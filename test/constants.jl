@@ -18,7 +18,7 @@ const Ms = Millisecond(ms)
 const Cs = Microsecond(cs)
 const Ns = Nanosecond(ns)
 
-const tyme = Time(hr, mi, sc, ms, cs, ns)
+const tyme = Time(hr, mi, sc, ms, μs, ns)
 const tyme_sc = Time(hr, mi, sc)
 const tyme_ms = Time(hr, mi, sc, ms)
 const earliertime = tyme - Minute(4) - Microsecond(12)

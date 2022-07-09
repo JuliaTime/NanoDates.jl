@@ -26,7 +26,6 @@ makedocs(
             "Timestamps" => "use/timestamps.md",
         ],
         "Helpful Extras" => Any[
-            "Period Compounding" => "use/compoundperiod.md",
             "Conviences" => "use/convenient.md",
             "Strings" => "use/intostring.md",
         ],

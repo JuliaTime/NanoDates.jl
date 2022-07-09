@@ -1,6 +1,7 @@
 module NanoDates
 
-export NanoDate, ISONanoDateFormat,
+export NanoDate, UTC, LOCAL, TimeZone,
+    ISONanoDateFormat,
     ndnow, ndnow_strict, ndtoday,
     date_time,
     nanodate2rata, rata2nanodate,
@@ -18,15 +19,17 @@ export NanoDate, ISONanoDateFormat,
     SmallWhiteCircle, SmallWhiteStar
 
 using Dates
-using Dates: AbstractDateTime, CompoundPeriod,
+using Dates: AbstractDateTime, UTC,
     quarter, format, value, days,
     toms, tons, UTD, UTM
 
-export AbstractDateTime, CompoundPeriod,
+export AbstractDateTime,
     quarter, value, days, format
 
 using Parsers
 # using InlineStrings ambiguity
+
+struct LOCAL <: TimeZone end
 
 include("constants.jl")
 include("nanodate.jl")

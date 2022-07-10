@@ -121,16 +121,16 @@ function ndnow_strict()
 end
 
 function ndnow_ns_strict()
-    global increment, lastns
+    global NSincr, NSkeep
 
     ns = time_ns()
 
-    if ns > lastns                  # this branch >98%
-        lastns = ns
-        increment = 0x0000
-    elseif ns === lastns            # this branch  <2%
-        increment += 0x0001
-        ns += increment
+    if ns > NSkeep                  # this branch >98%
+        NSkeep = ns
+        NSincr = 0x0000
+    elseif ns === NSkeep            # this branch  <2%
+        NSincr += 0x0001
+        ns += NSincr
     else                            # almost never
         reset_timekeeping()
         ns = ndnow_ns()
@@ -145,13 +145,13 @@ end
 UTC0 = NanoDate(today())
 LOCAL0 = NanoDate(today())
 
-increment = 0x0000
-lastns = UInt64(0)
+NSincr = 0x0000
+NSkeep = UInt64(0)
 
 function reset_timekeeping()
-    global UTC0, LOCAL0, increment, lastns
-    increment = 0x0000
-    lastns = zero(UInt64)
+    global UTC0, LOCAL0, NSincr, NSkeep
+    NSincr = 0x0000
+    NSkeep = zero(UInt64)
 
     utctime, localtime, ns = now(UTC), now(), time_ns()
     utcnd, localnd = NanoDate(utctime), NanoDate(localtime)
@@ -171,16 +171,16 @@ function ndnow(::Type{UTC}; sequential::Bool=true)
 end
 
 function ndnow_ns(sequential::Bool=true)
-    global increment, lastns
+    global NSincr, NSkeep
 
     ns = time_ns()
     if sequential
-        if ns === lastns
-            increment += 1
-            ns = ns + increment
+        if ns === NSkeep
+            NSincr += 1
+            ns = ns + NSincr
         else
-            lastns = ns
-            increment = 0
+            NSkeep = ns
+            NSincr = 0
         end
     end
 

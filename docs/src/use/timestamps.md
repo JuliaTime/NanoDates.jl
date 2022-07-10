@@ -6,55 +6,55 @@
 
 #### ISO8061 UTC timestamp formats (the default)
 
-|               timestamp                | resolution  | method(nd::NanoDate)                           |
-|:---------------------------------------|:------------|:-----------------------------------------------|
-| `2022-05-24T10:43:22Z`                 | second      | timestamp(floor(nd, Second); utc=true)         |
-| `2022-05-24T10:43:22.350Z`             | millisecond | timestamp(floor(nd, Millisecond); utc=true)    |
-| `2022-05-24T10:43:22.350789Z`          | microsecond | timestamp(floor(nd, Microsecond); utc=true)    |
-| `2022-05-24T10:43:22.350789123Z`       | nanosecond  | timestamp(floor(nd, Nanosecond); utc=true)     |
+|               timestamp                | method(nd::NanoDate)                           |
+|:---------------------------------------|:-----------------------------------------------|
+| `2022-05-24T10:43:22Z`                 | timestamp(floor(nd, Second); utc=true)         |
+| `2022-05-24T10:43:22.350Z`             | timestamp(floor(nd, Millisecond); utc=true)    |
+| `2022-05-24T10:43:22.350789Z`          | timestamp(floor(nd, Microsecond); utc=true)    |
+| `2022-05-24T10:43:22.350789123Z`       | timestamp(floor(nd, Nanosecond); utc=true)     |
 
 #### ISO8061 local timestamp formats
 
-|               timestamp                | resolution  | method(nd::NanoDate)                           |
-|:---------------------------------------|:------------|:-----------------------------------------------|
-| `2022-05-24T10:43:22-04:00`            | second      | timestamp(floor(nd, Second); localtime=true)       |
-| `2022-05-24T10:43:22.350-04:00`        | millisecond | timestamp(floor(nd, Millisecond); localtime=true)   |
-| `2022-05-24T10:43:22.350789-04:00`     | microsecond | timestamp(floor(nd, Microsecond); localtime=true)  |
-| `2022-05-24T10:43:22.350789123-04:00`  | nanosecond  | timestamp(floor(nd, Nanosecond); localtime=true)   |
+|               timestamp                | method(nd::NanoDate)                           |
+|:---------------------------------------|:-----------------------------------------------|
+| `2022-05-24T10:43:22-04:00`            | timestamp(floor(nd, Second); localtime=true)       |
+| `2022-05-24T10:43:22.350-04:00`        | timestamp(floor(nd, Millisecond); localtime=true)   |
+| `2022-05-24T10:43:22.350789-04:00`     | timestamp(floor(nd, Microsecond); localtime=true)  |
+| `2022-05-24T10:43:22.350789123-04:00`  | timestamp(floor(nd, Nanosecond); localtime=true)   |
 
 #### variant UTC timestamp (omits the Z)
 
-|               timestamp                | resolution  | method(nd::NanoDate)                           |
-|:---------------------------------------|:------------|:-----------------------------------------------|
-| `2022-05-24T10:43:22`                 | second      | timestamp(floor(nd, Second); utc=true, postfix=false)         |
-| `2022-05-24T10:43:22.350`             | millisecond | timestamp(floor(nd, Millisecond); utc=true, postfix=false)    |
-| `2022-05-24T10:43:22.350789`          | microsecond | timestamp(floor(nd, Microsecond); utc=true, postfix=false)    |
-| `2022-05-24T10:43:22.350789123`       | nanosecond  | timestamp(floor(nd, Nanosecond); utc=true, postfix=false)     |
+|               timestamp                | method(nd::NanoDate)                           |
+|:---------------------------------------|-----------------------------------------------|
+| `2022-05-24T10:43:22`                 | timestamp(floor(nd, Second); utc=true, postfix=false)         |
+| `2022-05-24T10:43:22.350`             | timestamp(floor(nd, Millisecond); utc=true, postfix=false)    |
+| `2022-05-24T10:43:22.350789`          | timestamp(floor(nd, Microsecond); utc=true, postfix=false)    |
+| `2022-05-24T10:43:22.350789123`       | timestamp(floor(nd, Nanosecond); utc=true, postfix=false)     |
 
 #### variant local timestamp (adjusts for offset)
 
-|               timestamp                | resolution  | method(nd::NanoDate)                           |
-|:---------------------------------------|:------------|:-----------------------------------------------|
-| `2022-05-24T06:43:22`            | second      | timestamp(floor(nd, Second); localtime=true, postfix=false)       |
-| `2022-05-24T06:43:22.350`        | millisecond | timestamp(floor(nd, Millisecond); localtime=true, postfix=false)   |
-| `2022-05-24T06:43:22.350789`     | microsecond | timestamp(floor(nd, Microsecond); localtime=true, postfix=false)  |
-| `2022-05-24T06:43:22.350789123`  | nanosecond  | timestamp(floor(nd, Nanosecond); localtime=true, postfix=false)   |
+|               timestamp                | method(nd::NanoDate)                           |
+|:---------------------------------------|:-----------------------------------------------|
+| `2022-05-24T06:43:22`            | timestamp(floor(nd, Second); localtime=true, postfix=false)       |
+| `2022-05-24T06:43:22.350`        | timestamp(floor(nd, Millisecond); localtime=true, postfix=false)   |
+| `2022-05-24T06:43:22.350789`     | timestamp(floor(nd, Microsecond); localtime=true, postfix=false)  |
+| `2022-05-24T06:43:22.350789123`  | timestamp(floor(nd, Nanosecond); localtime=true, postfix=false)   |
 
 
 #### timestamp formats where no zone is specified
 
-|               timestamp                | resolution  |  method(nd::NanoDate)             |
-|:---------------------------------------|:------------|:----------------------------------|
-| `2022-05-24T10:43:22`                  | second      | timestamp(floor(nd, Second))      |
-| `2022-05-24T10:43:22.350`              | millisecond | timestamp(floor(nd, Millisecond)) |
-| `2022-05-24T10:43:22.350789`           | microsecond | timestamp(floor(nd, Microsecond)) |
-| `2022-05-24T10:43:22.350789123`        | nanosecond  | timestamp(nd)                     |
+|               timestamp                |  method(nd::NanoDate)             |
+|:---------------------------------------|:----------------------------------|
+| `2022-05-24T10:43:22`                  | timestamp(floor(nd, Second))      |
+| `2022-05-24T10:43:22.350`              | timestamp(floor(nd, Millisecond)) |
+| `2022-05-24T10:43:22.350789`           | timestamp(floor(nd, Microsecond)) |
+| `2022-05-24T10:43:22.350789123`        | timestamp(nd)                     |
 
 #### timestamps with subsecond separators (other options still available)
-|               timestamp                | resolution  |  method(nd::NanoDate)             |
-|:---------------------------------------|:------------|:----------------------------------|
-| `2022-05-24T10:43:22.350_789`          | microsecond | timestamp(floor(nd, Microsecond); sep=`_`) |
-| `2022-05-24T10:43:22.350⬩789⬩123`      | nanosecond  | timestamp(nd; sep="⬩")                     |
+|               timestamp                |  method(nd::NanoDate)             |
+|:---------------------------------------|:----------------------------------|
+| `2022-05-24T10:43:22.350_789`          | timestamp(floor(nd, Microsecond); sep=`_`) |
+| `2022-05-24T10:43:22.350⬩789⬩123`      | timestamp(nd; sep="⬩")                     |
 
 #### timestamps that are counts offset from the UNIX Epoch (1970-01-01 UTC)
 

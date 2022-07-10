@@ -219,9 +219,14 @@ function simpleparse(indices, str::AbstractString)
             throw(ArgumentError("$(str) needs its own dateformat."))
         end
     else # no '.', no subseconds
-        if !occursin('T', supersec) && occursin(' ', supersec)
-            supersec = join(split(supersec, ' '), 'T')
+    if !occursin('T', str) && occursin(' ', str)
+        supersec = join(split(str, ' '), 'T')
+        try
+            return NanoDate(DateTime(supersec))
+        catch
+            throw(ArgumentError("$(str) needs its own dateformat."))
         end
+    else
         try
             return NanoDate(DateTime(str))
         catch

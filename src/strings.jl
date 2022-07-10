@@ -98,52 +98,37 @@ function nanodate_format(nd, df)
     ns = lpad3(nanosecond(nd))
     ss = ms * μs * ns
 
-    if :yr in syms && !iszero(indices.yr.start)
+    if :yr in syms && !isnothing(indices.yr)
         chrs[indices.yr] .= string2charvec(yr)
     end
-    if :mn in syms && !iszero(indices.mn.start)
+    if :mn in syms && !isnothing(indices.mn)
         chrs[indices.mn] .= string2charvec(mn)
     end
-    if :dy in syms && !iszero(indices.dy.start)
+    if :dy in syms && !isnothing(indices.dy)
         chrs[indices.dy] .= string2charvec(dy)
     end
-    if :hr in syms && !iszero(indices.hr.start)
+    if :hr in syms && !isnothing(indices.hr)
         chrs[indices.hr] .= string2charvec(hr)
     end
-    if :mi in syms && !iszero(indices.mi.start)
+    if :mi in syms && !isnothing(indices.mi)
         chrs[indices.mi] .= string2charvec(mi)
     end
-    if :sc in syms && !iszero(indices.sc.start)
+    if :sc in syms && !isnothing(indices.sc)
         chrs[indices.sc] .= string2charvec(sc)
     end
-    
 
-    if :ss in syms && !iszero(indices.ss.start)
+    if :ss in syms && !isnothing(indices.ss)
         chrs[indices.ss] .= string2charvec(ss[1:length(indices.ss)])
     end
-    if :ms in syms && !iszero(indices.ms.start)
+    if :ms in syms && !isnothing(indices.ms)
         chrs[indices.ms] .= string2charvec(ms)
     end
-    if :μs in syms && !iszero(indices.μs.start)
+    if :μs in syms && !isnothing(indices.μs)
         chrs[indices.μs] .= string2charvec(μs)
     end
-    if :ns in syms && !iszero(indices.ns.start)
+    if :ns in syms && !isnothing(indices.ns)
         chrs[indices.ns] .= string2charvec(ns)
     end
-
-    if :ms in syms
-        chrs[indices.ms] .= string2charvec(ms)
-    end
-    if :μs in syms
-        chrs[indices.μs] .= string2charvec(μs)
-    end
-    if :ns in syms
-        chrs[indices.ns] .= string2charvec(ns)
-    end
-
-    nss = length(indices.ss)
-    ss = ss[1:nss]
-    chrs[indices.ss] = string2charvec(ss)
 
     charvec2string(chrs)
 end
@@ -233,13 +218,6 @@ function separate_offset(str::AbstractString)
         throw(ArgumentError("offset in $(str) not recognized"))
     end
 end
-
-
-#Base.UnitRange(start::Nothing, stop::Nothing) = 0:0
-Base.UnitRange(start::Nothing, stop::Nothing) = throw(ErrorException("0:0"))
-
-const NTPeriods9 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss, :us, :ns),NTuple{9,UnitRange{Int64}}}
-const NTPeriods7 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss),NTuple{7,UnitRange{Int64}}}
 
 function tooffset(str::AbstractString)
     hr = 0
@@ -368,11 +346,12 @@ end
 
 function indexfirstlast(needle, haystack)
     indices = findfirstlast(needle, haystack)
-    UnitRange(indices...)
+    isnothing(indices[1]) ? nothing : UnitRange(indices...)
 end
 
 function indexfirstnext(needle, haystack)
     idx1 = findfirst(needle, haystack)
+    isnothing(idx1) && return nothing
     if needle == haystack[idx1+1]
         idx2 = idx1 + 1
     else

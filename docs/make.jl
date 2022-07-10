@@ -31,7 +31,6 @@ makedocs(
         ],
         "tempus fugit" => Any[
              "Outside Time" => "betterinformed/the_representation.md",
-             "Inside  Time" =>  "betterinformed/their_dual_natures.md",
         ]
     ]
 )

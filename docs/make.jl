@@ -29,10 +29,6 @@ makedocs(
             "Conviences"=>"use/convenient.md",
             "Strings"=>"use/intostring.md",
         ],
-        "Helpful Extras" => Any[
-            "Conviences"=>"use/convenient.md",
-            "Strings"=>"use/intostring.md",
-        ],
         "Technical: unexported" => Any[
             "Internals"=>"technical/DatesFunctions.md",
         ],

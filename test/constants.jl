@@ -6,6 +6,7 @@ const mi = 20
 const sc = 8
 const ms = 350
 const cs = 789
+const μs = 789
 const ns = 420
 
 const Yr = Year(yr)

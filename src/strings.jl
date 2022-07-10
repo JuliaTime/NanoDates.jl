@@ -307,11 +307,10 @@ getparts(df::DateFormat, str::AbstractString) =
 getparts(indices::NamedTuple{T,NTuple{N,UnitRange{Int}}}, str::AbstractString) where {N,T} =
     map(x -> getpart(x, str), indices)
 
-getpart(x::Nothing, str) = "0"
 getpart(r::UnitRange, str) = str[r]
+getpart(x::Nothing, str) = "0"
 
-indexperiods(df::DateFormat) =
-    indexperiods(String(df))
+indexperiods(df::DateFormat) = indexperiods(String(df))
 
 function indexperiods(dfstr::String)
     str = strip(dfstr)
@@ -323,6 +322,7 @@ function indexperiods(dfstr::String)
     sc = indexfirstnext('S', str)
     ss = indexfirstlast('s', str)
     offset = indexoffset(dfstr)
+    (; yr, mn, dy, hr, mi, sc, ss, offset)
 end
 
 function indexoffset(str::AbstractString)

@@ -1,19 +1,18 @@
 
-#### Getting Integer Valued Information
+## Getting Integer Valued Information
 
 ----
 
-#### low level internals from Dates
+### low level internals from Dates
 
-|   function           | mapping                          |
-|:---------------------|:---------------------------------|
-| value(x::T):         | x --> integer value underlying T |
-| toms(x::Period):     | x --> milliseconds               |
-| tons(x::Period):     | x --> nanoseconds                |
-|                      |                                  |
-| days(x::DatePeriod): | x -->  truncates (rounds down, floors)              |
-|                      |   ::Nanoseconds .. ::Hour, ::Day, ::Week            |
-|                      |   ::Date, ::DateTime --> daycount (RataDie)         |
+|   function         | mapping                          |
+|:-------------------|:---------------------------------|
+| value(x::T):       | x --> value stored in x::T       |
+| toms(x::Period):   | x --> milliseconds               |
+| tons(x::Period):   | x --> nanoseconds                |
+|                    |                                  |
+| days(x::Date)      | x --> daycount (RataDie)         |
+| days(x::DateTime)  | x --> daycount (RataDie)         |
 
 
 -----

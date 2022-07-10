@@ -2,32 +2,39 @@
 using Documenter
 
 makedocs(
-   # modules = [NanoDates],
-    sitename = "NanoDates.jl",
-    authors = "Jeffrey Sarnoff",
-    source = "src",
-    clean = false,
-    strict = !("strict=false" in ARGS),
-    doctest = ("doctest=only" in ARGS) ? :only : true,
-    format = Documenter.HTML(
+    # modules = [NanoDates],
+    sitename="NanoDates.jl",
+    authors="Jeffrey Sarnoff",
+    source="src",
+    clean=false,
+    strict=!("strict=false" in ARGS),
+    doctest=("doctest=only" in ARGS) ? :only : true,
+    format=Documenter.HTML(
         # Use clean URLs, unless built as a "local" build
-        prettyurls = !("local" in ARGS),
-        highlights = ["yaml"],
-        ansicolor = true,
+        prettyurls=!("local" in ARGS),
+        highlights=["yaml"],
+        ansicolor=true,
     ),
-    pages = [
+    pages=[
         "Home" => "index.md",
         "Enhancements" => "appropriate/enhancements.md",
         "Advantages" => "appropriate/advantages.md",
         "Basic Use" => Any[
-            "Construction" => "use/construction.md",
-            "Specification" => "use/specify.md",
-            "Accessors" => "use/accessors.md",
-            "Timestamps" => "use/timestamps.md",
+            "Construction"=>"use/construction.md",
+            "Specification"=>"use/specify.md",
+            "Accessors"=>"use/accessors.md",
+            "Timestamps"=>"use/timestamps.md",
         ],
         "Helpful Extras" => Any[
-            "Conviences" => "use/convenient.md",
-            "Strings" => "use/intostring.md",
+            "Conviences"=>"use/convenient.md",
+            "Strings"=>"use/intostring.md",
+        ],
+        "Helpful Extras" => Any[
+            "Conviences"=>"use/convenient.md",
+            "Strings"=>"use/intostring.md",
+        ],
+        "Technical: unexported" => Any[
+            "Internals"=>"technical/DatesFunctions.md",
         ],
     ]
 )

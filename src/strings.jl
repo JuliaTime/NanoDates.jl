@@ -258,7 +258,7 @@ function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localti
         end
     end
     parts = getparts(indices, str)
-    subsecs = isnothing(parts.ss) ? (0,0,0) :tosubsecs(parts.ss)
+    subsecs = isnothing(parts.ss) ? (0,0,0) : tosubsecs(parts.ss)
     offsets = isnothing(parts.offset) ? (0,0) : tooffset(parts.offset)
     periods = (ntuple(i -> isnothing(parts[i]) ? 0 : parse(Int, parts[i]), Val(6))..., subsecs...)
     result = NanoDate(periods...)

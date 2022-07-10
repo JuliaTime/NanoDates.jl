@@ -85,6 +85,7 @@ function nanodate_format(nd, df)
     dfstr = String(df)
     chrs = string2charvec(dfstr)
     indices = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss)}(indices) # omit offset field
+    syms = keys(indices)
 
     yr = lpad4(year(nd))
     mn = lpad2(month(nd))
@@ -97,15 +98,48 @@ function nanodate_format(nd, df)
     ns = lpad3(nanosecond(nd))
     ss = ms * μs * ns
 
-    chrs[indices.yr] .= string2charvec(yr)
-    chrs[indices.mn] .= string2charvec(mn)
-    chrs[indices.dy] .= string2charvec(dy)
-    chrs[indices.hr] .= string2charvec(hr)
-    chrs[indices.mi] .= string2charvec(mi)
-    chrs[indices.sc] .= string2charvec(sc)
-    chrs[indices.ms] .= string2charvec(ms)
-    chrs[indices.μs] .= string2charvec(μs)
-    chrs[indices.ns] .= string2charvec(ns)
+    if :yr in syms && !iszero(indices.yr.start)
+        chrs[indices.yr] .= string2charvec(yr)
+    end
+    if :mn in syms && !iszero(indices.mn.start)
+        chrs[indices.mn] .= string2charvec(mn)
+    end
+    if :dy in syms && !iszero(indices.dy.start)
+        chrs[indices.dy] .= string2charvec(dy)
+    end
+    if :hr in syms && !iszero(indices.hr.start)
+        chrs[indices.hr] .= string2charvec(hr)
+    end
+    if :mi in syms && !iszero(indices.mi.start)
+        chrs[indices.mi] .= string2charvec(mi)
+    end
+    if :sc in syms && !iszero(indices.sc.start)
+        chrs[indices.sc] .= string2charvec(sc)
+    end
+    
+
+    if :ss in syms && !iszero(indices.ss.start)
+        chrs[indices.ss] .= string2charvec(ss)
+    end
+    if :ms in syms && !iszero(indices.ms.start)
+        chrs[indices.ms] .= string2charvec(ms)
+    end
+    if :μs in syms && !iszero(indices.μs.start)
+        chrs[indices.μs] .= string2charvec(μs)
+    end
+    if :ns in syms && !iszero(indices.ns.start)
+        chrs[indices.ns] .= string2charvec(ns)
+    end
+
+    if :ms in syms
+        chrs[indices.ms] .= string2charvec(ms)
+    end
+    if :μs in syms
+        chrs[indices.μs] .= string2charvec(μs)
+    end
+    if :ns in syms
+        chrs[indices.ns] .= string2charvec(ns)
+    end
 
     nss = length(indices.ss)
     ss = ss[1:nss]

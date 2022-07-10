@@ -63,8 +63,6 @@
 | `63789100018`                          | second      | nanodate2unixseconds(nd)            |
 | `63789100018123`                       | millisecond | nanodate2unixmillis(nd)             |
 | `63789100018123456`                    | microsecond | nanodate2unixmicros(nd)             |
-| `63789100018⬩123⬩456⬩789`              | nanosecond  |  nanodate2unixnanos(nd; sep="⬩")    |
-
 
 ----
 

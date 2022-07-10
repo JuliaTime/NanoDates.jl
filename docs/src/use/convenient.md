@@ -8,16 +8,16 @@ with support for microseconds and nanoseconds.
 # ndnow(LOCAL), ndnow(UTC) work like now(), now(UTC)
 
 now(UTC)                     # 1 millisecond resolution
-# 2022-04-25T10:09:40.094
+# 2022-06-18T12:15:30.123
 
 ndnow(LOCAL)                 # 100 nanosecond resolution (ymmv)
-# 2022-04-25T10:09:40.094615300
+# 2022-06-18T12:15:30.123456700
 
-ndnow(UTC, Microsecond(123), Nanosecond(0))
-# 2022-04-25T10:09:40.094123
+ndnow(UTC, Microsecond(321), Nanosecond(0))
+# 2022-06-18T12:15:30.123321
 
-ndnow(LOCAL, Microsecond(123), Nanosecond(456))
-# 2022-04-25T10:09:40.094123456
+ndnow(LOCAL, Microsecond(321), Nanosecond(555))
+# 2022-06-18T12:15:30.12332555
 ```
 
 `ndtoday(UTC)` and `ndtoday(LOCAL)` are provided.

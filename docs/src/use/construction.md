@@ -5,35 +5,34 @@ All of the ways available to construct DateTimes work with NanoDates.  And there
 ```
 using Dates, NanoDates
 
-# lets get the parts from Dates
+# lets establish the values for each period
 
-years, months, days = (2022, 4, 28);
-hours, mins, secs, millis, micros, nanos = 
-  (14, 32, 10, 123, 456, 789);
+years, months, days   = (2022,  6,  18)
+hours, mins, secs     = (12,   15,  30)
+millis, micros, nanos = (123, 456, 789)
 
-dayt = Date(years, months, days)
-# 2022-04-28
+adate = Date(years, months, days)
+# 2022-05-18
 
-tyme = Time(hours, mins, secs, millis, micros, nanos)
-# 14:32:10.123456789
-
-# to get a DateTime from a Date and a Time safely
-# > tyme_ms = trunc(tyme, Millisecond)
-# > daytime = DateTime(dayt, tyme_ms)
-# NanoDates exports `date_time` that does this
-
-daytime = date_time(dayt, tyme)
-# 2022-04-28T14:32:10.123
+atime = Time(hours, mins, secs, millis, micros, nanos)
+# 12:15:30.123456789
 ```
+
 Here are familiar constructor methods.
 ```
-nd = NanoDate(dayt)
-# 2022-04-28T00:00:00
+nd = NanoDate(adate)
+# 2022-05-18T00:00:00
 
-nd = NanoDate(daytime)
-# 2022-04-28T14:32:10.123
+nd = NanoDate(adatetime)
+# 2022-05-18T12:15:20.123
 
-nd = NanoDate(dayt, tyme)
-# 2022-04-28T14:32:10.123456789
+nd = NanoDate(adate, atime)
+# 2022-05-18T12:15:30.123456789
 ```
 
+
+enhancement: `date_time` is safe from InexactErrors
+```
+daytime = date_time(adate, atime)
+# 2022-05-18T12:15:30.123
+```

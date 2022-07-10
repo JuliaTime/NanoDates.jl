@@ -206,10 +206,10 @@ end
 function simpleparse(indices, str::AbstractString)
     if occursin('.', str)
         supersec, subsec = strip.(split(str, '.'))
-        subsec = filter(isdigit, subsec)
         if !occursin('T', supersec) && occursin(' ', supersec)
-           supersec = join(split(supersec,' '), 'T')
+            supersec = join(split(supersec, ' '), 'T')
         end
+        subsec = filter(isdigit, subsec)
         if !endswith(subsec, 'Z') && !occursin('+', subsec) && !occursin('-', subsec)
             subsec = rpad(subsec, 9, '0')
             subsecs = tosubsecs(Meta.parse(subsec))
@@ -218,7 +218,10 @@ function simpleparse(indices, str::AbstractString)
         else
             throw(ArgumentError("$(str) needs its own dateformat."))
         end
-    else
+    else # no '.', no subseconds
+        if !occursin('T', supersec) && occursin(' ', supersec)
+            supersec = join(split(supersec, ' '), 'T')
+        end
         try
             return NanoDate(DateTime(str))
         catch

@@ -1,4 +1,4 @@
-## Convenient Work-Alikes
+## Conveniences
 
 Here are a few simple timesavers, DateTime work-alikes.
 `ndnow(LOCAL)`, `ndnow(UTC)` are similar to `now()`, `now(UTC)`,

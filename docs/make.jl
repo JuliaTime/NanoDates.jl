@@ -26,7 +26,7 @@ makedocs(
             "Timestamps"=>"use/timestamps.md",
         ],
         "Helpful Extras" => Any[
-            "Conviences"=>"use/convenient.md",
+            "Conveniences"=>"use/convenient.md",
             "Strings"=>"use/intostring.md",
         ],
         "Technical: unexported" => Any[

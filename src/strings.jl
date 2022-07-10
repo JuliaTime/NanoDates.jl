@@ -119,7 +119,7 @@ function nanodate_format(nd, df)
     
 
     if :ss in syms && !iszero(indices.ss.start)
-        chrs[indices.ss] .= string2charvec(ss)
+        chrs[indices.ss] .= string2charvec(ss[1:length(indices.ss)])
     end
     if :ms in syms && !iszero(indices.ms.start)
         chrs[indices.ms] .= string2charvec(ms)

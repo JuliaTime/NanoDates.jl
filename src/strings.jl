@@ -310,7 +310,7 @@ end
 getparts(df::DateFormat, str::AbstractString) =
     getparts(indexperiods(df), str)
 
-getparts(indices::NamedTuple{T,NTuple{N,UnitRange{Int}}}, str::AbstractString) where {N,T} =
+getparts(indices::NamedTuple, str::AbstractString) =
     map(x -> getpart(x, str), indices)
 
 getpart(r::UnitRange, str) = str[r]

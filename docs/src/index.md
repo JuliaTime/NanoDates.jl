@@ -1,13 +1,13 @@
 # NanoDates.jl
 
-### a date-and-time type
+#### a date-and-time type
 - Years, Months, Days
 - Hours, Minutes, Seconds
 - Milliseconds, Microseconds, Nanoseconds
 
 
 
-### cooperates with Dates
+#### cooperates with Dates
 
  - NanoDate works like a more precise DateTime
  - all Dates methods (afaik)
@@ -23,7 +23,7 @@
 
 
 ----
-
+#### help 
 - install with  `using Pkg; Pkg.add("NanoDates")`
 
 - ask questions

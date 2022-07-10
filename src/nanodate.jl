@@ -56,7 +56,7 @@ canonical(millis::Millisecond, micros::Microsecond, nanos::Nanosecond) =
     canonical_mcn(value(millis), value(micros), value(nanos))
 
 
-@inline function canonical(;millis, nanos)
+@inline function canonical(; millis, nanos)
     micros, nanos = fldmod_1000(nanos)
     micromillis, micros = fldmod_1000(micros)
     millis += micromillis
@@ -97,7 +97,7 @@ NanoDate(yr::Year, mn::Month, dy::Day, hr::Hour, mi::Minute=Minute(0), sc::Secon
 NanoDate(yr, mn=1, dy=1, hr=0, mi=0, sc=0, ms=0, cs=0, ns=0) =
     NanoDate(DateTime(yr, mn, dy, hr, mi, sc, ms), nanosecs(cs, ns))
 
-NanoDate(cs::Microsecond, ns::Nanosecond) = NanoDate(DateTime0, nanosecs(cs,ns))
+NanoDate(cs::Microsecond, ns::Nanosecond) = NanoDate(DateTime0, nanosecs(cs, ns))
 
 # for internal cse
 
@@ -107,6 +107,8 @@ csns(ns) = ns
 nanosecs(ns) = Nanosecond(ns)
 nanosecs(ns::Nanosecond) = ns
 nanosecs(cs::Microsecond) = Nanosecond(1_000 * value(cs))
+nanosecs(ms::Millisecond, ns::Nanosecond) = Nanosecond(1_000_000 * value(ms) + value(ns))
+nanosecs(ms::Millisecond, cs::Microsecond, ns::Nanosecond) = Nanosecond(1_000_000 * value(ms) + 1_000 * value(cs) + value(ns))
 
 @inline nanosecs(cs, ns) = Nanosecond(csns(cs, ns))
 @inline nanosecs(cs::Microsecond, ns::Nanosecond) = nanosecs(value(cs), value(ns))
@@ -128,7 +130,7 @@ NanoDate() = NanoDate(now())
 NanoDate(::Type{UTC}) = NanoDate(now(UTC))
 
 for T in (:Year, :Quarter, :Month, :Week, :Day,
-            :Hour, :Minute, :Second, :Millisecond)
+    :Hour, :Minute, :Second, :Millisecond)
     @eval NanoDate(nd::NanoDate, x::$T) = NanoDate(nd.datetime - $T(nd) + x, nd.nanosecs)
 end
 
@@ -142,9 +144,9 @@ NanoDate(nd::NanoDate, cs::Microsecond, ns::Nanosecond) =
 NanoDate(nd::NanoDate, dtm::DateTime) =
     NanoDate(dtm, nd.nanosecs)
 NanoDate(nd::NanoDate, tm::Time) =
-    NanoDate(Date(nd.datetime),tm)
+    NanoDate(Date(nd.datetime), tm)
 NanoDate(nd::NanoDate, dt::Date) =
     NanoDate(DateTime(dt, trunc(Time(nd.datetime), Millisecond)), nd.nanosecs)
 
-const NanoDate0 = NanoDate(0,1,1,0,0,0,0,0,0)
+const NanoDate0 = NanoDate(0, 1, 1, 0, 0, 0, 0, 0, 0)
 

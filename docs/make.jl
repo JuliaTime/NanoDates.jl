@@ -18,7 +18,7 @@ makedocs(
     pages=[
         "Home" => "index.md",
         "Enhancements" => "appropriate/enhancements.md",
-        "Advantages" => "appropriate/advantages.md",
+        "Financial Market Use" => "appropriate/advantages.md",
         "Basic Use" => Any[
             "Construction"=>"use/construction.md",
             "Specification"=>"use/specify.md",

@@ -325,7 +325,13 @@ function indexperiods(dfstr::String)
     sc = indexfirstnext('S', str)
     ss = indexfirstlast('s', str)
     offset = indexoffset(dfstr)
-    (; yr, mn, dy, hr, mi, sc, ss, offset)
+    # remove any nothings
+    result = (; yr, mn, dy, hr, mi, sc, ss, offset)
+    syms = (:yr, :mn, :dy, :hr, :mi, :sc, :ss, :offset)
+    tf = Tuple(map(!isnothing, result))
+    idxs = filter(i->tf[i], 1:length(syms))
+    kys  = syms[idxs]
+    NamedTuple{kys}(result)
 end
 
 function indexoffset(str::AbstractString)

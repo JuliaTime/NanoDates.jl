@@ -248,9 +248,15 @@ function tosubsecs(ss::Integer)
     millis, micros, nanos
 end
 
+Base.firstindex(::Nothing) = nothing
+Base.lastindex(::Nothing) = nothing
+
 function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localtime=false)
     indices = indexperiods(df)
-    if maximum(last.(Tuple(indices))) != length(str)
+    somethings = map(!isnothing, Tuple(indices))
+    somekeys = keys(indices)[[somethings...]]
+    someindices = NamedTuple{somekeys}(indices)
+    if maximum(last.(Tuple(someindices))) != length(str)
         if df !== ISONanoDateFormat
             throw(ArgumentError("$(str) does not match dateformat"))
         else

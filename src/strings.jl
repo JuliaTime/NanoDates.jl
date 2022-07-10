@@ -258,9 +258,9 @@ function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localti
         end
     end
     parts = getparts(indices, str)
-    subsecs = tosubsecs(parts.ss)
-    offsets = tooffset(parts.offset)
-    periods = (ntuple(i -> parse(Int, parts[i]), Val(6))..., subsecs...)
+    subsecs = isnothing(parts.ss) ? (0,0,0) :tosubsecs(parts.ss)
+    offsets = isnothing(parts.offset) ? (0,0) : tooffset(parts.offset)
+    periods = (ntuple(i -> isnothing(parts[i]) ? 0 : parse(Int, parts[i]), Val(6))..., subsecs...)
     result = NanoDate(periods...)
     if localtime
         result += (Hour(offsets[1]) + Minute(offsets[2]))
@@ -307,10 +307,8 @@ getparts(df::DateFormat, str::AbstractString) =
 getparts(indices::NamedTuple{T,NTuple{N,UnitRange{Int}}}, str::AbstractString) where {N,T} =
     map(x -> getpart(x, str), indices)
 
-@inline function getpart(r::UnitRange, str)
-    iszero(r.start) && return "0"
-    str[r]
-end
+getpart(x::Nothing, str) = "0"
+function getpart(r::UnitRange, str) = str[r]
 
 indexperiods(df::DateFormat) =
     indexperiods(String(df))
@@ -325,13 +323,6 @@ function indexperiods(dfstr::String)
     sc = indexfirstnext('S', str)
     ss = indexfirstlast('s', str)
     offset = indexoffset(dfstr)
-    # remove any nothings
-    result = (; yr, mn, dy, hr, mi, sc, ss, offset)
-    syms = (:yr, :mn, :dy, :hr, :mi, :sc, :ss, :offset)
-    tf = Tuple(map(!isnothing, result))
-    idxs = filter(i->tf[i], 1:length(syms))
-    kys  = syms[idxs]
-    NamedTuple{kys}(result)
 end
 
 function indexoffset(str::AbstractString)

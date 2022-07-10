@@ -19,7 +19,7 @@ export NanoDate, UTC, LOCAL, TimeZone,
     SmallWhiteCircle, SmallWhiteStar
 
 using Dates
-using Dates: AbstractDateTime, UTC,
+using Dates: AbstractDateTime, UTC, CompoundPeriod,
     quarter, format, value, days,
     toms, tons, UTD, UTM
 

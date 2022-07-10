@@ -19,3 +19,11 @@ end
     
 end
 
+@testset "parse more" begin
+
+    @test NanoDate("2022-04-28 02:15:30") == NanoDate("2022-04-28T02:15:30")
+    @test NanoDate("2022-04-28 02:15:30.12") == NanoDate("2022-04-28T02:15:30.12")
+    @test NanoDate("2022-04-28 02:15:30.123") == NanoDate("2022-04-28T02:15:30.123")
+    @test NanoDate("2022-04-28 02:15:30.1234") == NanoDate("2022-04-28T02:15:30.1234")
+
+end

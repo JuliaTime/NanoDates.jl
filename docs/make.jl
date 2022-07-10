@@ -29,9 +29,6 @@ makedocs(
             "Conviences" => "use/convenient.md",
             "Strings" => "use/intostring.md",
         ],
-        "tempus fugit" => Any[
-             "Outside Time" => "betterinformed/the_representation.md",
-        ]
     ]
 )
 

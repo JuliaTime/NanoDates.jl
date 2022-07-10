@@ -12,7 +12,7 @@ omit(needle::Nothing, haystack) = haystack
 omit(needle::AbstractRange, haystack::Nothing) = nothing
 omit(needle::Nothing, haystack::AbstractRange) = nothing
 
-omit(needle::AbstractRange, hahystack::AbstractRange) =
+omit(needle::AbstractRange, haystack::AbstractRange) =
     omit(collect(needle), collect(haystack))
 omit(needle::AbstractRange, haystack::T) where {T} =
     omit(collect(needle), haystack)
@@ -21,6 +21,9 @@ omit(needle::T, hahystack::AbstractRange) where {T} =
 
 omit(needle::AbstractRange, haystack::AbstractString) =
     omit(collect(needle), haystack)
+
+omit(needle::AbstractVector, haystack::AbstractRange ) =
+    omit(haystack, needle)
 
 omit(needle::Tuple, haystack::Tuple) = setdiff(haystack, needle)
 omit(needle::Vector, haystack::Vector) = setdiff(haystack, needle)

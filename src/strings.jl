@@ -81,9 +81,9 @@ charvec2string(chrs::AbstractVector{Char}) = foldl(*, chrs; init = "")
 
 function nanodate_format(nd, df)
     nooffset(df)
+    indices = indexperiods(df)
     dfstr = String(df)
     chrs = string2charvec(dfstr)
-    indices = indexperiods(dfstr)
     indices = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss)}(indices) # omit offset field
 
     yr = lpad4(year(nd))
@@ -108,7 +108,7 @@ function nanodate_format(nd, df)
     chrs[indices.ns] .= string2charvec(ns)
 
     nss = length(indices.ss)
-    ss  = ss[1:nss]
+    ss = ss[1:nss]
     chrs[indices.ss] = string2charvec(ss)
 
     charvec2string(chrs)
@@ -299,7 +299,10 @@ getparts(indices::NamedTuple{T,NTuple{N,UnitRange{Int}}}, str::AbstractString) w
     str[r]
 end
 
-function indexperiods(df::DateFormat)
+indexperiods(df::DateFormat) =
+    indexperiods(String(df))
+
+function indexperiods(dfstr::String)
     str = strip(String(df))
     yr = indexfirstlast('y', str)
     mn = indexfirstnext('m', str)

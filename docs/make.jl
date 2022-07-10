@@ -18,7 +18,6 @@ makedocs(
     pages=[
         "Home" => "index.md",
         "Enhancements" => "appropriate/enhancements.md",
-        "Financial Market Use" => "appropriate/advantages.md",
         "Basic Use" => Any[
             "Construction"=>"use/construction.md",
             "Specification"=>"use/specify.md",
@@ -29,6 +28,7 @@ makedocs(
             "Conveniences"=>"use/convenient.md",
             "Strings"=>"use/intostring.md",
         ],
+        "Regulatory Note" => "appropriate/advantages.md",
         "Technical: unexported" => Any[
             "Internals"=>"technical/DatesFunctions.md",
         ],

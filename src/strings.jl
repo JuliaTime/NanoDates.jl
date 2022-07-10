@@ -303,7 +303,7 @@ indexperiods(df::DateFormat) =
     indexperiods(String(df))
 
 function indexperiods(dfstr::String)
-    str = strip(String(df))
+    str = strip(dfstr)
     yr = indexfirstlast('y', str)
     mn = indexfirstnext('m', str)
     dy = indexfirstlast('d', str)
@@ -311,7 +311,7 @@ function indexperiods(dfstr::String)
     mi = indexfirstnext('M', str)
     sc = indexfirstnext('S', str)
     ss = indexfirstlast('s', str)
-    offset = indexoffset(str)
+    offset = indexoffset(dfstr)
     (; yr, mn, dy, hr, mi, sc, ss, offset)
 end
 

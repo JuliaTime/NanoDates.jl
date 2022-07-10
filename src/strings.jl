@@ -313,7 +313,13 @@ getparts(df::DateFormat, str::AbstractString) =
 getparts(indices::NamedTuple, str::AbstractString) =
     map(x -> getpart(x, str), indices)
 
-getpart(r::UnitRange, str) = str[r]
+function getpart(r::UnitRange, str)
+    if iszero(r.start)
+        "0"
+    else
+        str[r]
+    end
+end
 getpart(x::Nothing, str) = "0"
 
 indexperiods(df::DateFormat) = indexperiods(String(df))

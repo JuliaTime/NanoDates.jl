@@ -308,7 +308,7 @@ getparts(indices::NamedTuple{T,NTuple{N,UnitRange{Int}}}, str::AbstractString) w
     map(x -> getpart(x, str), indices)
 
 getpart(x::Nothing, str) = "0"
-function getpart(r::UnitRange, str) = str[r]
+getpart(r::UnitRange, str) = str[r]
 
 indexperiods(df::DateFormat) =
     indexperiods(String(df))

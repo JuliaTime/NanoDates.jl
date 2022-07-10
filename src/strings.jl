@@ -235,7 +235,8 @@ function separate_offset(str::AbstractString)
 end
 
 
-Base.UnitRange(start::Nothing, stop::Nothing) = 0:0
+#Base.UnitRange(start::Nothing, stop::Nothing) = 0:0
+Base.UnitRange(start::Nothing, stop::Nothing) = throw(ErrorException("0:0"))
 
 const NTPeriods9 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss, :us, :ns),NTuple{9,UnitRange{Int64}}}
 const NTPeriods7 = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss),NTuple{7,UnitRange{Int64}}}

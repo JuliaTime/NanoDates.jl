@@ -1,8 +1,8 @@
 Dates.days(x::NanoDate) = Dates.days(x.datetime)
 
-yearmonthday(x::NanoDate) = yearmonthday(Dates.days(x.datetime))
-yearmonth(x::NanoDate) = yearmonth(Dates.days(x.datetime))
-monthday(x::NanoDate) = monthday(Dates.days(x.datetime))
+Dates.yearmonthday(x::NanoDate) = yearmonthday(Dates.days(x.datetime))
+Dates.yearmonth(x::NanoDate) = yearmonth(Dates.days(x.datetime))
+Dates.monthday(x::NanoDate) = monthday(Dates.days(x.datetime))
 
 for P in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)
     p = Symbol(lowercase(String(P)))

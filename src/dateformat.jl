@@ -16,7 +16,7 @@ omit(needle::AbstractRange, hahystack::AbstractRange) =
     omit(collect(needle), collect(haystack))
 omit(needle::AbstractRange, haystack::T) where {T} =
     omit(collect(needle), haystack)
-mit(needle::T, hahystack::AbstractRange) where {T} =
+omit(needle::T, hahystack::AbstractRange) where {T} =
     omit(needle, collect(haystack))
 
 omit(needle::AbstractRange, haystack::AbstractString) =
@@ -24,8 +24,8 @@ omit(needle::AbstractRange, haystack::AbstractString) =
 
 omit(needle::Tuple, haystack::Tuple) = setdiff(haystack, needle)
 omit(needle::Vector, haystack::Vector) = setdiff(haystack, needle)
-pmit(needle::Tuple, haystack::Vector) = setdiff(haystack, [needle...])
-pmit(needle::Vector, haystack::Tuple) = setdiff([haystack...], needle)
+omit(needle::Tuple, haystack::Vector) = setdiff(haystack, [needle...])
+omit(needle::Vector, haystack::Tuple) = setdiff([haystack...], needle)
 
 function omit(needle::AbstractString, haystack::AbstractString)
     allidxs = 1:length(haystack)

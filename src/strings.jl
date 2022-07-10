@@ -70,9 +70,60 @@ end
 Dates.format(nd::NanoDate, df::DateFormat=NANODATE_FORMAT; sep::CharString=EmptyChar) =
     sep === EmptyChar ? nanodate_format(nd, df) : nanodate_format(nd, df, sep)
 
+@inline lpad2(n) = lpad(n, 2, '0')
+@inline lpad3(n) = lpad(n, 3, '0')
+@inline lpad4(n) = lpad(n, 2, '0')
+@inline lpad9(n) = lpad(n, 9, '0')
+
+lazystring2charvec(str::AbstractString) = (str[i] for i in eachindex(str))
+string2charvec(str::AbstractString) = collect(lazystring2charvec(str))
+charvec2string(chrs::AbstractVector{Char}) = foldl(*, chrs; init = "")
+
 function nanodate_format(nd, df)
     nooffset(df)
+    dfstr = String(df)
+    chrs = string2charvec(dfstr)
+    indices = indexperiods(dfstr)
+    indices = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss)}(indices) # omit offset field
+
+    yr = lpad4(year(nd))
+    mn = lpad2(month(nd))
+    dy = lpad2(day(nd))
+    hr = lpad2(hour(nd))
+    mn = lpad2(minute(nd))
+    sc = lpad2(second(nd))
+    ms = lpad3(millisecond(nd))
+    μs = lpad3(microsecond(nd))
+    ns = lpad3(nanosecond(nd))
+    ss = ms * μs * ns
+
+    chrs[indices.yr] .= string2charvec(yr)
+    chrs[indices.mn] .= string2charvec(mn)
+    chrs[indices.dy] .= string2charvec(dy)
+    chrs[indices.hr] .= string2charvec(hr)
+    chrs[indices.mi] .= string2charvec(mi)
+    chrs[indices.sc] .= string2charvec(sc)
+    chrs[indices.ms] .= string2charvec(ms)
+    chrs[indices.μs] .= string2charvec(μs)
+    chrs[indices.ns] .= string2charvec(ns)
+
+    nss = length(indices.ss)
+    ss  = ss[1:nss]
+    chrs[indices.ss] = string2charvec(ss)
+
+    charvec2string(chrs)
+end
+
+#=
+
     datetime = nd.datetime
+    millis = value(Millisecond(datetime))
+    micros, nanos = fldmod(value(nd.nanosecs), 1_000)
+    subsec_value = millis * 1_000_000 + micros * 1_000 + nanos
+    subsec_str = lpad(subsec_value, 9, '0')
+    supersec = datetime - Millisecond(datetime)
+    
+    dfstr = String(df)
     str = Dates.format(datetime, df)
     value(nd.nanosecs) == 0 && return str
 
@@ -96,6 +147,7 @@ function nanodate_format(nd, df)
     str = str * lpad(ns, 3, '0')
     str
 end
+=#
 
 function nanodate_format(nd, df, sep)
     nooffset(df)

@@ -70,7 +70,7 @@ NSkeep = zero(UInt64)
 NSincr = zero(UInt16)
 
 function reset_timekeeping()
-    global UTC0, Nskeep, NSincr
+    global UTC0, NSkeep, NSincr
 
     NSincr = zero(UInt16)
     NSkeep = zero(UInt64)

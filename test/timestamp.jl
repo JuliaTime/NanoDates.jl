@@ -43,4 +43,8 @@ end
 
     @test NanoDates.utc_delta()[end] == NanoDates.LOCAL_TZ_DELTA
 
+    @test typeof(NanoDates.UTC0) == typeof(NanoDates.LOCAL0)
+    @test isa(NanoDates.NSkeep, Unsigned)
+    @test isa(NanoDates.NSincr, Unsigned)
+
 end

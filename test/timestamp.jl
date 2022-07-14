@@ -1,5 +1,7 @@
 @testset "timestamp generation" begin
 
+    @test timestamp(nd; utc=false, localtime=false) == timestamp(nd; localtime=true, postfix=false)
+
     @test timestamp(nd; utc=true, postfix=true) == "2022-07-28T10:20:08.350789420Z"
     @test timestamp(nd; utc=true, postfix=false) == "2022-07-28T10:20:08.350789420"
     @test timestamp(nd; localtime=true, postfix=true) == "2022-07-28T10:20:08.350789420"*NanoDates.LOCAL_TZ_DELTA_STR
@@ -33,6 +35,12 @@ end
 
 end
 
-@testset "ndnow{_strict" begin
+@testset "ndnow_strict" begin
+
+end
+
+@testset "utc delta" begin
+
+    @test NanoDates.utc_delta()[end] == NanoDates.LOCAL_TZ_DELTA
 
 end

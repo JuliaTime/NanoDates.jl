@@ -15,5 +15,6 @@ end
 end
 
 
-
-    
+@testset "nanos_elapsed" begin
+    @test typeof(nanos_elapsed()) == Int64
+end   

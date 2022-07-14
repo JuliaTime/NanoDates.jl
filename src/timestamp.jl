@@ -82,51 +82,35 @@ function reset_timekeeping()
     LOCAL0 = NanoDate(now_local) - Nanosecond(now_ns)
 end
 
+
+# --------> nonstrict (ignores rollover)
+
 function ndnow(::Type{UTC})
     global UTC0
-    UTC0 + ndnow_ns()
+    UTC0 + ndnow_ns_nonstrict()
 end
 
 function ndnow(::Type{LOCAL})
     global LOCAL0
-    LOCAL0 + ndnow_ns()
+    LOCAL0 + ndnow_ns_nonstrict()
 end
 
-function ndnow_ns()
+function ndnow_ns_nonstrict()
     global NSincr, NSkeep
 
     ns = time_ns()
 
-    if ns !== NSkeep                 # unique nanoclock value
-        NSincr = 0x000               #      reset counter
-        NSkeep = ns                  #      ready for next use
-    else                             # repeated value
-        NSincr += 0x0001             #      require unique values
-        ns += NSincr                 #      strictly increasing
+    if ns > NSkeep         # this branch >98%
+        NSkeep = ns
+        NSincr = 0x0000
+    else                   # ns >= NSkeep
+        NSincr += 0x0001
+        ns += NSincr
     end
-    Nanosecond(ns)                   # stable toc at 100ns
+    
+    Nanosecond(ns)
 end
 
-
-ndnow(::Type{UTC}) = NanoDate(now(UTC))
-ndnow(::Type{UTC}, ns::Nanosecond) = NanoDate(now(UTC), nanosecs(ns))
-ndnow(::Type{UTC}, ms::Microsecond) = NanoDate(now(UTC), nanosecs(ms))
-ndnow(::Type{UTC}, ms::Microsecond, ns::Nanosecond) = NanoDate(now(UTC), nanosecs(ms, ns))
-ndnow(::Type{UTC}, cs::Integer, ns::Integer=0) = NanoDate(now(), nanosecs(cs, ns))
-
-
-ndnow(::Type{LOCAL}) = NanoDate(now())
-ndnow(::Type{LOCAL}, ns::Nanosecond) = NanoDate(now(), nanosecs(ns))
-ndnow(::Type{LOCAL}, ms::Microsecond) = NanoDate(now(), nanosecs(ms))
-ndnow(::Type{LOCAL}, ms::Microsecond, ns::Nanosecond) = NanoDate(now(), nanosecs(ms, ns))
-ndnow(::Type{LOCAL}, cs::Integer, ns::Integer=0) = NanoDate(now(), nanosecs(cs, ns))
-
-
-ndnow() = NanoDate(now())
-ndnow(ns::Nanosecond) = NanoDate(now(), nanosecs(ns))
-ndnow(ms::Microsecond) = NanoDate(now(), nanosecs(ms))
-ndnow(ms::Microsecond, ns::Nanosecond) = NanoDate(now(), nanosecs(ms, ns))
-ndnow(cs::Integer, ns::Integer=0) = NanoDate(now(), nanosecs(cs, ns))
 
 # --------> strict (accounts for rollover)
 

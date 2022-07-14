@@ -28,7 +28,7 @@ end
 
     @test trunc(nd, Year) == NanoDate(yr)
     @test trunc(nd, Month) == NanoDate(yr, mn)
-    @test trunc(Date(nd), Week) == trunc(firstdayofweek(Date(nd), Day))
+    @test trunc(Date(nd), Week) == firstdayofweek(Date(nd))
     @test trunc(nd, Day) == NanoDate(yr, mn, dy)
     @test trunc(nd, Hour) == NanoDate(yr, mn, dy, hr)
     @test trunc(nd, Minute) == NanoDate(yr, mn, dy, hr, mi)

@@ -25,6 +25,7 @@ end
 @testset "trunc to period" begin
     @test trunc(nd, Year) == NanoDate(yr)
     @test trunc(nd, Month) == NanoDate(yr, mn)
+    @test trunc(Date(nd), Week) == trunc(firstdayofwee(Date(nd), Day))
     @test trunc(nd, Day) == NanoDate(yr, mn, dy)
     @test trunc(nd, Hour) == NanoDate(yr, mn, dy, hr)
     @test trunc(nd, Minute) == NanoDate(yr, mn, dy, hr, mi)
@@ -101,6 +102,6 @@ end
 @test Date(nd) - nd == NanoDate(Date(nd)) - nd
 end
 
-@test nd - Time(nd) == nd - 
+@test nd - Time(nd) == nd - canonical(Time(nd))
         
 end

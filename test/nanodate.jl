@@ -16,5 +16,5 @@ end
 
 
 @testset "nanos_elapsed" begin
-    @test typeof(nanos_elapsed()) == Int64
+    @test typeof(NanoDates.nanos_elapsed()) == Int64
 end   

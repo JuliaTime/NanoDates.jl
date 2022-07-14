@@ -140,11 +140,14 @@ end
 
 function Dates.Time(cperiod::CompoundPeriod)
     cperiod = canonicalize(cperiod)
-    cperiod -= (Year(cperiod) + Quarter(cperiod) + Month(cperiod) + Week(cperiod) + Day(cperiod))
+    cnotused = Year(cperiod) + Quarter(cperiod) + Month(cperiod) + Week(cperiod) + Day(cperiod)
+    if !isempty(cnotused)
+        cperiod -= cnotused
+    end
     hr = Hour(cperiod)
     result = Time(hr)
-    result += (cperiod - hr)
-    result
+    cperiod = cperiod - hr
+    result + cperiod
 end
 
 function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)

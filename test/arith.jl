@@ -118,6 +118,9 @@ end
 
 @testset "nd - Time(nd)" begin
 
-    @test nd - Time(nd) == nd - canonical(Time(nd))
+    time1 = Time(nd) + Hour(4)
+    time2 = Time(nd) - Hour(4)
 
+    @test nd - time1 == nd - canonical(time1))
+    @test nd - time2 == nd - canonical(time2))
 end

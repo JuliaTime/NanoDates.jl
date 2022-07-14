@@ -129,6 +129,8 @@ function fldmod_1000(x::T) where {T<:Union{Int64,UInt64,Int128}}
     quotient, remainder
 end
 
+#=
+
 # nanoseconds per millisecond
 # microseconds per second
 
@@ -162,7 +164,7 @@ function fldmod_1_000_000(x::T) where {T<:Union{Int64,UInt64}}
     remainder = x - quotient * 1_000_000
     quotient, remainder
 end
-
+=#s
 #=
 # 86_400 (SecondsPerDay)
 function mulby86400(x)

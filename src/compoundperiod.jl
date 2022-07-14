@@ -121,5 +121,8 @@ cnurt(x::CompoundPeriod, ::Type{Year}) = let c = canonical(x)
      c - trunc(x, Year)
 end
 
+canonical(x::Time) =
+Hour(x) + Minute(x) + Second(x) +
+Millisecond(x) + Microsecond(x) + Nanosecond(x)
 
 

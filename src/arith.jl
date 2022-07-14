@@ -18,7 +18,7 @@ function Base.:(-)(nd::NanoDate, tm::Time)
     else
         tm_md = tm_nd - tm
     end
-    tm_nd = canonicalize(tm_nd)
+    tm_nd = canonical(tm_nd)
     tm = Time(tm_nd)
     return NanoDate(dt_nd, tm)
 end

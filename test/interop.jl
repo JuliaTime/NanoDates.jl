@@ -10,4 +10,8 @@ end
     @test convert(Time, nd) == tyme
 end
 
-
+@testset "nanoseconds" begin
+    ns = Dates.value(nd)
+    nd2 = NanoDate(nd)
+    @test nd == nd2
+end

@@ -116,6 +116,8 @@ end
     @test Date(nd) - nd == NanoDate(Date(nd)) - nd
 end
 
-@test nd - Time(nd) == nd - canonical(Time(nd))
+@testset "nd - Time(nd)" begin
+
+    @test nd - Time(nd) == nd - canonical(Time(nd))
 
 end

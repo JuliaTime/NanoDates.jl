@@ -26,7 +26,7 @@ datetime2datetime(date::Date, time::Time) =
 Dates.value(nd::NanoDate) =
     Int128(Dates.value(nd.datetime)) * Int128(1_000_000) + Dates.value(nd.nanosecs)
 
-function NanoDate(nanos::Integer)
+function NanoDate(nanos::Int128)
     ns = Int128(nanos)
     millis, submillis = fldmod(nanos, 1_000_000)
     NanoDate(DateTime(Dates.UTM(millis)), Nanosecond(submillis))

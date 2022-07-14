@@ -47,10 +47,7 @@ include("dateformat.jl")
 include("validargs.jl")
 include("timestamp.jl")
 include("io.jl")
-
-const NanosAtStart = time_ns()
-
-@inline nanos_elapsed() = reinterpret(Int64, time_ns() - NanosAtStart)
+include("ndnow.jl")
 
 function __init__()
     reset_timekeeping()

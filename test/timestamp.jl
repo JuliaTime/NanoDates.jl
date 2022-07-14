@@ -47,4 +47,9 @@ end
     @test isa(NanoDates.NSkeep, Unsigned)
     @test isa(NanoDates.NSincr, Unsigned)
 
+    @test isa(ndnow(UTC), NanoDate)
+    @test isa(ndnow(LOCAL), NanoDate)
+    
+    @test isa(ndnow_strict(UTC), NanoDate)
+    @test isa(ndnow_strict(LOCAL), NanoDate)
 end

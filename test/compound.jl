@@ -1,3 +1,7 @@
+cdnd = Day(91) + Hour(7) + Minute(57) + Second(36)
+
+dnd = Day(91) + Nanosecond(28656000000000)
+
 @testset "CompoundPeriod" begin
 
   @test Month(Month(5)) == Month(5)

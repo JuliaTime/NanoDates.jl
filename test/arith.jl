@@ -121,6 +121,6 @@ end
     time1 = Time(nd) + Hour(4)
     time2 = Time(nd) - Hour(4)
 
-    @test nd - time1 == nd - canonical(time1))
-    @test nd - time2 == nd - canonical(time2))
+    @test nd - time1 == nd - canonical(time1)
+    @test nd - time2 == nd - canonical(time2)
 end

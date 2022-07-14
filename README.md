@@ -8,6 +8,7 @@
 |--|:------------:|:-----------:|:----------:|:---------:|
 | &nbsp; 🕰️  &nbsp; |  guidance     | well tested | clean code | attribution only |
 
+[![DOI](https://zenodo.org/badge/483859789.svg)](https://zenodo.org/badge/latestdoi/483859789)
 
 ----
 

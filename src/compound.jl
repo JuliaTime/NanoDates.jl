@@ -138,6 +138,15 @@ for P in (:Microsecond, :Nanosecond)
     @eval Dates.DateTime(p::$P, utc::Bool=false) = utc ? now(UTC) : now()
 end
 
+function Dates.Time(cperiod::CompoundPeriod)
+    cperiod = canonicalize(cperiod)
+    cperiod -= (Year(cperiod) + Quarter(cperiod) + Month(cperiod) + Week(cperiod) + Day(cperiod))
+    hr = Hour(cperiod)
+    result = Time(hr)
+    result += (cperiod - hr)
+    result
+end
+
 function Dates.DateTime(cperiod::CompoundPeriod, utc::Bool=false)
     ccperiod = canonical(cperiod)
     yr = year(ccperiod)

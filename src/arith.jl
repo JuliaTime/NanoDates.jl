@@ -16,7 +16,7 @@ function Base.:(-)(nd::NanoDate, tm::Time)
         dt_nd -= Day(1)
         tm_nd = tm_nd - tm + Hour(24)
     else
-        tm_md = tm_nd - tm
+        tm_nd = tm_nd - tm
     end
     tm_nd = canonical(tm_nd)
     tm = Time(tm_nd)

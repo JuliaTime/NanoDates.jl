@@ -109,13 +109,13 @@ end
 
 end
 
-@testset "subtract NanoDate"
+@testset "subtract NanoDate" begin
     @test nd - DateTime(nd) == nd - NanoDate(DateTime(nd))
-@test DateTime(nd) - nd == NanoDate(DateTime(nd)) - nd
+    @test DateTime(nd) - nd == NanoDate(DateTime(nd)) - nd
     @test nd - Date(nd) == nd - NanoDate(Date(nd))
-@test Date(nd) - nd == NanoDate(Date(nd)) - nd
+    @test Date(nd) - nd == NanoDate(Date(nd)) - nd
 end
 
 @test nd - Time(nd) == nd - canonical(Time(nd))
-        
+
 end

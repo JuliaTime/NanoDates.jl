@@ -1,7 +1,13 @@
 function Base.:(-)(nd1::NanoDate, nd2::NanoDate)
     Δns  = Time(nd1) - Time(nd2)
     Δday = Date(nd1) - Date(nd2)
-    return Δday + Δns
+    ns = Dates.value(Δns)
+    if ns < 0
+        Δday = Δday - Day(1)
+        ns = ns + NanosecondsPerDay
+        Δns = Nanosecond(ns)
+    end
+    Δday + canonical(Δns)    
 end
 
 Base.:(-)(nd::NanoDate, dt::DateTime) = nd - NanoDate(dt)

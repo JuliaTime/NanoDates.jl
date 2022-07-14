@@ -93,3 +93,14 @@ end
     @test round(nd, Microsecond, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, cs + (ns >= 500))
     @test round(nd, Nanosecond, RoundNearestTiesUp) == NanoDate(yr, mn, dy, hr, mi, sc, ms, μs, ns)
 end
+
+@testset "subtract NanoDate"
+    @test nd - DateTime(nd) == nd - NanoDate(DateTime(nd))
+@test DateTime(nd) - nd == NanoDate(DateTime(nd)) - nd
+    @test nd - Date(nd) == nd - NanoDate(Date(nd))
+@test Date(nd) - nd == NanoDate(Date(nd)) - nd
+end
+
+@test nd - Time(nd) == nd - 
+        
+end

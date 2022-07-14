@@ -1,10 +1,10 @@
 @testset "convert" begin
-    @test convert(NanoDate, daytime) == nd0
+    @test convert(NanoDate, adatetime) == nd0
     @test convert(NanoDate, dayt) == nd00
 end
 
 @testset "promote" begin
-    @test promote(nd, daytime) == (nd, NanoDate(daytime))
+    @test promote(nd, adatetime) == (nd, NanoDate(adatetime))
     @test promote(nd, dayt) == (nd, NanoDate(dayt))
 end
 

@@ -33,6 +33,6 @@ nd = NanoDate(adate, atime)
 
 enhancement: `date_time` is safe from InexactErrors
 ```
-daytime = date_time(adate, atime)
+adatetime = date_time(adate, atime)
 # 2022-05-18T12:15:30.123
 ```

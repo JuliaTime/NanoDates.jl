@@ -41,7 +41,7 @@
 | light nanoseconds | metric distance          |
 |:-----------------:|:-------------------------:|
 | 1 ns              | 299_793_458 nanometers    |
-| 1 ns              | 0.299_793_458 kilometers  |
+| 1 ns              | 0.299_793_458 meters  |
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Grace Hopper (thank you, Grace)
 

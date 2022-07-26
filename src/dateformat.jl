@@ -9,7 +9,7 @@ function safestring(df::DateFormat)
     str = string(df)[12:end-1]
     sepidx = findlast('.', str)
     isnothing(sepidx) && return str
-    str[begin:sepidx+min(9, length(str))]
+    str[begin:sepidx+min(9, length(str)-sepidx)]
 end
 
 omit(needle::Nothing, haystack::Nothing) = nothing

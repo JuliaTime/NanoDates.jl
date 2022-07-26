@@ -281,7 +281,7 @@ function simpleparse(indices, str::AbstractString)
         if !occursin('T', supersec) && occursin(' ', supersec)
             supersec = join(split(supersec, ' '), 'T')
         end
-        subsec = filter(isdigit, subsec)
+        subsec = filter(isdigit,subsec)[begin:min(end,begin+9)]
         if !endswith(subsec, 'Z') && !occursin('+', subsec) && !occursin('-', subsec)
             subsec = rpad(subsec, 9, '0')
             subsecs = tosubsecs(Meta.parse(subsec))

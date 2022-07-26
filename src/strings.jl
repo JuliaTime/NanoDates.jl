@@ -333,6 +333,7 @@ function indexperiods(dfstr::String)
     mi = indexfirstnext('M', str)
     sc = indexfirstnext('S', str)
     ss = indexfirstlast('s', str)
+    if length(ss) > 9 ss = first(ss):first(ss)+8 end
     offset = indexoffset(dfstr)
     (; yr, mn, dy, hr, mi, sc, ss, offset)
 end

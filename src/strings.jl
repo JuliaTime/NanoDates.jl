@@ -82,7 +82,7 @@ charvec2string(chrs::AbstractVector{Char}) = foldl(*, chrs; init = "")
 function nanodate_format(nd, df)
     nooffset(df)
     indices = indexperiods(df)
-    dfstr = String(df)
+    dfstr = safestring(df)
     chrs = string2charvec(dfstr)
     indices = NamedTuple{(:yr, :mn, :dy, :hr, :mi, :sc, :ss)}(indices) # omit offset field
     syms = keys(indices)
@@ -142,7 +142,7 @@ end
     subsec_str = lpad(subsec_value, 9, '0')
     supersec = datetime - Millisecond(datetime)
     
-    dfstr = String(df)
+    dfstr = safestring(df)
     str = Dates.format(datetime, df)
     value(nd.nanosecs) == 0 && return str
 
@@ -195,7 +195,7 @@ function nanodate_format(nd, df, sep)
     str
 end
 
-nooffset(df::DateFormat) = nooffset(String(df))
+nooffset(df::DateFormat) = nooffset(safestring(df))
 function nooffset(str::AbstractString)
     if occursin('+', str)
         throw(ArgumentError("utc offsets are not supported in format(), use timestamp()"))
@@ -203,7 +203,7 @@ function nooffset(str::AbstractString)
 end
 
 
-separate_offset(df::DateFormat) = separate_offset(String(df))
+separate_offset(df::DateFormat) = separate_offset(safestring(df))
 
 function separate_offset(str::AbstractString)
     if isempty(str) || isdigit(str[end])
@@ -323,7 +323,7 @@ function getpart(r::UnitRange, str)
 end
 getpart(x::Nothing, str) = "0"
 
-indexperiods(df::DateFormat) = indexperiods(String(df))
+indexperiods(df::DateFormat) = indexperiods(safestring(df))
 
 function indexperiods(dfstr::String)
     str = strip(dfstr)

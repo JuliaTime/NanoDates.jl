@@ -223,7 +223,7 @@ function tooffset(str::AbstractString)
     hr = 0
     mn = 0
     sgn = 1
-    if !isempty(str) && length(str) > 3
+    if !isnothing(str) && !isempty(str) && length(str) > 3
         sgn = str[1] == '+' ? 1 : -1
         hr = Meta.parse(str[2:3])
         mn = Meta.parse(str[end-1:end])
@@ -252,7 +252,7 @@ Base.firstindex(::Nothing) = nothing
 Base.lastindex(::Nothing) = nothing
 
 function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localtime=false)
-    isempty(str) && throw(ArgumentError("nanodate_string cannot be empty"))
+    isnothing(str) || isempty(str) && throw(ArgumentError("nanodate_string cannot be empty"))
     indices = indexperiods(df)
     somethings = map(!isnothing, Tuple(indices))
     somekeys = keys(indices)[[somethings...]]
@@ -334,7 +334,7 @@ function indexperiods(dfstr::String)
     mi = indexfirstnext('M', str)
     sc = indexfirstnext('S', str)
     ss = indexfirstlast('s', str)
-    if length(ss) > 9
+    if !isnothing(ss) && length(ss) > 9
         ss = ss.start:ss.start+8
     end
     offset = indexoffset(dfstr)
@@ -342,6 +342,7 @@ function indexperiods(dfstr::String)
 end
 
 function indexoffset(str::AbstractString)
+    isnothing(str) || isempty(str) && throw(ArgumentError("str must not be empty"))
     n = length(str)
     if endswith(str, 'Z')
         offset = n:n

@@ -34,12 +34,18 @@ end
     https://github.com/JuliaTime/NanoDates.jl/commit/3878003bda122037de9804e1f7c9a2338f7de99f
 =#
 @testset "drop any 10th, 11th.. subsecond digits" begin
+   
+    nd = NanoDate(2022, 6, 18,  12, 15, 30,  123, 456, 789);
+    ymdhms = string(trunc(nd,Second))
     
-    subsecsstr9digits  = "123456789"
-    subsecsstr10digits = "1234567890"
-    subsecsstr11digits = "12345678990"
-    subsecsstr12digits = "123456789554"
-    subsecsstr13digits = "1234567890001"
+    all_as_nanosecs = Time(nd) - Time(ymdhms)
+    rollup_nanosecs = canonical(all_as_nanosecs)
+    
+    subsecstr9digits  = ".123456789"
+    subsecstr10digits = ".1234567890"
+    subsecstr11digits = ".12345678990"
+    subsecstr12digits = ".123456789554"
+    subsecstr13digits = ".1234567890001"
     
     ymdhms9subsecs  = ymdhms * subsecstr9digits
     ymdhms10subsecs = ymdhms * subsecstr10digits
@@ -47,31 +53,22 @@ end
     ymdhms12subsecs = ymdhms * subsecstr12digits
     ymdhms13subsecs = ymdhms * subsecstr13digits
     
-    subsecs9digits = "sss" * "sss" * "sss"
-    subsecs10digits = subsecs9digits  * "s"
-    subsecs11digits = subsecs9digits  * "ss"
-    subsecs12digits = subsecs9digits  * "sss"
-    subsecs13digits = subsecs9digits  * "ssss"
+    subsec9digits = "sss" * "sss" * "sss"
+    subsec10digits = subsec9digits  * "s"
+    subsec11digits = subsec9digits  * "ss"
+    subsec12digits = subsec9digits  * "sss"
+    subsec13digits = subsec9digits  * "ssss"
     
     df9subsecs  = dateformat"yyyy-mm-ddTHH:MM:SS.sssssssss"
     df10subsecs = dateformat"yyyy-mm-ddTHH:MM:SS.ssssssssss"
     df11subsecs = dateformat"yyyy-mm-ddTHH:MM:SS.sssssssssss"
-    df12subsecs = dateformat"yyyy-mm-ddTHH:MM:SS.sssssssssss"
-    df13subsecs = dateformat"yyyy-mm-ddTHH:MM:SS.ssssssssssss"
+    df12subsecs = dateformat"yyyy-mm-ddTHH:MM:SS.ssssssssssss"
+    df13subsecs = dateformat"yyyy-mm-ddTHH:MM:SS.sssssssssssss"
     
-    str = "2022-04-28T02:15:30"
-    str9subsecs  = str * subsecstr9digits
-    str10subsecs = str * subsecstr10digits
-    str12subsecs = str * subsecstr12digits
-    str13subsecs = str * subsecstr13digits
-    
-    nd = NanoDate(str) + Time(0,0,0,123,456,789)
- 
-    @test nd == NanoDate(str, df9)
-    @test nd == NanoDate(str9subsecs, df9subsecs) 
-    @test nd == NanoDate(str10subsecs, df10subsecs)
-    @test nd == NanoDate(str11subsecs, df11subsecs)
-    @test nd == NanoDate(str12subsecs, df12subsecs)
-    @test nd == NanoDate(str13subsecs, df13subsecs)
+    @test nd == NanoDate(ymdhms9subsecs,  df9subsecs) 
+    @test nd == NanoDate(ymdhms10subsecs, df10subsecs)
+    @test nd == NanoDate(ymdhms11subsecs, df11subsecs)
+    @test nd == NanoDate(ymdhms12subsecs, df12subsecs)
+    @test nd == NanoDate(ymdhms13subsecs, df13subsecs)
     
 end

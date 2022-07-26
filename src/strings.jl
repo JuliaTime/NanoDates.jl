@@ -225,13 +225,13 @@ function tooffset(str::AbstractString)
     sgn = 1
     if !isnothing(str) && !isempty(str) && length(str) > 3
         sgn = str[1] == '+' ? 1 : -1
-        hr = Meta.parse(str[2:3])
-        mn = Meta.parse(str[end-1:end])
+        hr = parse(Int, str[2:3])
+        mn = parse(Int, str[end-1:end])
     end
     copysign(hr, sgn), copysign(mn, sgn)
 end
 
-tosubsecs(ss::AbstractString) = tosubsecs(Meta.parse(rpad(ss, 9, '0')))
+tosubsecs(ss::AbstractString) = tosubsecs(parse(Int, rpad(ss, 9, '0')))
 
 function tosubsecs(ss::Integer)
     millis = micros = nanos = 0
@@ -284,7 +284,7 @@ function simpleparse(indices, str::AbstractString)
         subsec = filter(isdigit,subsec)[begin:min(end,begin+8)]    # ensure no more than 9 subsecond digits
         if !endswith(subsec, 'Z') && !occursin('+', subsec) && !occursin('-', subsec)
             subsec = rpad(subsec, 9, '0')
-            subsecs = tosubsecs(Meta.parse(subsec))
+            subsecs = tosubsecs(parse(Int, subsec))
             subseconds = Millisecond(subsecs[1]) + Microsecond(subsecs[2]) + Nanosecond(subsecs[3])
             return NanoDate(DateTime(supersec)) + subseconds
         else

@@ -9,7 +9,7 @@
 end
 
 @testset "parse nanodate strings" begin
-    nd1a = NanoDate("1999-07-12 08:15:30", dateformat"yyyy-mm-dd HH:MM:SS")
+    nd1a = NanoDate("1999-07-12T08:15:30", dateformat"yyyy-mm-ddTHH:MM:SS")
     nd1b == NanoDate(1999,07,12,08,15,30)
     @test nd1a == nd1b
 

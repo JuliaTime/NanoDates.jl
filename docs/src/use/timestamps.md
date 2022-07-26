@@ -66,4 +66,4 @@
 
 ----
 
-##### *to request another timestamp format, please raise an issue [here](https://github.com/JeffreySarnoff/NanoDates.jl/issues)*
+##### *to request another timestamp format, please raise an issue [here](https://github.com/JuliaTime/NanoDates.jl/issues)*

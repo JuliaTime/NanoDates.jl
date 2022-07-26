@@ -30,6 +30,6 @@
   - on [Discourse](https://discourse.julialang.org/latest) -- add the tag `time`
   - on [Zulip](https://julialang.zulipchat.com/#narrow/stream/321834-dates-times-zones) -- using the stream `dates-times-zones`
   
-- report any issues [here](https://github.com/JeffreySarnoff/NanoDates.jl/issues)
+- report any issues [here](https://github.com/JuliaTime/NanoDates.jl/issues)
 
 ----

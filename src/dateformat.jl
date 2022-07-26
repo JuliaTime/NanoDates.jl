@@ -57,7 +57,7 @@ function findeach(needle, haystack)
 end
 
 function nanodateformat(nd::NanoDate, df::DateFormat; subsecsep::Union{Char,AbstractString}='.')
-    dfstr = String(df)
+    dfstr = safestring(df)
     scount, sindices = findeach('s', dfstr)
     idxsubsecsep = subsecsep == "" ? nothing : findlast(subsecsep, dfstr)
     if !isnothing(idxsubsecsep)

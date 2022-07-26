@@ -6,10 +6,29 @@ NanoDate(nd::NanoDate, df::DateFormat) = format(nd, df)
 # get the specifier part of a DateFormat as a string
 # restricts the specifier to 9 subsecond digits
 function safestring(df::DateFormat)
-    str = string(df)[12:end-1]
-    sepidx = findlast('.', str)
-    isnothing(sepidx) && return str
-    str[begin:sepidx+min(9, length(str)-sepidx)]
+    str1 = string(df)[12:end-1]
+    str2 = ""
+    sepidx = findlast('.', str1)
+    isnothing(sepidx) && return str1
+    
+    if endswith(str1, "Z")
+        str1 = str1[1:end-1]
+        str2 = "Z"
+    elseif endswith(str1, "m") # "±hh:mm" or "±hhmm"
+        pmidx = findlast('h', str1)
+        if isnothing(pmidx) || pmidx == 1 || (str1[pmidx-1] != '+' || str1[pmidx-1] != '-')
+            return str1
+        else
+            pmidx -= 1
+            str1 = str1[1:pmidx-1]
+            str2 = str1[pmidx:end]
+        end
+    end
+    
+    sidxlast = findlast('s', str1)
+    sidxmax  = sepidx + 9
+    sidxlast = min(sidxlast, sidxmax)
+    str1[begin:sidxlast] * str2
 end
 
 omit(needle::Nothing, haystack::Nothing) = nothing

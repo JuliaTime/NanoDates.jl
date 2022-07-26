@@ -3,8 +3,14 @@ Dates.default_format(::Type{NanoDate}) = ISONanoDateFormat
 
 NanoDate(nd::NanoDate, df::DateFormat) = format(nd, df)
 
-# returns the specifier part as a string
-Base.String(df::DateFormat) = string(df)[12:end-1]
+# get the specifier part of a DateFormat as a string
+# restricts the specifier to 9 subsecond digits
+function safestring(df::DateFormat)
+    str = string(df)[12:end-1]
+    sepidx = findlast('.', str)
+    isnothing(sepidx) && return str
+    str[begin:sepidx+min(9, length(str))]
+end
 
 omit(needle::Nothing, haystack::Nothing) = nothing
 omit(needle, haystack::Nothing) = nothing

@@ -43,6 +43,6 @@ Documenter.deploydocs(
     target = "build",
     deps = nothing,
     make = nothing,
-    repo = "github.com/JeffreySarnoff/NanoDates.jl.git",
+    repo = "github.com/JuliaTime/NanoDates.jl.git",
 )
 

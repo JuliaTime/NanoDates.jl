@@ -7,7 +7,7 @@
     @test nd1 == nd2
     @test hour(nd2 - nd1) == 0
 end
-
+#=
 @testset "parse nanodate strings" begin
     nd1a = NanoDate("1999-07-12 08:15:30", dateformat"yyyy-mm-dd HH:MM:SS")
     nd1b == NanoDate(1999,07,12,08,15,30)
@@ -17,7 +17,7 @@ end
     nd2b = NanoDate(2022,7,8,4,5,6,100)
     @test nd2a == nd2b
 end
-
+=#
 #=
 @testset
     @test NanoDate("2022/07/18 04:15:16.124", dateformat"yyyy/mm/dd HH:MM:SS.sss") == NanoDate(2022,7,18,4,15,16,124)

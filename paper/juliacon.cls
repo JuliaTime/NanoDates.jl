@@ -942,4 +942,3 @@ to\hsize{\if@nfeven\else\hfil\fi\box\@tempboxa\if@nfeven\hfil\fi}
 \endinput
 
 % end of juliacon.cls
-                                  

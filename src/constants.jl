@@ -29,9 +29,9 @@ const MillisecondsPerDay = HoursPerDay * MillisecondsPerHour
 const MillisecondsPerWeek = MillisecondsPerDay * DaysPerWeek
 
 const MicrosecondsPerSecond = MillisecondsPerSecond * MicrosecondsPerMillisecond
-const MicrosecondsPerMinute = SecondsPerMinute * MillisecondsPerSecond
-const MicrosecondsPerHour = MinutesPerHour * MillisecondsPerMinute
-const MicrosecondsPerDay = HoursPerDay * MillisecondsPerHour
+const MicrosecondsPerMinute = SecondsPerMinute * MicrosecondsPerSecond
+const MicrosecondsPerHour = MinutesPerHour * MicrosecondsPerMinute
+const MicrosecondsPerDay = HoursPerDay * MicrosecondsPerHour
 const MicrosecondsPerWeek = MicrosecondsPerDay * DaysPerWeek
 
 const NanosecondsPerMillisecond = MicrosecondsPerMillisecond * NanosecondsPerMicrosecond

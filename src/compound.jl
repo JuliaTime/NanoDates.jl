@@ -1,6 +1,5 @@
 Base.iszero(x::Dates.CompoundPeriod) = isempty(x)
 
-
 const DatePeriod0 = Period[Year(0), Month(0), Day(0)]
 const TimePeriod0 = Period[Hour(0), Minute(0), Second(0), Millisecond(0),
     Microsecond(0), Nanosecond(0)]
@@ -180,7 +179,7 @@ NanoDate(dy::Day, utc::Bool=false) =
 
 for (P,Q) in ((:Hour, :Day), (:Minute, :Hour), 
               (:Second, :Minute), (:Millisecond, :Second),
-              (:Microsecond, :Millisecond), (:Nanosecond, :Microosecond))
+              (:Microsecond, :Millisecond), (:Nanosecond, :Microsecond))
   @eval function NanoDate(p::$P, utc::Bool=false)
             thenanodate = trunc(NanoDate(utc ? now(UTC) : now()), $Q)
             cperiod = canonical(p)

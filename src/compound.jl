@@ -180,7 +180,7 @@ NanoDate(dy::Day, utc::Bool=false) =
 
 for (P,Q) in ((:Hour, :Day), (:Minute, :Hour), 
               (:Second, :Minute), (:Millisecond, :Second),
-              (:Microsecond, :Millisecond), (:Nanosecond, :Microosecond))
+              (:Microsecond, :Millisecond), (:Nanosecond, :Microsecond))
   @eval function NanoDate(p::$P, utc::Bool=false)
             thenanodate = trunc(NanoDate(utc ? now(UTC) : now()), $Q)
             cperiod = canonical(p)

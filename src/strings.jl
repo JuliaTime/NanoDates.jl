@@ -231,7 +231,14 @@ function tooffset(str::AbstractString)
     copysign(hr, sgn), copysign(mn, sgn)
 end
 
-tosubsecs(ss::AbstractString) = tosubsecs(parse(Int, rpad(ss, 9, '0')))
+function tosubsecs(ss::AbstractString)
+    ss = rpad(ss, 9, '0')
+    millis = parse(Int, ss[1:3])
+    micros = parse(Int, ss[4:6])
+    nanos  = parse(Int, ss[7:9])
+    millis, micros, nanos
+end
+# tosubsecs(ss::AbstractString) = tosubsecs(parse(Int, rpad(ss, 9, '0')))
 
 function tosubsecs(ss::Integer)
     millis = micros = nanos = 0

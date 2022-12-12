@@ -238,7 +238,6 @@ function tosubsecs(ss::AbstractString)
     nanos  = parse(Int, ss[7:9])
     millis, micros, nanos
 end
-# tosubsecs(ss::AbstractString) = tosubsecs(parse(Int, rpad(ss, 9, '0')))
 
 function tosubsecs(ss::Integer)
     millis = micros = nanos = 0

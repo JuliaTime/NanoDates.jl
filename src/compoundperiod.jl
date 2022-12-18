@@ -17,9 +17,6 @@ for (P,p) in ((:Year, :year),
     @eval begin
         Dates.$P(x::Dates.$P) = x
         Dates.$p(x::Dates.$P) = value(x)
-
-        Dates.$P(x::Period) = Dates.$P(0)
-        Dates.$p(x::Period) = 0
   
         Dates.$P(x::CompoundPeriod) = Dates.$P(x.periods)
         Dates.$p(x::CompoundPeriod) = Dates.$p(x.periods)

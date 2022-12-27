@@ -232,6 +232,9 @@ function tooffset(str::AbstractString)
 end
 
 function tosubsecs(ss::AbstractString)
+    if endswith(ss, 'Z')
+        ss = ss[1:end-1]
+    end
     ss = rpad(ss, 9, '0')
     millis = parse(Int, ss[1:3])
     micros = parse(Int, ss[4:6])

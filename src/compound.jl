@@ -11,11 +11,11 @@ const NanoDatePeriod0 = Period[Year(0), Month(0), Day(0),
 
 const YMD = (Year, Month, Day)
 const HMS = (Hour, Minute, Second)
-const MμN = (Millisecond, Microsecond, Nanosecond)
+const McN = (Millisecond, Microsecond, Nanosecond)
 
 const HMSs = (HMS..., Millisecond)
 const HMSss = (HMS..., Millisecond, Microsecond)
-const HMSsss = (HMS..., MμN...)
+const HMSsss = (HMS..., McN...)
 
 const YMDHMS = (YMD..., HMS...)
 const YMDHMSs = (YMD..., HMSs...)
@@ -263,4 +263,5 @@ function Base.:(div)(a::CompoundPeriod, b::Integer)
     end
     CompoundPeriod(accum)
 end
+
 

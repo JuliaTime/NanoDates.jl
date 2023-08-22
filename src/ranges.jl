@@ -37,6 +37,7 @@ Base.convert(::Type{Day}, cperiod::Dates.CompoundPeriod) =
 Base.convert(::Type{week}, cperiod::Dates.CompoundPeriod) =
     Day(fld(fld(Dates.value(cperiod), 24_000_000), 25_200_000))
 
+const InSeconds = Union{Nanosecond, Microsecond, Millisecond, Second, Minute, Hour, Day, Week}
 const OfSeconds = (:Nanosecond, :Microsecond, :Millisecond, :Second, :Minute, :Hour, :Day, :Week)
 
 for P in OfSeconds
@@ -53,14 +54,15 @@ for P in OfSeconds
   end
 end
 
-for P in (:Year, :Month, :Day, :Hour, :Minute, :Second, :Millisecond, :Microsecond, :Nanosecond)
-  steprange = StepRange{NanoDate, P}
-  @eval begin
-    function nanosteprange(nd1::NanoDate, p::Dates.Period, nd2::NanoDate)
-        separation = sign(p) * (nd1 - nd2)
-        periodsep = trunc(separation, typeof(p))
-        StepRange(nd1, periodsep, nd2)        
-  end
+function Base.collect(sr::StepRange{NanoDate, P}) where {P<:InSeconds}
+    srspan = sr.stop - sr.start
+    stepsavail = convert(P, srspan)
+    stepsused  = fld(convert(P, srspan), sr.step)
+    gather = Vector{NanoDate}(undef, stepsused)
+    for i in eachindex(gather)
+        gather[i] = sr.start + (i-1) * sr.step
+    end
+    gather
 end
 
 Base.:(:)(a::NanoDate, b::NanoDate) = (:)(a, Day(1), b)

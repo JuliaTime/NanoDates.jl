@@ -55,15 +55,16 @@ end
 
 const AllPeriods = (:Nanosecond, :Microsecond, :Millisecond, :Second, :Minute, :Hour, :Day, :Week, :Month, :Quarter, :Year)
 
+for P in AllPeriods
+    @eval Base.isless(::Type{$P}, ::Type{$P}) = false
+end
+
 # allow period type relative duration determination
 for shortidx in 1:length(AllPeriods)-1
     short = AllPeriods[shortidx]
-    @eval Base.isless(::Type{$short}, ::Type{$short}) = false
     for longidx in shortidx+1:length(AllPeriods)
         long = AllPeriods[longidx]
         @eval Base.isless(::Type{$short}, ::Type{$long}) = true
         @eval Base.isless(::Type{$long}, ::Type{$short}) = false
     end
 end
-
-Base.isless(::Type{AllPeriods[end]}, ::Type{AllPeriods[end]}) = false

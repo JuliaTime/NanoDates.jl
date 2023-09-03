@@ -37,10 +37,10 @@ Base.convert(::Type{Day}, cperiod::Dates.CompoundPeriod) =
 Base.convert(::Type{week}, cperiod::Dates.CompoundPeriod) =
     Day(fld(fld(Dates.value(cperiod), 24_000_000), 25_200_000))
 
-#=
-const InSeconds = Union{Nanosecond, Microsecond, Millisecond, Second, Minute, Hour, Day, Week}
-const OfSeconds = (:Nanosecond, :Microsecond, :Millisecond, :Second, :Minute, :Hour, :Day, :Week)
 
+const InSeconds = Union{Nanosecond, Microsecond, Millisecond, Second, Minute, Hour, Day, Week}
+#=
+const OfSeconds = (:Nanosecond, :Microsecond, :Millisecond, :Second, :Minute, :Hour, :Day, :Week)
 for P in OfSeconds
   for T in OfSeconds
     @eval begin

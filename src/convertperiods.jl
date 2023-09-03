@@ -1,20 +1,3 @@
-Base.isempty(x::Dates.CompoundPeriod) = isempty(x.periods)
-
-const AllPeriods = (:Nanosecond, :Microsecond, :Millisecond, :Second, :Minute, :Hour, :Day, :Week, :Month, :Quarter, :Year)
-const FixedPeriods = (:Nanosecond, :Microsecond, :Millisecond, :Second, :Minute, :Hour, :Day, :Week)
-const VariablePeriods = (:Month, :Quarter, :Year)
-
-# allow period type relative duration determination
-for shortidx in 1:length(AllPeriods)-1
-    short = AllPeriods[shortidx]
-    @eval Base.isless(::Type{$short}, ::Type{$short}) = false
-    for longidx in shortidx+1:length(AllPeriods)
-        long = AllPeriods[longidx]
-        @eval Base.isless(::Type{$short}, ::Type{$long}) = true
-        @eval Base.isless(::Type{$long}, ::Type{$short}) = false
-    end
-end
-
 # allow periods to be expressed in Nanoseconds
 widevalue(@nospecialize(x::Period))  = Int128(Dates.value(x))
 tonanos(x::Nanosecond)  = widevalue(x)

@@ -65,3 +65,5 @@ for shortidx in 1:length(AllPeriods)-1
         @eval Base.isless(::Type{$long}, ::Type{$short}) = false
     end
 end
+
+Base.isless(::Type{AllPeriods[end]}, ::Type{AllPeriods[end]}) = false

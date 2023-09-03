@@ -1,19 +1,12 @@
 function Base.:(-)(nd1::NanoDate, nd2::NanoDate)
-    Δns  = Time(nd1) - Time(nd2)
-    Δday = Date(nd1) - Date(nd2)
-    ns = Dates.value(Δns)
-    if ns < 0
-        Δday = Δday - Day(1)
-        ns = ns + NanosecondsPerDay
-        Δns = Nanosecond(ns)
-    end
-    Δday + canonical(Δns)    
+    Δns  = tonanos(nd1) - tonanos(nd2)
+    Nanosecond(Δns)
 end
 
-Base.:(-)(nd::NanoDate, dt::DateTime) = nd - NanoDate(dt)
-Base.:(-)(dt::DateTime, nd::NanoDate) = NanoDate(dt) - nd
-Base.:(-)(nd::NanoDate, dt::Date) = nd - NanoDate(dt)
-Base.:(-)(dt::Date, nd::NanoDate) = NanoDate(dt) - nd
+Base.:(-)(nd::NanoDate, dt::DateTime) = Nanosecond(tonanos(nd) - tonanos(dt))
+Base.:(-)(dt::DateTime, nd::NanoDate) = Nanosecond(tonanos(dt) - tonanos(nd))
+Base.:(-)(nd::NanoDate, dt::Date) = Nanosecond(tonanos(nd) - tonanos(dt))
+Base.:(-)(dt::Date, nd::NanoDate) = Nanosecond(tonanos(dt) - tonanos(nd))
 
 function Base.:(-)(nd::NanoDate, tm::Time)
     tm_nd = Time(nd)
@@ -24,7 +17,6 @@ function Base.:(-)(nd::NanoDate, tm::Time)
     else
         tm_nd = tm_nd - tm
     end
-    tm_nd = canonical(tm_nd)
     tm = Time(tm_nd)
     return NanoDate(dt_nd, tm)
 end

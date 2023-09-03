@@ -12,6 +12,11 @@ tonanos(x::Month)   = widevalue(x) *  2629746000000000 # * Int(Month(1))
 tonanos(x::Quarter) = widevalue(x) *  7889238000000000 # * Int(Quarter(1))
 tonanos(x::Year)    = widevalue(x) * 31556952000000000 # * Int(Year(1))
 
+tonanos(x::Time) = Int128(Dates.value(x))
+tonanos(x::Date) = Int128(Dates.value(x)) * NanosecondsPerDay
+tonanos(x::DateTime) = Int128(Dates.value(x)) * NanosecondsPerMillisecond
+tonanos(x::NanoDate) = tonanos(x.datetime) + x.nanosecs.value
+
 for P in AllPeriods
     @eval tonanos(::Type{$P}) = tonanos($P(1))
 end

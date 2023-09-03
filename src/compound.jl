@@ -1,4 +1,4 @@
-Base.isempty(x::Dates.CompoundPeriod) = isempty(x.periods)
+Base.iterate(x::Dates.CompoundPeriod) = Base.iterate(x.periods)
 Base.iszero(x::Dates.CompoundPeriod) = isempty(x)
 
 const DatePeriod0 = Period[Year(0), Month(0), Day(0)]

@@ -1,3 +1,15 @@
+function Base.:(-)(nd::NanoDate, x::Nanosecond)
+    nanos = value(nd.nanosecs) - value(x)
+    millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)
+    NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
+end
+
+function Base.:(-)(nd::NanoDate, x::Microsecond)
+    nanos = value(nd.nanosecs) - (value(x) * NanosecondsPerMicrosecond)
+    millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)
+    NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
+end
+
 function Base.:(-)(nd1::NanoDate, nd2::NanoDate)
     Δns  = tonanos(nd1) - tonanos(nd2)
     Nanosecond(Δns)
@@ -28,17 +40,6 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millis
   end
 end
 
-#=
-Base.:(-)(nd::NanoDate, dtm::DateTime) = (-)(promote(nd, dtm)...)
-
-Base.:(-)(dtm::DateTime, nd::NanoDate) = (-)(promote(nd, dtm)...)
-
-Base.:(-)(nd::NanoDate, dt::Date) = (-)(promote(nd, dt)...)
-
-function Base.:(-)(nd::NanoDate, tm::Time)
-     NanoDate(NanoDate(tm), Year(0))
-    = (-)(promote(nd, tm)...)
-=#
 
 function Base.:(+)(nd::NanoDate, x::Nanosecond)
     nanos = value(nd.nanosecs) + value(x)
@@ -48,18 +49,6 @@ end
 
 function Base.:(+)(nd::NanoDate, x::Microsecond)
     nanos = value(nd.nanosecs) + (value(x) * NanosecondsPerMicrosecond)
-    millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)
-    NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
-end
-
-function Base.:(-)(nd::NanoDate, x::Nanosecond)
-    nanos = value(nd.nanosecs) - value(x)
-    millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)
-    NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
-end
-
-function Base.:(-)(nd::NanoDate, x::Microsecond)
-    nanos = value(nd.nanosecs) - (value(x) * NanosecondsPerMicrosecond)
     millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)
     NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
 end

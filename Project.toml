@@ -1,10 +1,10 @@
 name = "NanoDates"
-repo = "https://github.com/JuliaTime/NanoDates.jl.git"
 uuid = "46f1a544-deae-4307-8689-c12aa3c955c6"
 keywords = ["Julia", "Dates", "time", "date", "nanoseconds"]
 license = "MIT"
 authors = ["Jeffrey Sarnoff <jeffrey.sarnoff@gmail.com>"]
-description = "NanoDate is a nanosecond resolved DateTime type" 
+description = "NanoDate is a nanosecond resolved DateTime type"
+repo = "https://github.com/JuliaTime/NanoDates.jl.git"
 version = "0.3.0"
 
 [deps]
@@ -23,4 +23,3 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
 test = ["Test", "Aqua", "Dates"]
-

@@ -1,3 +1,4 @@
+Base.isone(x::Dates.Period) = isone(Dates.value(x))
 Base.iszero(x::Dates.CompoundPeriod) = isempty(x)
 
 const DatePeriod0 = Period[Year(0), Month(0), Day(0)]

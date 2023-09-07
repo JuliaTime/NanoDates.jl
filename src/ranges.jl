@@ -39,25 +39,9 @@ Base.convert(::Type{week}, cperiod::Dates.CompoundPeriod) =
 
 
 const InSeconds = Union{Nanosecond, Microsecond, Millisecond, Second, Minute, Hour, Day, Week}
-#=
-const OfSeconds = (:Nanosecond, :Microsecond, :Millisecond, :Second, :Minute, :Hour, :Day, :Week)
-for P in OfSeconds
-  for T in OfSeconds
-    @eval begin
-      if $P == $T
-        Base.convert(::Type{$P}, period::$T) = period
-      elseif $P < $T
-        Base.convert(::Type{$P}, period::$T) = convert($P, period+Nanosecond(1))
-      else
-        $P(0)
-      end
-    end
-  end
-end
-=#
 
-function Base.collect(sr::StepRange{NanoDate, P}) where {P<:InSeconds}
-    srspan = sr.stop - sr.start
+function Base.collect(sr::StepRange{NanoDate,P}) where {P<:InSeconds}
+  srspan = sr.stop - sr.start
     stepsavail = convert(P, srspan)
     stepsused  = fld(convert(P, srspan), sr.step)
     gather = Vector{NanoDate}(undef, stepsused)

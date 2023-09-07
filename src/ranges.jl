@@ -41,10 +41,10 @@ Base.convert(::Type{week}, cperiod::Dates.CompoundPeriod) =
 const InSeconds = Union{Nanosecond, Microsecond, Millisecond, Second, Minute, Hour, Day, Week}
 
 function Base.collect(sr::StepRange{NanoDate,P}) where {P<:InSeconds}
-  srspan = sr.stop - sr.start
-    stepsavail = convert(P, srspan)
-    stepsused  = fld(convert(P, srspan), sr.step)
-    gather = Vector{NanoDate}(undef, stepsused)
+    srspan = convert(P, sr.stop - sr.start)
+    srstep = convert(P, sr.step)
+    steps  = fld(Dates.value(srspan), Dates.value(srstep)) + 1
+    gather = Vector{NanoDate}(undef, steps)
     for i in eachindex(gather)
         gather[i] = sr.start + (i-1) * sr.step
     end

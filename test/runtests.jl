@@ -51,3 +51,8 @@ end
 @testset "timestamp" begin
     include("timestamp.jl")
 end
+
+@testset "ranges" begin
+    include("ranges.jl")
+end
+

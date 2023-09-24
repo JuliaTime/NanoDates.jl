@@ -5,7 +5,7 @@
     nd2 = NanoDate(ndstr2)
 
     @test nd1 == nd2
-    @test hour(nd2 - nd1) == 0
+    @test Hour(nd2 - nd1) == Hour(0)
 end
 
 @testset "parse nanodate strings" begin

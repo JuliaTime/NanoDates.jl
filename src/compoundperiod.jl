@@ -46,7 +46,7 @@ function canonical(x::CompoundPeriod)
    if !iszero(Dates.week(y))
        w = Week(y)
        y -= w
-       y += convert(Day, y)
+       y += convert(Day, w)
    end
    y
 end
@@ -63,7 +63,7 @@ function canonical(x::Period)
     if !iszero(Dates.week(y))
        w = Week(y)
        y -= w
-       y += convert(Day, y)
+       y += convert(Day, w)
     end
     y
 end

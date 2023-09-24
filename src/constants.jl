@@ -87,3 +87,5 @@ const Nperiods = length(AllPeriodsDecreasing)
 const AllPeriodsIncreasing = reverse(AllPeriodsDecreasing)
 const AllPeriodSymsIncreasing = Symbol(AllPeriodsIncreasing)
 
+const Base.zero(::Type{NanoDate}) = NanoDate(zero(DateTime), zero(Nanosecond))
+const Base.one(::Type{NanoDate})  = NanoDate(one(DateTime), zero(Nanosecond))

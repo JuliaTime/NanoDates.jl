@@ -38,31 +38,44 @@ Base.convert(::Type{week}, cperiod::Dates.CompoundPeriod) =
     Day(fld(fld(Dates.value(cperiod), 24_000_000), 25_200_000))
 
 
-const InSeconds = Union{Nanosecond, Microsecond, Millisecond, Second, Minute, Hour, Day, Week}
+Base.:(:)(a::NanoDate, b::NanoDate) = (:)(a, Day(1), b)
+
+function Base.collect(sr::StepRange{NanoDate,Nanosecond})
+    srspan = NanoDates.tons(sr.stop - sr.start) # from value in Nanoseconds
+    srstep = NanoDates.tons(sr.step)            # value from Nanoseconds
+    steps = fld(srspan, srstep) + 1
+    gather = Vector{NanoDate}(undef, steps)
+    for i in eachindex(gather)
+        gather[i] = sr.start + Nanosecond((i - 1) * srstep)
+    end
+    gather
+end
+
+const InSeconds = Union{Microsecond, Millisecond, Second, Minute, Hour, Day, Week}
 
 function Base.collect(sr::StepRange{NanoDate,P}) where {P<:InSeconds}
-    srspan = sr.stop - sr.start      # in Nanoseconds
-    srstep = NanoDates.tons(sr.step) # in Nanoseconds
-    steps  = fld(Dates.value(srspan), Dates.value(srstep)) + 1
+    srspan = NanoDates.tons(sr.stop - sr.start) # value from Nanoseconds
+    srstep = NanoDates.tons(sr.step)            # value from Nanoseconds
+    steps  = fld(srspan, srstep) + 1
     gather = Vector{NanoDate}(undef, steps)
     for i in eachindex(gather)
-        gather[i] = sr.start + (i-1) * srstep
+        gather[i] = sr.start + Nanosecond((i-1) * srstep)
     end
     gather
 end
 
-function Base.collect(sr::StepRange{NanoDate, Nanosecond})
-    srspan = sr.stop - sr.start # in Nanoseconds
-    # sr.step is in Nanoseconds
-    steps  = fld(Dates.value(srspan), Dates.value(sr.step)) + 1
+function Base.collect(sr::StepRange{NanoDate,P}) where {P<:Dates.CompoundPeriod}
+    srspan = NanoDates.tons(sr.stop - sr.start) # value from Nanoseconds
+    dest = Vector{Int64}(undef, length(sr.step.periods))
+    srstep = foldl(+, map!(NanoDates.tons, dest, sr.step.periods)) # value from Nanoseconds    
+    steps = fld(srspan, srstep) + 1
     gather = Vector{NanoDate}(undef, steps)
     for i in eachindex(gather)
-        gather[i] = sr.start + (i-1) * sr.step
+        gather[i] = sr.start + Nanosecond((i - 1) * srstep)
     end
     gather
 end
-
-Base.:(:)(a::NanoDate, b::NanoDate) = (:)(a, Day(1), b)
 
 Dates.guess(a::NanoDate, b::NanoDate, c) = floor(Int64, (Int128(value(b)) - Int128(value(a))) / tons(c))
 Dates.len(a::NanoDate, b::NanoDate, c) = Int64(div(value(b - a), tons(c)))
+

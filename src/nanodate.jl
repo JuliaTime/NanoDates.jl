@@ -11,6 +11,9 @@ struct NanoDate <: Dates.AbstractDateTime
     end
 end
 
+const Base.zero(::Type{NanoDate}) = NanoDate(zero(DateTime), zero(Nanosecond))
+const Base.one(::Type{NanoDate})  = NanoDate(one(DateTime), zero(Nanosecond))
+
 function canonical_mn(millis::T, nanos::T) where {T<:Integer}
     micros, nanos = fldmod_1000(nanos)
     micromillis, micros = fldmod_1000(micros)

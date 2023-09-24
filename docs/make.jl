@@ -27,6 +27,7 @@ makedocs(
         "Helpful Extras" => Any[
             "Conveniences"=>"use/convenient.md",
             "Strings"=>"use/intostring.md",
+            "Ranges"=>"use/ranges.md",
         ],
         "Regulatory Note" => "appropriate/advantages.md",
         "Technical: unexported" => Any[

@@ -29,7 +29,11 @@
   - `TimesDates` is widely used and well-liked
     - offers nanoseond resolved dates       (as do we)
     - offers nanosecond accurate time zones (we do not)
- 
+
+- Latest
+  - performant NanoDate ranges with steps that are simple or compound periods
+    - much faster than Dates with compound period stepsizes
+    
 - Contributors are welcome
   -  clear code, robust performance, reliable interoperability
   -  frendly docs, easily followed, well explained

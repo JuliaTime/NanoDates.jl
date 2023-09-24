@@ -1,5 +1,4 @@
 using Dates, NanoDates
-using NanoDates
 using Dates: value, CompoundPeriod, toms, tons, UTM, UTD
 using NanoDates: nanosecs, NanoDate0, DateTime0, Date0, Time0
 using Aqua, Test
@@ -52,3 +51,8 @@ end
 @testset "timestamp" begin
     include("timestamp.jl")
 end
+
+@testset "ranges" begin
+    include("ranges.jl")
+end
+

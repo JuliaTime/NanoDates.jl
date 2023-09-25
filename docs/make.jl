@@ -29,6 +29,10 @@ makedocs(
             "Strings"=>"use/intostring.md",
             "Ranges"=>"use/ranges.md",
         ],
+        "More Advanced Examples" => Any[
+            "Ranges with Compound Steps" => "example/compoundsteps.md",
+            "Millisecond based Timestamping" => "example/millistamps.md",
+        ],
         "Regulatory Note" => "appropriate/advantages.md",
         "Technical: unexported" => Any[
             "Internals"=>"technical/DatesFunctions.md",

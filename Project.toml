@@ -12,6 +12,7 @@ Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Parsers = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
 
 [compat]
+Dates = "1.7"
 Aqua = "0.7 - 0.15"
 Parsers = "2 - 3"
 julia = "1.7"

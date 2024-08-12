@@ -262,6 +262,9 @@ Base.lastindex(::Nothing) = nothing
 
 function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localtime=false)
     isnothing(str) || isempty(str) && throw(ArgumentError("nanodate_string cannot be empty"))
+    if '_' in str
+        str = join(split(str, '_'))
+    end
     indices = indexperiods(df)
     somethings = map(!isnothing, Tuple(indices))
     somekeys = keys(indices)[[somethings...]]

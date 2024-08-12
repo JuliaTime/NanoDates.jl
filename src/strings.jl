@@ -324,8 +324,11 @@ getparts(indices::NamedTuple, str::AbstractString) =
     map(x -> getpart(x, str), indices)
 
 function getpart(r::UnitRange, str)
-    if iszero(r.start)
+    n = length(str)
+    if iszero(r.start) || r.start > n
         "0"
+    elseif r.stop > n
+        str[r.start:n]
     else
         str[r]
     end

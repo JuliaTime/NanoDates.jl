@@ -266,13 +266,6 @@ function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localti
     somethings = map(!isnothing, Tuple(indices))
     somekeys = keys(indices)[[somethings...]]
     someindices = NamedTuple{somekeys}(indices)
-    if maximum(last.(Tuple(someindices))) != length(str)
-        if df !== ISONanoDateFormat
-            throw(ArgumentError("$(str) does not match dateformat"))
-        else
-            return simpleparse(indices, str)
-        end
-    end
     parts = getparts(indices, str)
     subsecs = isnothing(parts.ss) ? (0,0,0) : tosubsecs(parts.ss)
     offsets = isnothing(parts.offset) ? (0,0) : tooffset(parts.offset)

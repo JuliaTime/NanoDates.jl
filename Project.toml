@@ -5,7 +5,7 @@ license = "MIT"
 authors = ["Jeffrey Sarnoff <jeffrey.sarnoff@gmail.com>"]
 description = "NanoDate is a nanosecond resolved DateTime type"
 repo = "https://github.com/JuliaTime/NanoDates.jl.git"
-version = "0.3.3"
+version = "0.4.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"

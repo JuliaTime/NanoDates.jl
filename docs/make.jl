@@ -7,7 +7,6 @@ makedocs(
     authors="Jeffrey Sarnoff",
     source="src",
     clean=false,
-    strict=!("strict=false" in ARGS),
     doctest=("doctest=only" in ARGS) ? :only : true,
     format=Documenter.HTML(
         # Use clean URLs, unless built as a "local" build

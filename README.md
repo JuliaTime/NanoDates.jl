@@ -33,6 +33,7 @@
 - Latest
   - performant NanoDate ranges with steps that are simple or compound periods
     - much faster than Dates with compound period stepsizes
+  - bugfix (parsing some subsecond layouts)
     
 - Contributors are welcome
   -  clear code, robust performance, reliable interoperability

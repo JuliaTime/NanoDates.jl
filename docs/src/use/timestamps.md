@@ -56,14 +56,20 @@
 | `2022-05-24T10:43:22.350_789`          | timestamp(floor(nd, Microsecond); sep=`_`) |
 | `2022-05-24T10:43:22.350⬩789⬩123`      | timestamp(nd; sep="⬩")                     |
 
-#### timestamps that are counts offset from the UNIX Epoch (1970-01-01 UTC)
+#### Offsets from the UNIX Epoch (1970-01-01 UTC)
 
-|               timestamp                | resolution  | method(nd::NanoDate)                |
-|:---------------------------------------|:------------|:------------------------------------|
-| `63789100018`                          | second      | nanodate2unixseconds(nd)            |
-| `63789100018123`                       | millisecond | nanodate2unixmillis(nd)             |
-| `63789100018123456`                    | microsecond | nanodate2unixmicros(nd)             |
+|   NanoDate                      | integer offset      | resolution  | method(nd::NanoDate)     |
+|:--------------------------------|---------------------|:------------|--------------------------|
+| "2022-05-24T10:43:22"           | 1653389002          | second      | nanodate2unixseconds(nd) |
+| "2022-05-24T10:43:22.123"       | 1653389002123       | millisecond | nanodate2unixmillis(nd)  |
+| "2022-05-24T10:43:22.123456"    | 1653389002123456    | microsecond | nanodate2unixmicros(nd)  |
+| "2022-05-24T10:43:22.123456789" | 1653389002123456789 | nanosecond  | nanodate2unixnanos(nd)   |
 
-----
+| method(nd::NanoDate)     | inverse method                          |
+|--------------------------|-----------------------------------------|
+| nanodate2unixseconds(nd) | unixseconds2nanodate(integer secs)      |
+| nanodate2unixmillis(nd)  | unixmillis2nanodate(integer millisecs)  |
+| nanodate2unixmicros(nd)  | unixmicros2nanodate(integer microsecs)  |
+| nanodate2unixnanos(nd)   | unixnanos2nanodate(integer nanosecs)    |
 
-##### *to request another timestamp format, please raise an issue [here](https://github.com/JuliaTime/NanoDates.jl/issues)*
+

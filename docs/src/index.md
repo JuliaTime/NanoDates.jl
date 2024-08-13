@@ -20,6 +20,9 @@
  - uses DateFormat
    - one 's' for each subsecond digit
    - `format(::NanoDate, ::DateFormat)`
+   - Technical Note: DateFormats used with NanoDates must use '.' only to separate seconds from subseconds.
+     - If you need that sort of format, use `NanoDate(DateTime(datestring, dateformat))`.
+     - `nd = NanoDate(DateTime("12.31.2024 23:59", dateformat"mm.dd.yyyy HH:MM"))`
 
 
 ----

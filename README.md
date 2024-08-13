@@ -4,9 +4,11 @@
 ----
 
 
-|&nbsp; 📅 &nbsp;  | [![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliatime.github.io/NanoDates.jl/dev/) |  [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl) | [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) |
+
+|&nbsp; 📅 &nbsp;  | [![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://juliatime.github.io/NanoDates.jl/dev/) |  [![Coverage Status](https://coveralls.io/repos/github/JuliaTime/NanoDates.jl/badge.svg?branch=main)](https://coveralls.io/github/JuliaTime/NanoDates.jl?branch=main) |  [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl) | [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) |
 |--|:------------:|:-----------:|:----------:|:---------:|
 | &nbsp; 🕰️  &nbsp; |  guidance     | testing | clean code | attribution only |
+
 
 [![DOI](https://zenodo.org/badge/483859789.svg)](https://zenodo.org/badge/latestdoi/483859789)
 

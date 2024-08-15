@@ -203,22 +203,6 @@ function nooffset(str::AbstractString)
 end
 
 
-separate_offset(df::DateFormat) = separate_offset(safestring(df))
-
-function separate_offset(str::AbstractString)
-    if isempty(str) || isdigit(str[end])
-        ("", "")
-    elseif endswith(str, 'Z')
-        ("", "Z")
-    elseif str[end-4:end] == "hh:mm"
-        (str[end-5], "hh:mm")
-    elseif str[end-3:end] == "hhmm"
-        (str[end-4], "hhmm")
-    else
-        throw(ArgumentError("offset in $(str) not recognized"))
-    end
-end
-
 function tooffset(str::AbstractString)
     hr = 0
     mn = 0
@@ -266,9 +250,6 @@ function NanoDate(str::AbstractString, df::DateFormat=ISONanoDateFormat; localti
         str = join(split(str, '_'))
     end
     indices = indexperiods(df)
-    somethings = map(!isnothing, Tuple(indices))
-    somekeys = keys(indices)[[somethings...]]
-    someindices = NamedTuple{somekeys}(indices)
     parts = getparts(indices, str)
     subsecs = isnothing(parts.ss) ? (0,0,0) : tosubsecs(parts.ss)
     offsets = isnothing(parts.offset) ? (0,0) : tooffset(parts.offset)

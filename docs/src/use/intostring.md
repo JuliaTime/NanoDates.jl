@@ -14,7 +14,7 @@ nd = NanoDate(adatetime, subsecond)
 string(nd)  # "2022-06-18T12:15:30.123456789"
 ```
 
-##### Use `timestamp` to get an ISO8061 conoforming string.
+##### Use `timestamp` to get an ISO8061 conforming string.
 ```
 timestamp(nd; utc=true)
 # "2022-06-18T12:15:30.123456789Z"

@@ -35,3 +35,10 @@ end
     @test nd - NanoDate(nd, Ns-Nanosecond(999)) == Nanosecond(999)
 end
 
+@testset "unix" begin
+    @test unixnanos2nanodate(0) == NanoDate(DateTime(1970))
+    @test nanodate2unixnanos(unixnanos2nanodate(123_456_789)) == 123_456_789
+    # `unixnanos2nanodate` must be type-stable (returns `NanoDate`, not `Any`).
+    @test Base.return_types(unixnanos2nanodate, Tuple{Int64}) == [NanoDate]
+end
+

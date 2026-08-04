@@ -48,7 +48,11 @@ end
 function unixnanos2nanodate(nanosecs)
     millis, micronanos = fldmod(nanosecs, 1_000_000)
     ndays, millis = fldmod(millis, 86400_000)
-    dtm = DateTime(1970) + Day(ndays) + Millisecond(millis)
+    # Parenthesize so each `+` dispatches to the binary `+(::DateTime, ::Period)`
+    # method (which returns `DateTime`). Writing `a + b + c` would otherwise be
+    # parsed as a 3-arg `+`, hitting `Dates`'s varargs `+(::TimeType, ::Period...)`
+    # method whose return type does not infer, making this function return `Any`.
+    dtm = (DateTime(1970) + Day(ndays)) + Millisecond(millis)
     NanoDate(dtm, Nanosecond(micronanos))
 end
 

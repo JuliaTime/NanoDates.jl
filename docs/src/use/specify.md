@@ -17,11 +17,11 @@ nd = NanoDate(years, months, days, hours, mins)
 nd = NanoDate(years, months, days, hours, mins, secs)
 # 2022-06-18T12:15:30
 
-nd = NanoDate(years, months, days, 
+nd = NanoDate(years, months, days,
               hours, mins, secs, millis, micros)
 # 2022-04-28T14:32:10.123456
 
-nd = NanoDate(years, months, days, 
+nd = NanoDate(years, months, days,
               hours, mins, secs, millis, micros, nanos)
 # 2022-04-28T14:32:10.123456789
 ```
@@ -34,12 +34,12 @@ nd = NanoDate(Year(years), Month(months))
 # 2022-06-01T00:00:00
 
 nd = NanoDate(
-    Year(years), Month(months), Day(days), 
+    Year(years), Month(months), Day(days),
     Hour(hours), Minute(mins), Second(secs))
 # 2022-06-18T12:15:30
 
 nd = NanoDate(
-    Year(years), Month(months), Day(days), 
+    Year(years), Month(months), Day(days),
     Hour(hours), Minute(mins), Second(secs),
     Millisecond(millis), Microsecond(micros),
     Nanosecond(nanos))

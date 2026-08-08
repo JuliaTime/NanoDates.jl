@@ -13,7 +13,7 @@ dnd = Day(91) + Nanosecond(28656000000000)
   @test day(Day(15)) == 15
   @test hour(Hour(1)) == 1
   @test nanosecond(Nanosecond(123)) == 123
-  
+
   @test dnd == Day(91) + Nanosecond(28656000000000)
   @test cdnd == Day(91) + Hour(7) + Minute(57) + Second(36)
 
@@ -44,7 +44,7 @@ end
 
 #=
 @testset "Date" begin
-   
+
     tda = today()
     da = Date(2022,6,18)
     cpda = CompoundPeriod(da)
@@ -54,12 +54,12 @@ end
     @test Date(cpda - Day(da) + Day(1)) == da - Day(da) + Day(1)
     @test Date(cpda - Day(da)) - Day(1) == (da - Day(da)) - Day(1)
     @test Date(cpda - (Day(da) - Day(1))) == da - (Day(da) - Day(1))
-   
+
     @test Date(cpda - Month(da)) == da - Month(da)
     @test Date(cpda - Month(da) + Month(1)) == da - Month(da) + Month(1)
     @test Date(cpda - Month(da)) - Month(1) == (da - Month(da)) - Month(1)
     @test Date(cpda - (Month(da) - Month(1))) == da - (Month(da) - Month(1))
-   
+
     @test Date(cpda - Month(da) - Day(da)) == da - Month(da) - Day(da)
 
     @test Date(Month(11)) == Date(year(tda), 11, 1)
@@ -94,7 +94,7 @@ end
     nd = NanoDate(2022, 6, 18,  12, 15, 30,  123, 456, 789);
     cnd = CompoundPeriod(nd)
     tda = NanoDate(today())
-    
+
     @test NanoDate(Month(2) + Day(5)) ==
         firstdayofyear(tda) + Month(2-1) + Day(5-1)
     @test NanoDate(Month(2) + Hour(3)) ==

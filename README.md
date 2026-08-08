@@ -33,15 +33,15 @@
   - performant NanoDate ranges with steps that are simple or compound periods
     - much faster than Dates with compound period stepsizes
   - bugfix (parsing some subsecond layouts)
-    
+
 - Contributors are welcome
   -  clear code, robust performance, reliable interoperability
   -  frendly docs, easily followed, well explained
- 
+
 ----
 
 
-  
+
 | light nanoseconds | metric distance          |
 |:-----------------:|:-------------------------:|
 | 1 ns              | 299_793_458 nanometers    |

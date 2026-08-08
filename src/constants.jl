@@ -75,7 +75,7 @@ const Epoch2000RataDie = Dates.value(Epoch2000Date)
 const Epoch2000Milliseconds = Dates.value(Epoch2000DateTime)
 const Epoch2000Nanoseconds  = Int128(Epoch2000Milliseconds) * NanosecondsPerMillisecond
 
-const AllPeriodsDecreasing = 
+const AllPeriodsDecreasing =
       (Year, Quarter, Month, Week, Day,
        Hour, Minute, Second,
        Millisecond, Microsecond, Nanosecond)

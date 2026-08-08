@@ -10,7 +10,7 @@ function safestring(df::DateFormat)
     str2 = ""
     sepidx = findlast('.', str1)
     isnothing(sepidx) && return str1
-    
+
     if endswith(str1, "Z")
         str1 = str1[1:end-1]
         str2 = "Z"
@@ -24,7 +24,7 @@ function safestring(df::DateFormat)
             str2 = str1[pmidx:end]
         end
     end
-    
+
     sidxlast = findlast('s', str1)
     sidxmax  = sepidx + 9
     sidxlast = min(sidxlast, sidxmax)

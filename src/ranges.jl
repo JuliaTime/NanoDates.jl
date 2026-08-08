@@ -67,7 +67,7 @@ end
 function Base.collect(sr::StepRange{NanoDate,P}) where {P<:Dates.CompoundPeriod}
     srspan = NanoDates.tons(sr.stop - sr.start) # value from Nanoseconds
     dest = Vector{Int64}(undef, length(sr.step.periods))
-    srstep = foldl(+, map!(NanoDates.tons, dest, sr.step.periods)) # value from Nanoseconds    
+    srstep = foldl(+, map!(NanoDates.tons, dest, sr.step.periods)) # value from Nanoseconds
     steps = fld(srspan, srstep) + 1
     gather = Vector{NanoDate}(undef, steps)
     for i in eachindex(gather)

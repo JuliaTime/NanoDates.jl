@@ -10,7 +10,7 @@
    @test trunc(nd, Second) == firstmillisecondofsecond(nd)
    @test trunc(nd, Millisecond) == firstmicrosecondofmillisecond(nd)
    @test trunc(nd, Microsecond) == firstnanosecondofmicrosecond(nd)
-   
+
 end
 
 @testset "last_of_" begin
@@ -26,5 +26,5 @@ end
    @test lastmillisecondofsecond(nd) == trunc(nd, Second) + Millisecond(999)
    @test lastmicrosecondofmillisecond(nd) == trunc(nd, Millisecond) + Microsecond(999)
    @test lastnanosecondofmicrosecond(nd) == trunc(nd, Microsecond) + Nanosecond(999)
-   
+
 end

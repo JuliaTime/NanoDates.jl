@@ -67,7 +67,7 @@ po2n = P.Options(stripwhitespace=true, stripquoted=true, dateformat="yyyy-mm-ddT
 po3n = P.Options(stripwhitespace=true, stripquoted=true, dateformat="yyyy-mm-ddTHH:MM:SS.nnn");
 
 
-tryxparse(::Type{NanoDate}, str::String, pos::Int64, 
+tryxparse(::Type{NanoDate}, str::String, pos::Int64,
           strlen::Int64, po::P.Options) =
     P.xparse(NanoDate, ndstr, pos, strlen, po1s)
 

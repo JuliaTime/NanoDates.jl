@@ -11,7 +11,7 @@
 
  - NanoDate works like a more precise DateTime
  - all Dates methods (afaik)
- - construct from 
+ - construct from
    - DateTime & Time, Date & Time
    - DateTime & Microseconds [, Nanoseconds]
    - DateTime, Date
@@ -26,13 +26,13 @@
 
 
 ----
-#### help 
+#### help
 - install with  `using Pkg; Pkg.add("NanoDates")`
 
 - ask questions
   - on [Discourse](https://discourse.julialang.org/latest) -- add the tag `time`
   - on [Zulip](https://julialang.zulipchat.com/#narrow/stream/321834-dates-times-zones) -- using the stream `dates-times-zones`
-  
+
 - report any issues [here](https://github.com/JuliaTime/NanoDates.jl/issues)
 
 ----

@@ -25,7 +25,7 @@ end
     @test NanoDate(nd, Month(nd) - Month(2)) + Month(2) == nd
     @test NanoDate(nd, Week(nd) - Week(2)) + Week(2) == nd
     @test nd - NanoDate(nd, Dy+Day(2)) == -Day(2)
- 
+
     @test nd - NanoDate(nd, Hr-Hour(2)) == Hour(2)
     @test nd - NanoDate(nd, Mi+Minute(122)) == -Minute(122)
     @test nd - NanoDate(nd, Sc-Second(64)) == Second(64)

@@ -5,8 +5,8 @@
 # '⦰' is the reversed empty set 0x29b0
 Base.isempty(ch::Char) = ch === EmptyChar
 
-const CapitalT = 'T'      # ISO selected char, separates date from time 
-const SmallCapitalT = 'ᴛ' # latin letter small capital T 0x1d1b 
+const CapitalT = 'T'      # ISO selected char, separates date from time
+const SmallCapitalT = 'ᴛ' # latin letter small capital T 0x1d1b
 const PunctDot = '.'      # separates fractions of a second, subseconds
 
 const EmptyChar = '⦰'
@@ -141,7 +141,7 @@ end
     subsec_value = millis * 1_000_000 + micros * 1_000 + nanos
     subsec_str = lpad(subsec_value, 9, '0')
     supersec = datetime - Millisecond(datetime)
-    
+
     dfstr = safestring(df)
     str = Dates.format(datetime, df)
     value(nd.nanosecs) == 0 && return str

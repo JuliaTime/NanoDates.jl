@@ -58,6 +58,12 @@ end
     @test infer_type(-, Tuple{Day, CompoundPeriod}) == CompoundPeriod
 end
 
+@testset "add a CompoundPeriod to a Time or a DateTime" begin
+    @test Time(1, 2, 3) + (Hour(2) + Minute(4)) == Time(3, 6, 3)
+    @test infer_type(+, Tuple{Time, CompoundPeriod}) == Time
+    @test infer_type(+, Tuple{DateTime, CompoundPeriod}) == DateTime
+end
+
 @testset "the order within a CompoundPeriod" begin
     # the coarser period is applied first, as for Date and DateTime
     @test NanoDate(2014, 1, 29) + (Day(1) + Month(1)) == NanoDate(2014, 3, 1)

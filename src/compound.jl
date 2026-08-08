@@ -239,6 +239,17 @@ negated(cperiod::CompoundPeriod) =
 Base.:(-)(x::CompoundPeriod, cperiod::CompoundPeriod) = negated(cperiod) + x
 Base.:(-)(x::Period, cperiod::CompoundPeriod) = negated(cperiod) + x
 
+# Periods are stored with an abstract type, so each step of the accumulation
+# needs the result type:
+# - Dates pairs `Time` with `TimePeriod` only
+# - for `DateTime` more methods than `max_methods` match with Julia 1.13
+function Base.:(+)(x::T, cperiod::CompoundPeriod) where {T<:Union{Time, DateTime}}
+    for p in cperiod.periods
+        x = (x + p)::T
+    end
+    x
+end
+
 function Base.:(*)(a::Integer, b::CompoundPeriod)
     b = canonicalize(b)
     accum = similar(b.periods)

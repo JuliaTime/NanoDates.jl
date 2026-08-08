@@ -43,6 +43,13 @@ end
     # a zero period carries no information, so it canonicalizes to nothing
     @test isempty(canonical(Day(0)))
 
+    @test infer_type(canonical, Tuple{Period}) == CompoundPeriod
+    @test infer_type(canonical, Tuple{CompoundPeriod}) == CompoundPeriod
+
+end
+
+@testset "a period out of a CompoundPeriod" begin
+    @test infer_type(Day, Tuple{CompoundPeriod}) == Day
 end
 
 @testset "subtract CompoundPeriods" begin

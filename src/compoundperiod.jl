@@ -26,7 +26,8 @@ for (P,p) in ((:Year, :year),
             if isnothing(idx)
                 Dates.$P(0)
             else
-                x[idx]
+                # the elements are stored with an abstract type
+                x[idx]::$P
             end
         end
 

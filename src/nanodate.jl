@@ -31,7 +31,7 @@ function canonical_cn(micros::T, nanos::T) where {T<:Integer}
 end
 
 function canonical_mc(millis::T, micros::T) where {T<:Integer}
-    micromills, micros = fldmod_1000(micros)
+    micromillis, micros = fldmod_1000(micros)
     millis += micromillis
     nanos = micros * NanosecondsPerMicrosecond
     return Millisecond(millis), Nanosecond(nanos)

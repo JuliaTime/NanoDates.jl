@@ -42,6 +42,19 @@ end
 
 end
 
+@testset "subtract CompoundPeriods" begin
+    @test (Day(91) + Hour(7)) - (Day(90) + Minute(5)) == Day(1) + Hour(7) - Minute(5)
+
+    # Dates loses the element type when it negates an empty CompoundPeriod, and
+    # every subtraction of a CompoundPeriod goes through that negation
+    @test (Day(1) + Hour(2)) - CompoundPeriod() == Day(1) + Hour(2)
+    @test Day(1) - CompoundPeriod() == CompoundPeriod(Day(1))
+    @test isempty(CompoundPeriod() - CompoundPeriod())
+
+    @test Base.infer_return_type(-, Tuple{CompoundPeriod, CompoundPeriod}) == CompoundPeriod
+    @test Base.infer_return_type(-, Tuple{Day, CompoundPeriod}) == CompoundPeriod
+end
+
 #=
 @testset "Date" begin
 

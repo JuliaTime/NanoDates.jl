@@ -227,6 +227,17 @@ function Base.:(-)(nd::NanoDate, cperiod::CompoundPeriod)
     nd
 end
 
+# Dates negates a `CompoundPeriod` by broadcasting over its untyped period vector,
+# which loses the element type and fails outright when that vector is empty.
+# Subtraction is defined through that negation, so it needs a way around it.
+negated(cperiod::CompoundPeriod) =
+    CompoundPeriod(collect(Period, (-p for p in cperiod.periods)))
+
+# Dates covers both of these with one method taking a `Union`, so a method on that
+# same `Union` would overwrite it rather than add to it.
+Base.:(-)(x::CompoundPeriod, cperiod::CompoundPeriod) = negated(cperiod) + x
+Base.:(-)(x::Period, cperiod::CompoundPeriod) = negated(cperiod) + x
+
 function Base.:(*)(a::Integer, b::CompoundPeriod)
     b = canonicalize(b)
     accum = similar(b.periods)

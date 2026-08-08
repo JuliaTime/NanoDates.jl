@@ -40,5 +40,7 @@ end
     @test nanodate2unixnanos(unixnanos2nanodate(123_456_789)) == 123_456_789
     # `unixnanos2nanodate` must be type-stable (returns `NanoDate`, not `Any`).
     @test Base.return_types(unixnanos2nanodate, Tuple{Int64}) == [NanoDate]
+    @test Base.infer_return_type(NanoDates.tonanos, Tuple{CompoundPeriod}) == Int128
+    @test NanoDates.tonanos(CompoundPeriod(Period[])) == 0
 end
 

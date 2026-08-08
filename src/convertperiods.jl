@@ -21,9 +21,10 @@ for P in AllPeriods
     @eval tonanos(::Type{$P}) = tonanos($P(1))
 end
 
+# the periods are stored with an abstract type, so each step of the fold needs
+# the result type
 function tonanos(x::Dates.CompoundPeriod)
-    isempty(x) && return 0
-    mapfoldl(tonanos, +, x.periods)
+    mapfoldl(p -> tonanos(p)::Int128, +, x.periods; init=Int128(0))
 end
 
 function safeconvert(::Type{P}, x::Period) where {P<:Period}

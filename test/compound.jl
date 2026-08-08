@@ -40,6 +40,9 @@ end
     @test canonical(Quarter(2)) == Month(6)
     @test canonical(Week(1) + Day(3)) == Day(10)
 
+    # a zero period carries no information, so it canonicalizes to nothing
+    @test isempty(canonical(Day(0)))
+
 end
 
 @testset "subtract CompoundPeriods" begin

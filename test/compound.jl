@@ -54,8 +54,8 @@ end
     @test Day(1) - CompoundPeriod() == CompoundPeriod(Day(1))
     @test isempty(CompoundPeriod() - CompoundPeriod())
 
-    @test Base.infer_return_type(-, Tuple{CompoundPeriod, CompoundPeriod}) == CompoundPeriod
-    @test Base.infer_return_type(-, Tuple{Day, CompoundPeriod}) == CompoundPeriod
+    @test infer_type(-, Tuple{CompoundPeriod, CompoundPeriod}) == CompoundPeriod
+    @test infer_type(-, Tuple{Day, CompoundPeriod}) == CompoundPeriod
 end
 
 @testset "the order within a CompoundPeriod" begin

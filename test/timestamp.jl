@@ -36,7 +36,7 @@ end
 end
 
 @testset "ndnow_strict" begin
-    @test Base.infer_return_type(NanoDates.ndnow_ns_strict, Tuple{}) ==
+    @test infer_type(NanoDates.ndnow_ns_strict, Tuple{}) ==
           Tuple{Millisecond, Nanosecond}
 end
 

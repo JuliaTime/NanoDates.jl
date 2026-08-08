@@ -24,7 +24,7 @@ Base.string(nd::NanoDate; sep::CharString=EmptyChar) =
 
 Base.string(nd::NanoDate, sep) = string(nd; sep=sep)
 
-function nanodate_string(nd)
+function nanodate_string(nd::NanoDate)
     str = string(nd.datetime)
     micronanos = value(nd.nanosecs)
     micronanos == 0 && return str
@@ -79,7 +79,7 @@ lazystring2charvec(str::AbstractString) = (str[i] for i in eachindex(str))
 string2charvec(str::AbstractString) = collect(lazystring2charvec(str))
 charvec2string(chrs::AbstractVector{Char}) = foldl(*, chrs; init = "")
 
-function nanodate_format(nd, df)
+function nanodate_format(nd::NanoDate, df::DateFormat)
     nooffset(df)
     indices = indexperiods(df)
     dfstr = safestring(df)
@@ -168,7 +168,7 @@ end
 end
 =#
 
-function nanodate_format(nd, df, sep)
+function nanodate_format(nd::NanoDate, df::DateFormat, sep::CharString)
     nooffset(df)
     datetime = nd.datetime
     str = Dates.format(datetime, df)
@@ -176,7 +176,8 @@ function nanodate_format(nd, df, sep)
 
     millis = millisecond(datetime)
     millistr = PunctDot * lpad(millis, 3, '0')
-    str = split(str, PunctDot)[1]
+    # Use `String` for a type stable return type (not return a `SubString` here).
+    str = String(split(str, PunctDot)[1])
 
     nsubsecfields = 0
     lasttoken = df.tokens[end]

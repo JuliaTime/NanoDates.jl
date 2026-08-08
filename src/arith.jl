@@ -1,15 +1,3 @@
-function Base.:(-)(nd::NanoDate, x::Nanosecond)
-    nanos = value(nd.nanosecs) - value(x)
-    millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)
-    NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
-end
-
-function Base.:(-)(nd::NanoDate, x::Microsecond)
-    nanos = value(nd.nanosecs) - (value(x) * NanosecondsPerMicrosecond)
-    millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)
-    NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
-end
-
 function Base.:(-)(nd1::NanoDate, nd2::NanoDate)
     Δns  = tonanos(nd1) - tonanos(nd2)
     Nanosecond(Δns)
@@ -33,25 +21,22 @@ function Base.:(-)(nd::NanoDate, tm::Time)
     return NanoDate(dt_nd, tm)
 end
 
-for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second, :Millisecond)
-  @eval begin
-    Base.:(+)(nd::NanoDate, x::$T) = NanoDate(nd.datetime + x, nd.nanosecs)
-    Base.:(-)(nd::NanoDate, x::$T) = NanoDate(nd.datetime - x, nd.nanosecs)
-  end
-end
+# `max_methods` (3) limits how many methods may match one call signature before
+# inference gives up on it. To not exceed the limit, group period types into two
+# `Union`s for the definitions of `±(NanoDate, Period)`.
+const MultipleMilliseconds = Union{Year, Quarter, Month, Week, Day, Hour, Minute, Second, Millisecond}
+
+Base.:(+)(nd::NanoDate, x::MultipleMilliseconds) = NanoDate(nd.datetime + x, nd.nanosecs)
+Base.:(-)(nd::NanoDate, x::MultipleMilliseconds) = NanoDate(nd.datetime - x, nd.nanosecs)
 
 
-function Base.:(+)(nd::NanoDate, x::Nanosecond)
-    nanos = value(nd.nanosecs) + value(x)
+function Base.:(+)(nd::NanoDate, x::Union{Microsecond, Nanosecond})
+    nanos = value(nd.nanosecs) + value(Nanosecond(x))
     millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)
     NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
 end
 
-function Base.:(+)(nd::NanoDate, x::Microsecond)
-    nanos = value(nd.nanosecs) + (value(x) * NanosecondsPerMicrosecond)
-    millis, nanos = fldmod(nanos, NanosecondsPerMillisecond)
-    NanoDate(nd.datetime + Millisecond(millis), Nanosecond(nanos))
-end
+Base.:(-)(nd::NanoDate, x::Union{Microsecond, Nanosecond}) = nd + (-x)
 
 # for internal use
 # cnurt(CompoundPeriod, Period) removes Periods larger than Period

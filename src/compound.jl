@@ -208,9 +208,10 @@ end
 # length, iterate
 Base.length(cperiod::CompoundPeriod) = length(cperiod.periods)
 
-# reverse to process smaller period types before larger period types
-Base.iterate(cperiod::CompoundPeriod) = Base.iterate(reverse(cperiod.periods))
-Base.iterate(cperiod::CompoundPeriod, state) = Base.iterate(reverse(cperiod.periods), state)
+# Use the same order as in Dates.jl as documented in
+# https://docs.julialang.org/en/v1/stdlib/Dates/#TimeType-Period-Arithmetic
+Base.iterate(cperiod::CompoundPeriod) = Base.iterate(cperiod.periods)
+Base.iterate(cperiod::CompoundPeriod, state) = Base.iterate(cperiod.periods, state)
 
 function Base.:(+)(nd::NanoDate, cperiod::CompoundPeriod)
     for p in cperiod

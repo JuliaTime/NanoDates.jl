@@ -58,6 +58,12 @@ end
     @test Base.infer_return_type(-, Tuple{Day, CompoundPeriod}) == CompoundPeriod
 end
 
+@testset "the order within a CompoundPeriod" begin
+    # the coarser period is applied first, as for Date and DateTime
+    @test NanoDate(2014, 1, 29) + (Day(1) + Month(1)) == NanoDate(2014, 3, 1)
+    @test NanoDate(2014, 3, 31) - (Day(1) + Month(1)) == NanoDate(2014, 2, 27)
+end
+
 #=
 @testset "Date" begin
 

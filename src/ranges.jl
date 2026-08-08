@@ -16,8 +16,7 @@ Base.abs(cperiod::Dates.CompoundPeriod) =
        cperiod
     end
 
-Dates.value(cperiod::Dates.CompoundPeriod) =
-    sum(map(tons, cperiod.periods))
+Dates.value(cperiod::Dates.CompoundPeriod) = tonanos(cperiod)
 
 Base.convert(::Type{Nanosecond}, cperiod::Dates.CompoundPeriod) =
     Nanosecond(Dates.value(cperiod))

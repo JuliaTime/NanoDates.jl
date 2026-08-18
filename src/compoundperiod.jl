@@ -37,7 +37,7 @@ end
 function canonical(x::CompoundPeriod)
     isempty(x) && return x
     y = canonicalize(x)
-    isone(length(y.periods)) && return y.periods[1]
+    isone(length(y.periods)) && return y
     if !iszero(Dates.quarter(y))
        q = Quarter(y)
        y -= q
@@ -52,9 +52,8 @@ function canonical(x::CompoundPeriod)
 end
 
 function canonical(x::Period)
-    iszero(x) && return x
     y = canonicalize(x)
-    isone(length(y.periods)) && return y.periods[1]
+    isone(length(y.periods)) && return y
     if !iszero(Dates.quarter(y))
        q = Quarter(y)
        y -= q

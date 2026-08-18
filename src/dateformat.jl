@@ -41,7 +41,7 @@ omit(needle::AbstractRange, haystack::AbstractRange) =
     omit(collect(needle), collect(haystack))
 omit(needle::AbstractRange, haystack::T) where {T} =
     omit(collect(needle), haystack)
-omit(needle::T, hahystack::AbstractRange) where {T} =
+omit(needle::T, haystack::AbstractRange) where {T} =
     omit(needle, collect(haystack))
 
 omit(needle::AbstractRange, haystack::AbstractString) =
@@ -105,7 +105,7 @@ end
 # >> given a string with templatized fields for date periods and time periods
 # >> extract each field's covering indices and use them to produce a formatted timestamp
 
-SubSecond(nd::NanoDate) = (mllisecond(nd) + Int128(1000) * (microsecond(nd) * Int128(1000) + nanosecond(nd)))
+SubSecond(nd::NanoDate) = (millisecond(nd) + Int128(1000) * (microsecond(nd) * Int128(1000) + nanosecond(nd)))
 subsecond(nd::NanoDate) = value(SubSecond(nd))
 
 TzZ(nd::NanoDate) = nothing

@@ -40,6 +40,28 @@ end
     @test canonical(Quarter(2)) == Month(6)
     @test canonical(Week(1) + Day(3)) == Day(10)
 
+    # a zero period carries no information, so it canonicalizes to nothing
+    @test isempty(canonical(Day(0)))
+
+end
+
+@testset "subtract CompoundPeriods" begin
+    @test (Day(91) + Hour(7)) - (Day(90) + Minute(5)) == Day(1) + Hour(7) - Minute(5)
+
+    # Dates loses the element type when it negates an empty CompoundPeriod, and
+    # every subtraction of a CompoundPeriod goes through that negation
+    @test (Day(1) + Hour(2)) - CompoundPeriod() == Day(1) + Hour(2)
+    @test Day(1) - CompoundPeriod() == CompoundPeriod(Day(1))
+    @test isempty(CompoundPeriod() - CompoundPeriod())
+
+    @test infer_type(-, Tuple{CompoundPeriod, CompoundPeriod}) == CompoundPeriod
+    @test infer_type(-, Tuple{Day, CompoundPeriod}) == CompoundPeriod
+end
+
+@testset "the order within a CompoundPeriod" begin
+    # the coarser period is applied first, as for Date and DateTime
+    @test NanoDate(2014, 1, 29) + (Day(1) + Month(1)) == NanoDate(2014, 3, 1)
+    @test NanoDate(2014, 3, 31) - (Day(1) + Month(1)) == NanoDate(2014, 2, 27)
 end
 
 #=

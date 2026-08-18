@@ -36,7 +36,8 @@ end
 end
 
 @testset "ndnow_strict" begin
-
+    @test infer_type(NanoDates.ndnow_ns_strict, Tuple{}) ==
+          Tuple{Millisecond, Nanosecond}
 end
 
 @testset "utc delta" begin

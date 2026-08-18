@@ -85,7 +85,7 @@ function ndnow_ns_strict()
         ns += NSincr
     else                            # almost never
         reset_timekeeping()
-        ns = ndnow_ns()
+        ns = time_ns()
     end
 
     millis, submillis = fldmod(ns, 1_000_000)

@@ -18,3 +18,8 @@ end
 @testset "nanos_elapsed" begin
     @test typeof(NanoDates.nanos_elapsed()) == Int64
 end
+
+@testset "canonical millis and micros" begin
+    @test NanoDates.canonical(Millisecond(1500), Microsecond(2500)) ==
+          (Millisecond(1502), Nanosecond(500_000))
+end

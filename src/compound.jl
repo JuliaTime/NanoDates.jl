@@ -208,9 +208,10 @@ end
 # length, iterate
 Base.length(cperiod::CompoundPeriod) = length(cperiod.periods)
 
-# reverse to process smaller period types before larger period types
-Base.iterate(cperiod::CompoundPeriod) = Base.iterate(reverse(cperiod.periods))
-Base.iterate(cperiod::CompoundPeriod, state) = Base.iterate(reverse(cperiod.periods), state)
+# Use the same order as in Dates.jl as documented in
+# https://docs.julialang.org/en/v1/stdlib/Dates/#TimeType-Period-Arithmetic
+Base.iterate(cperiod::CompoundPeriod) = Base.iterate(cperiod.periods)
+Base.iterate(cperiod::CompoundPeriod, state) = Base.iterate(cperiod.periods, state)
 
 function Base.:(+)(nd::NanoDate, cperiod::CompoundPeriod)
     for p in cperiod
@@ -226,6 +227,17 @@ function Base.:(-)(nd::NanoDate, cperiod::CompoundPeriod)
     end
     nd
 end
+
+# Dates negates a `CompoundPeriod` by broadcasting over its untyped period vector,
+# which loses the element type and fails outright when that vector is empty.
+# Subtraction is defined through that negation, so it needs a way around it.
+negated(cperiod::CompoundPeriod) =
+    CompoundPeriod(collect(Period, (-p for p in cperiod.periods)))
+
+# Dates covers both of these with one method taking a `Union`, so a method on that
+# same `Union` would overwrite it rather than add to it.
+Base.:(-)(x::CompoundPeriod, cperiod::CompoundPeriod) = negated(cperiod) + x
+Base.:(-)(x::Period, cperiod::CompoundPeriod) = negated(cperiod) + x
 
 function Base.:(*)(a::Integer, b::CompoundPeriod)
     b = canonicalize(b)

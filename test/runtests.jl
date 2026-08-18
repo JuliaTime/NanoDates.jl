@@ -3,6 +3,13 @@ using Dates: value, CompoundPeriod, toms, tons, UTM, UTD
 using NanoDates: nanosecs, NanoDate0, DateTime0, Date0, Time0
 using Aqua, Test
 
+# `Base.infer_return_type` is available from Julia 1.11
+@static if isdefined(Base, :infer_return_type)
+    infer_type(f, types) = Base.infer_return_type(f, types)
+else
+    infer_type(f, types) = reduce(typejoin, Base.return_types(f, types))
+end
+
 Aqua.test_ambiguities([NanoDates, Base, Core])
 Aqua.test_unbound_args(NanoDates)
 Aqua.test_undefined_exports(NanoDates)

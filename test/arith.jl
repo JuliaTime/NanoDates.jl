@@ -125,3 +125,8 @@ end
     @test nd - time2 == nd - canonical(time2)
 end
 
+@testset "NanoDate and Period" begin
+    @test infer_type(+, Tuple{NanoDate, Period}) == NanoDate
+    @test infer_type(-, Tuple{NanoDate, Period}) == NanoDate
+end
+

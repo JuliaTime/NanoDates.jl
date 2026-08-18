@@ -43,6 +43,13 @@ end
     # a zero period carries no information, so it canonicalizes to nothing
     @test isempty(canonical(Day(0)))
 
+    @test infer_type(canonical, Tuple{Period}) == CompoundPeriod
+    @test infer_type(canonical, Tuple{CompoundPeriod}) == CompoundPeriod
+
+end
+
+@testset "a period out of a CompoundPeriod" begin
+    @test infer_type(Day, Tuple{CompoundPeriod}) == Day
 end
 
 @testset "subtract CompoundPeriods" begin
@@ -56,6 +63,12 @@ end
 
     @test infer_type(-, Tuple{CompoundPeriod, CompoundPeriod}) == CompoundPeriod
     @test infer_type(-, Tuple{Day, CompoundPeriod}) == CompoundPeriod
+end
+
+@testset "add a CompoundPeriod to a Time or a DateTime" begin
+    @test Time(1, 2, 3) + (Hour(2) + Minute(4)) == Time(3, 6, 3)
+    @test infer_type(+, Tuple{Time, CompoundPeriod}) == Time
+    @test infer_type(+, Tuple{DateTime, CompoundPeriod}) == DateTime
 end
 
 @testset "the order within a CompoundPeriod" begin

@@ -29,3 +29,8 @@
 
 - Subtracting a `CompoundPeriod` from a `CompoundPeriod` or from a `Period` infers
   `CompoundPeriod` as its return type rather than `Any`.
+- `canonical` infers `CompoundPeriod` as its return type rather than `Any`.
+- Adding a `CompoundPeriod` to a `NanoDate`, a `Time` or a `DateTime` infers the type
+  of the first argument rather than `Any`.
+- `format(::NanoDate, ::DateFormat)` infers `String` rather than
+  `Union{String, SubString{String}}`.

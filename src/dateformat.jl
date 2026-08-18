@@ -121,22 +121,22 @@ absorb(x) = string(x)
 absorb(x, y) = string(x)
 absorb(x, y, z) = string(x)
 
-char2period = IdDict(zip(
+const char2period = IdDict(zip(
     ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
     (Year, Year, Month, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond, SubSecond, TzZ, Tzz, Tzpm, Tzmp)
 ));
 
-char2count = IdDict(zip(
+const char2count = IdDict(zip(
     ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
     (year, year, month, day, hour, minute, second, millisecond, microsecond, nanosecond, subsecond, TzZ, Tzz, Tzpm, Tzmp)
 ));
 
-char2strlen = IdDict(zip(
+const char2strlen = IdDict(zip(
     ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
     (4, 4, 2, 2, 2, 2, 2, 3, 3, 3, 9, 1, 1, 5, 4)
 ));
 
-char2padfn = IdDict(zip(
+const char2padfn = IdDict(zip(
     ('Y', 'y', 'm', 'd', 'H', 'M', 'S', 's', 'c', 'n', 'f', 'Z', 'z', '±', '∓'),
     (absorb, absorb, lpad, lpad, lpad, rpad, rpad, rpad, rpad, rpad, rpad, absorb, absorb, rpad, rpad)
 ));

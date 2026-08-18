@@ -66,3 +66,7 @@ end
     @test NanoDate(2022,5,24,18,26,21,0,0,9) == NanoDate("2022-05-24T18:26:21.000000009")
 end
 
+@testset "format inference" begin
+    @test infer_type(Dates.format, Tuple{NanoDate, DateFormat}) == String
+end
+

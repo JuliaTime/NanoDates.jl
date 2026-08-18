@@ -4,7 +4,7 @@
     @test NanoDate(yr,mn,dy,hr,mi,sc,ms) == nd0
     @test NanoDate(Yr,Mn,Dy,Hr,Mi,Sc,Ms) == nd0
     @test NanoDate(yr,mn,dy) == nd00
-    @test NanoDate(Yr,Mn,Dy) == nd00 
+    @test NanoDate(Yr,Mn,Dy) == nd00
 end
 
 @testset "construct by Dates types" begin
@@ -17,4 +17,4 @@ end
 
 @testset "nanos_elapsed" begin
     @test typeof(NanoDates.nanos_elapsed()) == Int64
-end   
+end

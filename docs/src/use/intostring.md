@@ -34,7 +34,7 @@ NanoDate("2022-06-18T12:15:30.123456-04:00")
 
 ##### Accepting strings that are not ISO8061 conforming requires a dateformat.
 ```
-NanoDate("-- 12345 2022-06-18 12:15:30", 
+NanoDate("-- 12345 2022-06-18 12:15:30",
          dateformat"-- sssss yyyy-mm-dd HH:MM:SS")
 # 2022-06-18T12:15:30.123450
 ```

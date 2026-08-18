@@ -69,9 +69,9 @@ cnurt(nd::NanoDate, p::Type{<:Dates.Period}) = cnurt(CompoundPeriod(nd), p)
 # trunc, floor, ceil
 
 # missing from Dates
-Base.trunc(d::Date, ::Type{Week}) = 
+Base.trunc(d::Date, ::Type{Week}) =
     trunc(firstdayofweek(d), Day)
-Base.trunc(dt::DateTime, ::Type{Week}) = 
+Base.trunc(dt::DateTime, ::Type{Week}) =
     trunc(firstdayofweek(dt), Day)
 
 for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second)
@@ -79,7 +79,7 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second)
     Base.trunc(nd::NanoDate, ::Type{$T}) = NanoDate(trunc(nd.datetime, $T))
     Base.floor(nd::NanoDate, ::Type{$T}) = trunc(nd, $T)
     Base.ceil(nd::NanoDate, ::Type{$T}) = trunc(nd, $T) + $T(!iszero(tons(cnurt(nd, $T))))
-  end  
+  end
 end
 
 Base.trunc(nd::NanoDate, ::Type{Millisecond}) = NanoDate(trunc(nd.datetime, Millisecond))
@@ -107,7 +107,7 @@ for T in (:Minute, :Second, :Millisecond, :Microsecond)
   @eval begin
     Base.floor(tm::Time, ::Type{$T}) = trunc(tm, $T)
     Base.ceil(tm::Time, ::Type{$T}) = NanoDate(trunc(tm, $T))
-  end  
+  end
 end
 =#
 #=
@@ -141,7 +141,7 @@ for T in (:Year, :Quarter, :Month, :Week, :Day, :Hour, :Minute, :Second,
         (up - nd) <= (nd - down) ? up : down
     end
     Base.round(nd::NanoDate, ::Type{$T}, ::RoundingMode{:Nearest})  = round(nd, $T)
-    Base.round(nd::NanoDate, ::Type{$T}) = round(nd, $T, RoundNearestTiesUp)    
+    Base.round(nd::NanoDate, ::Type{$T}) = round(nd, $T, RoundNearestTiesUp)
   end
 end
 

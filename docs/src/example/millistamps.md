@@ -6,7 +6,7 @@ using Dates, NanoDates
 # an appropriate Time0 for this use case, it is a NanoDate
 # NanoDates support adding and subtracting many Milliseconds
 
-const UnixEpoch = NanoDate(DateTime(1970,1,1)) 
+const UnixEpoch = NanoDate(DateTime(1970,1,1))
 
 # mapping Milliseconds relative to the UnixEpoch onto NanoDates
 

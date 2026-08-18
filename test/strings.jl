@@ -31,11 +31,11 @@ end
 
     str = "2022-05-24 18 26 21.123456789"
     df = dateformat"yyyy-mm-dd HH MM SS.sssssssss"
-    @test NanoDate(str, df) == NanoDate(2022,5,24,18,26,21,123,456,789)    
+    @test NanoDate(str, df) == NanoDate(2022,5,24,18,26,21,123,456,789)
 end
 
 
-@testset "parse" begin    
+@testset "parse" begin
     @test NanoDate("1999-07-12 08:15:30", dateformat"yyyy-mm-dd HH:MM:SS") == NanoDate(1999,07,12,08,15,30)
     @test NanoDate("2022-7-8 4:5:6.1", dateformat"yyyy-m-d H:M:S.s") == NanoDate(2022,7,8,4,5,6,100)
     @test NanoDate("2022/07/18 04:15:16.124", dateformat"yyyy/mm/dd HH:MM:SS.sss") == NanoDate(2022,7,18,4,15,16,124)
@@ -44,7 +44,7 @@ end
 
     str = "2022-05-24 18 26 21.123456789"
     df = dateformat"yyyy-mm-dd HH MM SS.sssssssss"
-    @test NanoDate(str, df) == NanoDate(2022,5,24,18,26,21,123,456,789) 
+    @test NanoDate(str, df) == NanoDate(2022,5,24,18,26,21,123,456,789)
 end
 
 @testset "parse more" begin
@@ -64,5 +64,5 @@ end
     @test NanoDate(2022,5,24,18,26,21,0,0,900) == NanoDate("2022-05-24T18:26:21.0000009")
     @test NanoDate(2022,5,24,18,26,21,0,0,90) == NanoDate("2022-05-24T18:26:21.00000009")
     @test NanoDate(2022,5,24,18,26,21,0,0,9) == NanoDate("2022-05-24T18:26:21.000000009")
-end 
+end
 

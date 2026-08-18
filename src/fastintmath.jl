@@ -26,7 +26,7 @@ fld_1000(x::T) where {T<:Union{Int64,UInt64}} =
 
 unsafe_mulby_1000(x) = (x<<10) - (x << 5) + (x << 3)
 
-safe_mulby_1000(x::Int64) = x <= 9_223_372_036_854_775 ? mulby_100(x) : 
+safe_mulby_1000(x::Int64) = x <= 9_223_372_036_854_775 ? mulby_100(x) :
                                                          ArgumentError("$(x) is too large")
 safe_mulby_1000(x::Int32) = x <= 2_147_483 ? mulby_100(x) : ArgumentError("$(x) is too large")
 
@@ -39,7 +39,7 @@ function fldmod_1000(x::T) where {T<:Union{Int64,UInt64,Int128}}
                     end
 
         remainder = x - unsafe_mulby_1000(quotient)
-        
+
         if signbit(quotient) && signbit(remainder)
             quotient -= 1
             remainder += 1000
@@ -47,6 +47,6 @@ function fldmod_1000(x::T) where {T<:Union{Int64,UInt64,Int128}}
     else
         quotient, remainder = fldmod(x, 1000)
     end
-        
+
     quotient, remainder
 end

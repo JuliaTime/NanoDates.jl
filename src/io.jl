@@ -12,5 +12,5 @@ end
 Base.show(io::IO, m::MIME"text/plain", nd::NanoDate) =
     print(io, string(nd))
 
-Base.show(io::IO, m::MIME"text/plain", nd::NanoDate, sep::Char) = 
+Base.show(io::IO, m::MIME"text/plain", nd::NanoDate, sep::Char) =
     print(io, string(nd; sep))

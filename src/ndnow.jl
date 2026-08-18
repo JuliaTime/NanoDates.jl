@@ -52,7 +52,7 @@ function ndnow_ns_nonstrict()
         NSincr += 0x0001
         ns += NSincr
     end
-    
+
     millis, submillis = fldmod(ns, 1_000_000)
     Millisecond(millis), Nanosecond(submillis)
 end
@@ -87,7 +87,7 @@ function ndnow_ns_strict()
         reset_timekeeping()
         ns = ndnow_ns()
     end
-    
+
     millis, submillis = fldmod(ns, 1_000_000)
     Millisecond(millis), Nanosecond(submillis)
 end

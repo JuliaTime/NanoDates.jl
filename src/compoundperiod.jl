@@ -1,6 +1,6 @@
 #=
 import Dates: Year, Quarter, Month, Week, Day,
-              Hour, Minute, Second, Millisecond, 
+              Hour, Minute, Second, Millisecond,
               Microsecond, Nanosecond,
               year, quarter, month, week, day,
               hour, minute, second, millisecond,
@@ -8,16 +8,16 @@ import Dates: Year, Quarter, Month, Week, Day,
 =#
 import Dates: quarter
 
-for (P,p) in ((:Year, :year), 
-              (:Quarter, :quarter), (:Month, :month), 
-              (:Week, :week), (:Day, :day), 
+for (P,p) in ((:Year, :year),
+              (:Quarter, :quarter), (:Month, :month),
+              (:Week, :week), (:Day, :day),
               (:Hour, :hour), (:Minute, :minute), (:Second, :second),
-              (:Millisecond, :millisecond), 
+              (:Millisecond, :millisecond),
               (:Microsecond, :microsecond), (:Nanosecond, :nanosecond))
     @eval begin
         Dates.$P(x::Dates.$P) = x
         Dates.$p(x::Dates.$P) = value(x)
-  
+
         Dates.$P(x::CompoundPeriod) = Dates.$P(x.periods)
         Dates.$p(x::CompoundPeriod) = Dates.$p(x.periods)
 

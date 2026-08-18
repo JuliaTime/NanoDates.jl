@@ -63,7 +63,7 @@ end
 const DateTime_periods =
     Dates.Period[Year(2000), Month(1), Day(1),
      Hour(0), Minute(0), Second(0), Millisecond(0)]
-const DateTime_compound = 
+const DateTime_compound =
     CompoundPeriod(DateTime_periods)
 
 # Dates defines CompoundPeriod(t::Time)
@@ -125,7 +125,7 @@ Dates.DateTime(mn::Month, utc::Bool=false) =
 Dates.DateTime(dy::Day, utc::Bool=false) =
     DateTime(Date(dy, utc))
 
-for (P,Q) in ((:Hour, :Day), (:Minute, :Hour), 
+for (P,Q) in ((:Hour, :Day), (:Minute, :Hour),
               (:Second, :Minute), (:Millisecond, :Second))
   @eval function Dates.DateTime(p::$P; utc::Bool=false)
             thenanodate = trunc(NanoDate(utc ? now(UTC) : now()), $Q)
@@ -178,7 +178,7 @@ NanoDate(mn::Month, utc::Bool=false) =
 NanoDate(dy::Day, utc::Bool=false) =
     NanoDate(DateTime(dy, utc))
 
-for (P,Q) in ((:Hour, :Day), (:Minute, :Hour), 
+for (P,Q) in ((:Hour, :Day), (:Minute, :Hour),
               (:Second, :Minute), (:Millisecond, :Second),
               (:Microsecond, :Millisecond), (:Nanosecond, :Microsecond))
   @eval function NanoDate(p::$P, utc::Bool=false)

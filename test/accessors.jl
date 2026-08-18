@@ -24,7 +24,7 @@ end
 
 @testset "multiperiod access" begin
     @test days(nd) == days(nd.datetime)
-    @test yearmonthday(nd) == (year(nd), month(nd), day(nd)) 
+    @test yearmonthday(nd) == (year(nd), month(nd), day(nd))
     @test yearmonth(nd) == (year(nd), month(nd))
     @test monthday(nd) == (month(nd), day(nd))
 end

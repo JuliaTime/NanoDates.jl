@@ -11,14 +11,14 @@ push!(translation_values, (Year, Month, Day, Hour, Minute, Second, Millisecond, 
 const CONVERSIONTRANSLATIONS = IdDict(zip(translation_keys, translation_values));
 
 
-function Dates.validargs(::Type{NanoDate}, year::Int64=year(today()), 
+function Dates.validargs(::Type{NanoDate}, year::Int64=year(today()),
                                            month::Int64=one(Int64), day::Int64=one(Int64),
                                            hour::Int64=0, minute::Int64=0, second::Int64=0,
                                            millisecond::Int64=0, microsecond::Int64=0,
                                            nanosecond::Int64=0)
 
     Dates.validargs(Dates.Date, year, month, day)
-    Dates.validargs(Dates.Time, hour, minute, second, 
+    Dates.validargs(Dates.Time, hour, minute, second,
                                 millisecond, microsecond, nanosecond)
 end
 
@@ -52,7 +52,7 @@ end
     hour = minute = second = millisecond = Int64(0)
     tz = ""
     ampm = Dates.TWENTYFOURHOUR
-    
+
     extras = nothing
     for tok in tokens
         # @show pos, Char(b), code, typeof(tok)
@@ -133,7 +133,7 @@ nd = NanoDate(2022, 4, 27,  12, 21, 0,  123, 456, 789); ndstr=string(nd);
     hour = minute = second = millisecond = Int64(0)
     tz = ""
     ampm = Dates.TWENTYFOURHOUR
-    
+
     extras = nothing
     for tok in tokens
         # @show pos, Char(b), code, typeof(tok)

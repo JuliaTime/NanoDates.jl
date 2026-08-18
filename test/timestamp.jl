@@ -6,7 +6,7 @@
     @test timestamp(nd; utc=true, postfix=false) == "2022-07-28T10:20:08.350789420"
     @test timestamp(nd; localtime=true, postfix=true) == "2022-07-28T10:20:08.350789420"*NanoDates.LOCAL_TZ_DELTA_STR
     @test timestamp(nd; localtime=true, postfix=false) == timestamp(nd + NanoDates.LOCAL_TZ_DELTA; utc=true, postfix=false)
-   
+
     @test timestamp(nd; sep="_", postfix=false) == "2022-07-28T10:20:08.350_789_420"
     @test timestamp(nd; sep="_") == "2022-07-28T10:20:08.350_789_420Z"
     @test timestamp(nd; sep="_", postfix=false) == "2022-07-28T10:20:08.350_789_420"
@@ -49,7 +49,7 @@ end
 
     @test isa(ndnow(UTC), NanoDate)
     @test isa(ndnow(LOCAL), NanoDate)
-    
+
     @test isa(ndnow_strict(UTC), NanoDate)
     @test isa(ndnow_strict(LOCAL), NanoDate)
 end

@@ -1,5 +1,11 @@
 Base.isone(x::Dates.Period) = isone(Dates.value(x))
-Base.iszero(x::Dates.CompoundPeriod) = isempty(x)
+
+# Dates defines `iszero(::CompoundPeriod)` from Julia 1.14 (JuliaLang/julia#61280).
+# Redefining it there overwrites the method, which aborts precompilation. The
+# generic `iszero` fallback matches every type, so `hasmethod` cannot detect this.
+if which(Base.iszero, Tuple{Dates.CompoundPeriod}).module !== Dates
+    Base.iszero(x::Dates.CompoundPeriod) = isempty(canonicalize(x).periods)
+end
 
 const DatePeriod0 = Period[Year(0), Month(0), Day(0)]
 const TimePeriod0 = Period[Hour(0), Minute(0), Second(0), Millisecond(0),

@@ -48,6 +48,15 @@ end
 
 end
 
+@testset "iszero of a CompoundPeriod" begin
+    # the same results as `Dates` from Julia 1.14
+    @test iszero(CompoundPeriod())
+    @test iszero(Day(1) + Hour(-24))
+    @test !iszero(Day(1) + Hour(1))
+    @test isone(Day(1))
+    @test !isone(Day(2))
+end
+
 @testset "a period out of a CompoundPeriod" begin
     @test infer_type(Day, Tuple{CompoundPeriod}) == Day
 end

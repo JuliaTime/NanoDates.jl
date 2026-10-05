@@ -26,7 +26,7 @@
 
 - This package is a redesign of `TimesDates`
   - `TimesDates` is widely used and well-liked
-    - offers nanoseond resolved dates       (as do we)
+    - offers nanosecond resolved dates      (as do we)
     - offers nanosecond accurate time zones (we do not)
 
 - Latest
@@ -48,5 +48,3 @@
 | 1 ns              | 0.299_793_458 meters  |
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Grace Hopper (thank you, Grace)
-
-
